@@ -101,6 +101,11 @@ body{font-family:var(--f-display)}
 .dchip b{display:block;font-size:1.15rem;font-variant-numeric:tabular-nums}
 .dchip span{font-family:var(--f-mono);font-size:.68rem;color:var(--c1)}
 .dchip.on{border-color:var(--c1);background:color-mix(in srgb,var(--c1) 9%,transparent);animation:pop .4s ease both}
+.opt-q{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 18px;cursor:pointer;font:inherit;font-size:1.1rem;font-weight:700;min-width:64px}
+.opt-q:hover:not(:disabled){border-color:var(--wk)}
+.opt-q.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 16%,transparent)}
+.opt-q.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent);animation:shake .3s}
+.qa input.blank{font-size:1.15rem;min-width:90px}
 .order{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;font-size:.86rem}
 .order span{border-radius:999px;padding:3px 10px;border:1px solid currentColor}
 .stamp{justify-self:center;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--good);border:3px solid var(--good);border-radius:10px;padding:6px 14px;transform:rotate(-4deg);animation:stamp .5s ease both}
@@ -388,8 +393,9 @@ const MEAN=[
 const varF=()=>`${T('lhs',S2+' =')} ${T('frac',fr(T('sig',SIG(),'c2')+T('br',`<span>(</span>${T('xi',XI,'c1')}${T('minus',' − ','c1')}${T('xb',XB,'c1')}<span>)</span>`)+T('sq','2','c4 supk'),T('nm1','(n − 1)','c3')))}`;
 const brk=(fn,mode='comma',sc='')=>`${S2} = ${fr(`${mode==='plus'?'':`<span class="c2 ${sc}">${SG()}</span>`}${D.map((v,i)=>`<span style="white-space:nowrap">${fn(v,i)}</span>${i<4?(mode==='melt'?' '+sep(true):mode==='plus'?' '+plus+' ':sep(false)):''}`).join(' ')}`,'<span class="c3">(n − 1)</span>')}`;
 const full=den=>`${S2} = ${fr(D.map(v=>`<span style="white-space:nowrap">(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup></span>`).join(' '+plus+' '),den)}`;
+/* ---------- variance, method 1: brackets ---------- */
 const VAR=[
- {f:varF(),say:[['t','The mean’s big sister. Same reading.']]},
+ {f:varF(),say:[['t','Method 1: brackets. Same reading as the mean.']]},
  {f:varF(),hl:['frac'],say:[['s','Fraction: divide!']]},
  {f:varF(),hl:['sig'],say:[['t','Σ again. But now in front of a whole bracket.'],['t','Do the bracket for every value. Then add.']]},
  {f:varF(),hl:['xi','minus','xb'],say:[['t','Inside: each value minus x̄.'],['s','x̄ is 18!']]},
@@ -402,20 +408,38 @@ const VAR=[
  {f:brk(v=>`(<span class="c1">${v} − 18</span>)<sup class="c4 new">2</sup>`),say:[['t','Then?'],['s','Square!']]},
  {f:brk(v=>`(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup>`,'melt','melt'),say:[['t','Σ melts. Commas become plus.']]},
  {f:full('<span class="c3 new">(5 − 1)</span>'),x:'<div class="stamp">Half the mark ✓</div>',say:[['t','n − 1 becomes 5 − 1.'],['t','Half the mark, and no calculator yet.']]},
- {f:`${S2} = ${fr('<span class="c1">−6, −3, 0, 2, 7</span> …','<span class="c3">4</span>')}`,x:nl(D,{mean:18,mode:'dist'}),say:[['t','See it. Each bracket is a distance from the mean.'],['t','Left is negative. Added up, they cancel to zero.']]},
- {f:`${S2} = ${fr(`<span class="c4">36 ${plus} 9 ${plus} 0 ${plus} 4 ${plus} 49</span>`,'<span class="c3">4</span>')}`,x:nl(D,{mean:18,mode:'sq'}),say:[['t','So we square. Each distance becomes a real square.'],['t','No more negatives.']]},
- {f:`${S2} = ${fr(big(98),'<span class="c3">4</span>')} = ${big(24.5)}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['t','Total area 98, shared by 4: the average square.'],['s','24.5!'],['t','Its side is the standard deviation: about 4.95.']]}];
+ {f:`${S2} = ${fr(`<span class="c4 new">36 ${plus} 9 ${plus} 0 ${plus} 4 ${plus} 49</span>`,'<span class="c3">4</span>')}`,say:[['t','Calculator: one bracket at a time.'],['s','36, 9, 0, 4, 49.']]},
+ {f:`${S2} = ${fr(big(98),'<span class="c3">4</span>')} = ${big(24.5)}`,say:[['s','98 divided by 4 is 24.5!']]}];
+
+/* ---------- variance, method 2: deviation table ---------- */
+const DV=[-6,-3,0,2,7], DQ=[36,9,0,4,49];
+const mn=v=>String(v).replace('-','−');
+function vt(cols,{nw=null,tot=false}={}){
+  const C={x:['xᵢ',D,90],d:['xᵢ − x̄',DV.map(mn),0],q:['(xᵢ − x̄)²',DQ,98]};
+  return `<table class="ft" style="max-width:420px;justify-self:center"><tr>${cols.map(c=>`<th class="${c===nw?'new':''}">${C[c][0]}</th>`).join('')}</tr>
+   ${D.map((_,r)=>`<tr>${cols.map(c=>`<td class="${c===nw?'new':''}" style="animation-delay:${c===nw?r*.15:0}s">${C[c][1][r]}</td>`).join('')}</tr>`).join('')}
+   ${tot?`<tr>${cols.map(c=>`<td><b class="${c==='q'?'c2':''}">${c==='x'?'Σ':C[c][2]}</b></td>`).join('')}</tr>`:''}</table>`; }
+const TBL=[
+ {f:varF(),x:vt(['x']),say:[['t','Method 2: a table. One column per step.']]},
+ {f:varF(),hl:['xi','minus','xb'],x:vt(['x','d'],{nw:'d'}),say:[['t','Column 2: each value minus x̄, 18.'],['s','−6, −3, 0, 2, 7.']]},
+ {f:varF(),hl:['xi','minus','xb'],x:vt(['x','d'],{tot:true})+nl(D,{mean:18,mode:'dist'}),say:[['t','Each one is a distance from the mean.'],['t','Check: this column adds to zero.']]},
+ {f:varF(),hl:['sq'],x:vt(['x','d','q'],{nw:'q'})+nl(D,{mean:18,mode:'sq'}),say:[['t','Column 3: square each one. Real squares, no negatives.'],['s','36, 9, 0, 4, 49.']]},
+ {f:varF(),hl:['sig'],x:vt(['x','d','q'],{tot:true}),say:[['t','Σ: total the last column.'],['s','98.']]},
+ {f:`${S2} = ${fr('98','<span class="c3">(5 − 1)</span>')} = ${big(24.5)}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['t','Divide by n − 1: the average square.'],['s','24.5!'],['t','Same answer as the brackets. Its side is s: about 4.95.']]}];
 
 const sq=r=>`<span class="sqrt"><span class="c4">√</span><span class="rad">${r}</span></span>`;
 const MU='<span class="v">μ</span>',SIG2='<span class="xi"><span class="v">σ</span><sup>2</sup></span>';
+const sdF=()=>`${T('l','<span class="v">s</span> =')} ${T('root',sq(T('s2',S2,'c1')))}`;
 const SD=[
- {f:`${T('l','<span class="v">s</span> =')} ${T('root',sq(T('s2',S2,'c1')))}`,hl:['root'],say:[['t','√ undoes the square. Back to marks.']]},
+ {f:sdF(),hl:['root'],say:[['t','√ undoes the square. Back to marks.']]},
  {f:`<span class="v">s</span> = ${sq('<span class="c1 new">24.5</span>')} ≈ ${big('4.95')}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['s','About 4.95.'],['t','A typical mark is 4.95 from the mean.']]}];
+const popF=()=>`${T('l',SIG2+' =')} ${fr(`<span class="c2">${SIG(' ',' ')}</span>(${XI} − ${T('mu',MU,'c1')})<sup class="c4">2</sup>`,T('N','<span class="v">N</span>','c3'))}`;
 const POP=[
- {f:`${T('l',SIG2+' =')} ${fr(`<span class="c2">${SIG(' ',' ')}</span>(${XI} − ${T('mu',MU,'c1')})<sup class="c4">2</sup>`,T('N','<span class="v">N</span>','c3'))}`,hl:['mu','N'],say:[['t','Spot the two changes.'],['s','μ instead of x̄. N instead of n − 1.']]},
+ {f:popF(),hl:['mu','N'],say:[['t','Spot the two changes.'],['s','μ instead of x̄. N instead of n − 1.']]},
  {f:`${SIG2} = ${fr('98','<span class="c3 new">5</span>')} = ${big('19.6')}`,say:[['t','“All”, “every”, “entire”: population. Divide by N.'],['t','“Sample”, “randomly selected”: divide by n − 1.']]}];
+const cvF=()=>`${T('l','CV =')} ${fr(T('s','<span class="v">s</span>','c1'),T('xb',XB,'c2'))} ${T('pc','× 100%','c4')}`;
 const CV=[
- {f:`${T('l','CV =')} ${fr(T('s','<span class="v">s</span>','c1'),T('xb',XB,'c2'))} ${T('pc','× 100%','c4')}`,hl:['s','xb'],say:[['t','Which numbers do we have?'],['s','s = 4.95 and x̄ = 18.']]},
+ {f:cvF(),hl:['s','xb'],say:[['t','Which numbers do we have?'],['s','s = 4.95 and x̄ = 18.']]},
  {f:`CV = ${fr('<span class="c1 new">4.95</span>','<span class="c2 new">18</span>')} <span class="c4">× 100%</span> ≈ ${big('27.5%')}`,say:[['t','Spread is 27.5% of the mean. No units.']]}];
 
 const PX='<span class="v">P</span>(<span class="v">x</span>)';
@@ -429,6 +453,82 @@ const EX=[
  {f:EF(),hl:['x','px'],x:EXT(['x','p','xp'],'xp'),say:[['t','Each x times its probability.'],['s','0, 0.3, 0.8, 0.6.']]},
  {f:`E(<span class="v">X</span>) = 0 ${plus} 0.3 ${plus} 0.8 ${plus} 0.6 = ${big('1.7')}`,x:EXT(['x','p','xp']),say:[['t','Σ melts. No dividing by n.'],['s','1.7 complaints a day.']]},
  {f:`Var(<span class="v">X</span>) = <span class="c2">Σ</span>(<span class="v c1">x</span> <span class="c1">− μ</span>)<sup class="c4">2</sup> · <span class="c3">${PX}</span> = ${big('0.81')}`,x:EXT(['x','p','d','d2','w'],'w'),say:[['t','Same story as s². Subtract, square, times P(x), add.'],['s','0.81. SD is 0.9.']]}];
+
+/* ================= quest: the student does each step (booklet data) ================= */
+function quest(el,steps,onDone){
+  steps.forEach(s=>window.__lines.add('t|'+plain(s.q)));
+  el.innerHTML=`<div class="story"><div class="stg"><div class="m"></div><div class="xtra" style="display:grid"></div></div>
+   <div class="talk"></div><div class="qa"></div><div class="ctl"><div class="dots"></div><button type="button" class="btn" data-a="next" hidden>Next →</button></div></div>`;
+  const m=el.querySelector('.m'),xt=el.querySelector('.xtra'),talk=el.querySelector('.talk'),qa=el.querySelector('.qa'),dots=el.querySelector('.dots'),bN=el.querySelector('[data-a=next]');
+  steps.forEach(()=>dots.appendChild(document.createElement('i')));
+  let i=0;
+  const norm=v=>v.trim().replace(/[−–]/g,'-').replace(',','.');
+  function show(k){ i=k; const s=steps[k]; m.classList.remove('focus'); m.innerHTML=s.f; xt.innerHTML=s.x||''; bN.hidden=true;
+    talk.innerHTML=`<div class="bub t" title="Click to hear"><small>Teacher</small>${s.q}</div>`;
+    talk.querySelector('.bub').addEventListener('click',e=>{ const b=e.currentTarget; b.classList.add('now'); say('t',s.q,()=>b.classList.remove('now')); });
+    if(s.o){ qa.innerHTML=`<div class="row">${s.o.map((o,j)=>`<button type="button" class="opt-q" data-j="${j}">${o}</button>`).join('')}</div>`;
+      qa.querySelectorAll('.opt-q').forEach(b=>b.addEventListener('click',()=>{ if(+b.dataset.j===s.a){ b.classList.add('ok'); qa.querySelectorAll('.opt-q').forEach(x=>x.disabled=true); right(); } else { b.classList.add('no'); setTimeout(()=>b.classList.remove('no'),400); hint(); } })); }
+    else { qa.innerHTML=`<div class="row"><input class="blank" inputmode="decimal" size="6" aria-label="answer"><button type="button" class="btn">Check</button></div>`;
+      const inp=qa.querySelector('input'),b=qa.querySelector('button');
+      const chk=()=>{ const v=parseFloat(norm(inp.value)); const tol=String(s.a).includes('.')?Math.pow(10,-(String(s.a).split('.')[1].length))*1.01:1e-9;
+        if(!isNaN(v)&&Math.abs(v-s.a)<=tol){ inp.classList.add('ok'); inp.disabled=true; b.disabled=true; right(); } else { inp.classList.remove('no'); void inp.offsetWidth; inp.classList.add('no'); hint(); } };
+      b.addEventListener('click',chk); inp.addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); }); setTimeout(()=>inp.focus({preventScroll:true}),50); }
+    [...dots.children].forEach((d,j)=>d.className=j===k?'on':j<k?'done':''); }
+  function hint(){ if(steps[i].hint&&!talk.querySelector('.s')) talk.insertAdjacentHTML('beforeend',`<div class="bub s"><small>Hint</small>${steps[i].hint}</div>`); }
+  function right(){ const s=steps[i]; if(s.then){ m.innerHTML=s.then; } if(s.tx!=null) xt.innerHTML=s.tx;
+    if(i<steps.length-1) bN.hidden=false; else { xt.insertAdjacentHTML('beforeend','<div class="stamp">Well done ✓</div>'); onDone&&onDone(); } }
+  bN.addEventListener('click',()=>show(i+1));
+  show(0);
+}
+/* booklet data: 2, 4, 6, 8, 10 */
+const B5=[2,4,6,8,10];
+const bm=(num,den)=>`${XB} = ${fr(num,den)}`;
+const Q_MEAN=[
+ {f:meanF(),x:chips(B5),q:'Data: 2, 4, 6, 8, 10. What is x₂?',o:['2','4','6'],a:1,hint:'The small 2 is the position.'},
+ {f:meanF(),x:chips(B5,[1]),q:'And x₄?',o:['4','8','6'],a:1},
+ {f:meanF(),x:chips(B5,[3]),q:'n = ?',a:5,then:bm(`<span class="c2">${SG()}</span>${XI}`,'<span class="c3 new">5</span>'),hint:'Count the values.'},
+ {f:bm(`<span class="c2">${SG()}</span>${XI}`,'<span class="c3">5</span>'),q:'Replace xᵢ with…',o:['5','2, 4, 6, 8, 10','x₁ only'],a:1,then:bm(`<span class="c2">${SG()}</span><span class="c1 new">(${list(B5)})</span>`,'<span class="c3">5</span>')},
+ {f:bm(`<span class="c2">${SG()}</span><span class="c1">(${list(B5)})</span>`,'<span class="c3">5</span>'),q:'Σ melts. Each comma becomes…',o:['+','−','×'],a:0,then:bm(`<span class="c2 melt">${SG()}</span><span class="c1">(${list(B5,'melt')})</span>`,'<span class="c3">5</span>')},
+ {f:bm(`<span class="c1">${list(B5,'plus')}</span>`,'<span class="c3">5</span>'),q:'Add the top.',a:30,then:bm(big(30),'<span class="c3">5</span>')},
+ {f:bm('30','<span class="c3">5</span>'),q:'x̄ = ?',a:6,then:`${XB} = ${big(6)}`}];
+const bb=(fn,mode='comma',den='<span class="c3">(n − 1)</span>',sc='')=>`${S2} = ${fr(`${mode==='plus'?'':`<span class="c2 ${sc}">${SG()}</span>`}${B5.map((v,i)=>`<span style="white-space:nowrap">${fn(v,i)}</span>${i<4?(mode==='melt'?' '+sep(true):mode==='plus'?' '+plus+' ':sep(false)):''}`).join(' ')}`,den)}`;
+const b6=v=>`(<span class="c1">${v} − 6</span>)<sup class="c4">2</sup>`;
+const Q_VARB=[
+ {f:varF(),x:chips(B5),q:'Data: 2, 4, 6, 8, 10 · x̄ = 6. How many brackets?',a:5,then:bb(()=>'<span class="new">(&nbsp;&nbsp;&nbsp;&nbsp;)</span>')},
+ {f:bb(()=>'(&nbsp;&nbsp;&nbsp;&nbsp;)'),q:'What goes in the first bracket?',o:['6','2','x̄'],a:1,then:bb(v=>`(<span class="c1 new">${v}</span>)`)},
+ {f:bb(v=>`(<span class="c1">${v}</span>)`),q:'After xᵢ comes…',o:['+','−','×'],a:1,then:bb(v=>`(<span class="c1">${v}</span><span class="c1 new"> − </span>&nbsp;)`)},
+ {f:bb(v=>`(<span class="c1">${v} − </span>&nbsp;)`),q:'Then x̄. Which number?',o:['5','10','6'],a:2,then:bb(v=>`(<span class="c1">${v} − </span><span class="c1 new">6</span>)`)},
+ {f:bb(v=>`(<span class="c1">${v} − 6</span>)`),q:'Outside the bracket?',o:['√','²','÷ n'],a:1,then:bb(v=>`(<span class="c1">${v} − 6</span>)<sup class="c4 new">2</sup>`)},
+ {f:bb(b6),q:'Σ melts into…',o:['+','×','−'],a:0,then:bb(b6,'melt','<span class="c3">(n − 1)</span>','melt')},
+ {f:bb(b6,'plus'),q:'Bottom: n − 1 = ?',a:4,then:bb(b6,'plus','<span class="c3 new">4</span>'),tx:'<div class="stamp">Half the mark ✓</div>'},
+ {f:bb(b6,'plus','<span class="c3">4</span>'),q:'Calculator: (4 − 6)² = ?',a:4,hint:'(−2)² — keep the brackets.',then:`${S2} = ${fr(`16 ${plus} <span class="new">4</span> ${plus} 0 ${plus} 4 ${plus} 16`,'<span class="c3">4</span>')}`,tx:''},
+ {f:`${S2} = ${fr(`16 ${plus} 4 ${plus} 0 ${plus} 4 ${plus} 16`,'<span class="c3">4</span>')}`,q:'Total of the top?',a:40,then:`${S2} = ${fr(big(40),'<span class="c3">4</span>')}`},
+ {f:`${S2} = ${fr('40','<span class="c3">4</span>')}`,q:'s² = ?',a:10,then:`${S2} = ${big(10)}`}];
+const Q_SD=[
+ {f:sdF(),q:'s is the ___ of s².',o:['square','square root','half'],a:1},
+ {f:sdF(),q:'Your s² from before?',a:10,then:`<span class="v">s</span> = ${sq('<span class="c1 new">10</span>')}`},
+ {f:`<span class="v">s</span> = ${sq('<span class="c1">10</span>')}`,q:'s ≈ ? (2 decimals)',a:3.16,then:`<span class="v">s</span> ≈ ${big('3.16')}`},
+ {f:`<span class="v">s</span> ≈ 3.16`,q:'Units of s?',o:['squared','original'],a:1}];
+const Q_POP=[
+ {f:popF(),q:'2, 4, 6, 8, 10 are ALL the values. So…',o:['sample','population'],a:1},
+ {f:popF(),q:'μ = ?',a:6,then:`${SIG2} = ${fr(`<span class="c2">${SIG(' ',' ')}</span>(${XI} − <span class="c1 new">6</span>)<sup class="c4">2</sup>`,'<span class="v c3">N</span>')}`},
+ {f:`${SIG2} = ${fr('40','<span class="v c3">N</span>')}`,q:'Top is 40. Divide by…',o:['4','5'],a:1,then:`${SIG2} = ${fr('40','<span class="c3 new">5</span>')}`},
+ {f:`${SIG2} = ${fr('40','<span class="c3">5</span>')}`,q:'σ² = ?',a:8,then:`${SIG2} = ${big(8)}`},
+ {f:`${SIG2} = 8`,q:'σ = √8 ≈ ?',a:2.83,then:`<span class="v">σ</span> ≈ ${big('2.83')}`},
+ {f:`<span class="v">s</span> = 3.16 &nbsp; <span class="v">σ</span> = 2.83`,q:'Which is bigger?',o:['s','σ'],a:0}];
+const Q_CV=[
+ {f:cvF(),q:'CV = s ÷ …',o:['n','x̄','s²'],a:1},
+ {f:cvF(),q:'Your s?',a:3.16,then:`CV = ${fr('<span class="c1 new">3.16</span>',XB)} <span class="c4">× 100%</span>`},
+ {f:`CV = ${fr('<span class="c1">3.16</span>',XB)} <span class="c4">× 100%</span>`,q:'Your x̄?',a:6,then:`CV = ${fr('<span class="c1">3.16</span>','<span class="c2 new">6</span>')} <span class="c4">× 100%</span>`},
+ {f:`CV = ${fr('<span class="c1">3.16</span>','<span class="c2">6</span>')} <span class="c4">× 100%</span>`,q:'CV ≈ ? %',a:52.7,then:`CV ≈ ${big('52.7%')}`}];
+const COF=(n)=>`<table class="ft" style="max-width:420px;justify-self:center"><tr><th>x</th><th>P(x)</th><th>x · P(x)</th></tr>${[[1,.2,.2],[2,.3,.6],[3,.4,1.2],[4,.1,.4]].map((r,i)=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${i<n?`<span class="${i===n-1?'new':''}">${r[2]}</span>`:'?'}</td></tr>`).join('')}</table>`;
+const Q_EX=[
+ {f:EF(),x:COF(1),q:'Cups of coffee. ΣP(x) = ?',a:1,hint:'0.2 + 0.3 + 0.4 + 0.1'},
+ {f:EF(),x:COF(1),q:'2 × 0.3 = ?',a:0.6,tx:COF(2)},
+ {f:EF(),x:COF(2),q:'3 × 0.4 = ?',a:1.2,tx:COF(3)},
+ {f:EF(),x:COF(3),q:'4 × 0.1 = ?',a:0.4,tx:COF(4)},
+ {f:`E(<span class="v">X</span>) = 0.2 ${plus} 0.6 ${plus} 1.2 ${plus} 0.4`,x:COF(4),q:'E(X) = ?',a:2.4,then:`E(<span class="v">X</span>) = ${big('2.4')}`},
+ {f:`E(<span class="v">X</span>) = 2.4`,q:'Divide by n?',o:['Yes','No'],a:1}];
 
 /* ================= stations ================= */
 function levels(el,tabs){
@@ -450,9 +550,9 @@ const CALC_VAR=[
  {name:'n − 1 trap',trap:true,intro:'98 ÷ 5 − 1…',steps:[{k:'9 8 ÷ 5 − 1 =',note:'<b>18.6?</b> It divided first.',tone:'bad',rec:'✗ 18.6'},{k:'9 8 ÷ ( 5 − 1 ) =',note:'<b>24.5</b> ✓',tone:'good',rec:'✓ 24.5'}]}];
 
 const ERR=[['Symbols',2],['Which number goes where',2],['The fraction',2],['Calculator answer',2],['Order of steps',3],['Negative signs',3],['Is my answer reasonable?',3]];
+const TEAM=`<div class="team"><span><b>Dr. Robert Mcclung</b> · Dean, GED</span><span>Dr. Noura Mansoura</span><span>Eng. Nadia Mekhfi</span><span>Junas Andrino</span></div>`;
 const STATIONS=[
- {nav:'Start',build:el=>{ el.innerHTML=`<div class="hero"><div><span class="eyebrow">Mind the Gap · Workshop 2 of 3</span><h1>Read the<span>formula.</span></h1>
-   <div class="team"><span>Dr. Noura Mansoura</span><span>Eng. Nadia Mekhfi</span><span>Dr. Robert Mcclung</span><span>Junas Andrino</span></div></div>
+ {nav:'Start',build:el=>{ el.innerHTML=`<div class="hero"><div><span class="eyebrow">Mind the Gap · Workshop 2 of 3</span><h1>Read the<span>formula.</span></h1>${TEAM}</div>
    <div class="card"><div class="route"><div>READ</div><div>UNDERSTAND</div><div>APPLY</div><div>INTERPRET</div></div>
    <div class="lv3"><div><b>LEVEL 1</b>Watch</div><div><b>LEVEL 2</b>Your turn</div><div><b>LEVEL 3</b>On your own</div></div>
    <button type="button" class="btn go" onclick="goSt(1)">Start →</button></div></div>`; }},
@@ -466,30 +566,33 @@ const STATIONS=[
    W.poll(pb,{q:'Where did you get stuck?',opts:ERR.map(e=>e[0]),reveal:i=>`<a href="#s${ERR[i][1]}" style="font-weight:700">Go to station ${ERR[i][1]} →</a>`}); }},
  {nav:'Mean',title:'The mean',track:1,build:el=>levels(el,[
    ['Level 1','Watch','',c=>story(c,MEAN)],
-   ['Tool','Calculator','',c=>calc(c,CALC_MEAN)],
-   ['Level 2','Your turn','Data: 2, 4, 6, 8, 10',c=>fill(c,`<div class="ln"><b>Identify</b> x₂ = [[4]] &nbsp; x₄ = [[8]] &nbsp; n = [[5]]</div>
-     <div class="ln"><b>Translate</b> x̄ = ( 2 + 4 + 6 + 8 + 10 ) / [[5]]</div><div class="ln"><b>Calculate</b> x̄ = [[30]] / 5 = [[6]]</div>`,()=>setRes({xbar:'6'}))]])},
+   ['Level 2','Your turn','Booklet · Exercise 1',c=>quest(c,Q_MEAN,()=>setRes({xbar:'6'}))],
+   ['Tool','Calculator','',c=>calc(c,CALC_MEAN)]])},
  {nav:'Variance',title:'The sample variance',track:1,build:el=>levels(el,[
-   ['Level 1','Watch','',c=>story(c,VAR)],
+   ['Method 1','Brackets','',c=>story(c,VAR)],
+   ['Your turn','Brackets','Booklet · Exercise 2',c=>quest(c,Q_VARB,()=>setRes({s2:'10'}))],
+   ['Method 2','Table','',c=>story(c,TBL)],
+   ['Your turn','Table','Booklet · Exercise 2',c=>fill(c,`<div class="datahead">Data: <b>2, 4, 6, 8, 10</b> · x̄ = 6</div><table class="ft"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>
+     <tr><td>2</td><td>−4</td><td>16</td></tr><tr><td>4</td><td>[[-2]]</td><td>[[4]]</td></tr><tr><td>6</td><td>[[0]]</td><td>[[0]]</td></tr><tr><td>8</td><td>[[2]]</td><td>[[4]]</td></tr><tr><td>10</td><td>[[4]]</td><td>[[16]]</td></tr>
+     <tr><td><b>Σ</b></td><td>[[0]]</td><td>[[40]]</td></tr></table><div class="ln"><b>s²</b> [[40]] / ( 5 − 1 ) = [[10]]</div>`,()=>setRes({s2:'10'}))],
    ['Tool','Calculator','',c=>calc(c,CALC_VAR)],
-   ['Play','See the squares','',c=>explore(c)],
-   ['Level 2','Your turn','Data: 2, 4, 6, 8, 10 · x̄ = 6',c=>fill(c,`<table class="ft"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>
-     <tr><td>2</td><td>−4</td><td>16</td></tr><tr><td>4</td><td>−2</td><td>[[4]]</td></tr><tr><td>6</td><td>[[0]]</td><td>[[0]]</td></tr><tr><td>8</td><td>[[2]]</td><td>[[4]]</td></tr><tr><td>10</td><td>[[4]]</td><td>[[16]]</td></tr>
-     <tr><td><b>Σ</b></td><td>0</td><td>[[40]]</td></tr></table><div class="ln"><b>Calculate</b> s² = [[40]] / ( 5 − 1 ) = [[10]]</div>`,()=>setRes({s2:'10'}))]])},
- {nav:'s · σ² · CV',title:'Same routine',track:1,build:el=>levels(el,[
-   ['Level 1','s',      '',c=>story(c,SD)],
-   ['Level 1','σ²',     '',c=>story(c,POP)],
-   ['Level 1','CV',     '',c=>story(c,CV)],
-   ['Level 2','Your turn','Data: 2, 4, 6, 8, 10 · s² = 10',c=>{ c.innerHTML='<div id="f"></div><div style="margin-top:18px"><span class="eyebrow">Sample or population?</span><div id="sp" style="margin-top:8px"></div></div>';
-     fill(c.querySelector('#f'),`<div class="ln"><b>s</b> √[[10]] ≈ [[3.16]]</div><div class="ln"><b>σ²</b> 40 / [[5]] = [[8]] &nbsp; σ ≈ [[2.83]]</div><div class="ln"><b>CV</b> ( [[3.16]] / [[6]] ) × 100% ≈ [[52.7]] %</div>`,()=>setRes({s:'3.16',sig2:'8',cv:'52.7%'}));
-     W.sort(c.querySelector('#sp'),{buckets:['n − 1','N'],items:[{t:'6 randomly selected customers',a:0,why:''},{t:'All 32 students in the section',a:1,why:''},{t:'200 Dubai residents surveyed',a:0,why:''},{t:'Every employee of a 15-person firm',a:1,why:''}]}); }]])},
+   ['Play','See the squares','',c=>explore(c)]])},
+ {nav:'Std deviation',title:'Standard deviation',track:1,build:el=>levels(el,[
+   ['Level 1','Watch','',c=>story(c,SD)],
+   ['Level 2','Your turn','Booklet · Exercise 3',c=>quest(c,Q_SD,()=>setRes({s:'3.16'}))]])},
+ {nav:'Population',title:'Sample or population?',track:1,build:el=>levels(el,[
+   ['Level 1','Watch','',c=>story(c,POP)],
+   ['Level 2','Your turn','Booklet · Exercise 4',c=>quest(c,Q_POP,()=>setRes({sig2:'8'}))],
+   ['Quick','Sort it','',c=>W.sort(c,{buckets:['n − 1','N'],items:[{t:'6 randomly selected customers',a:0,why:''},{t:'All 32 students in the section',a:1,why:''},{t:'200 Dubai residents surveyed',a:0,why:''},{t:'Every employee of a 15-person firm',a:1,why:''}]})]])},
+ {nav:'CV',title:'Coefficient of variation',track:1,build:el=>levels(el,[
+   ['Level 1','Watch','',c=>story(c,CV)],
+   ['Level 2','Your turn','Booklet · Exercise 5',c=>quest(c,Q_CV,()=>setRes({cv:'52.7%'}))]])},
  {nav:'E(X)',title:'Expected value',track:1,build:el=>levels(el,[
    ['Level 1','Watch','',c=>story(c,EX)],
-   ['Level 2','Your turn','Cups of coffee per day',c=>fill(c,`<table class="ft"><tr><th>x</th><th>P(x)</th><th>x · P(x)</th></tr><tr><td>1</td><td>0.2</td><td>0.2</td></tr><tr><td>2</td><td>0.3</td><td>[[0.6]]</td></tr><tr><td>3</td><td>0.4</td><td>[[1.2]]</td></tr><tr><td>4</td><td>0.1</td><td>[[0.4]]</td></tr><tr><td><b>Σ</b></td><td>[[1]]</td><td>[[2.4]]</td></tr></table>
-     <div class="ln"><b>Var</b> 0.392 + 0.048 + 0.144 + 0.256 = [[0.84]] &nbsp; SD ≈ [[0.92]]</div>`,()=>setRes({ex:'2.4'}))]])},
- {nav:'On your own',title:'Level 3 · Café waiting times',build:el=>levels(el,[
+   ['Level 2','Your turn','Booklet · Exercise 6',c=>quest(c,Q_EX,()=>setRes({ex:'2.4'}))]])},
+ {nav:'On your own',title:'Level 3 · On your own',build:el=>levels(el,[
    ['Level 3','Café','6 randomly selected customers (minutes)',c=>fill(c,`<div class="datahead"><b>3, 5, 4, 8, 6, 4</b></div>
-     <table class="ft"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>${[3,5,4,8,6,4].map(v=>`<tr><td>${v}</td><td>[[${v-5}]]</td><td>[[${(v-5)**2}]]</td></tr>`).join('')}<tr><td><b>Σ</b></td><td>0</td><td>[[16]]</td></tr></table>
+     <table class="ft"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>${[3,5,4,8,6,4].map(v=>`<tr><td>${v}</td><td>[[${v-5}]]</td><td>[[${(v-5)**2}]]</td></tr>`).join('')}<tr><td><b>Σ</b></td><td>[[0]]</td><td>[[16]]</td></tr></table>
      <div class="ln"><b>x̄</b> [[5]] min</div><div class="ln"><b>s²</b> [[16]] / [[5]] = [[3.2]] min²</div><div class="ln"><b>s</b> ≈ [[1.79]] min</div><div class="ln"><b>CV</b> ≈ [[35.8]] %</div>`)],
    ['Level 3','Online orders','X = items per order',c=>fill(c,`<div class="datahead">x: <b>1, 2, 3</b> &nbsp; P(x): <b>0.5, 0.3, 0.2</b></div>
      <div class="ln"><b>Valid?</b> ΣP(x) = [[1]]</div><div class="ln"><b>E(X)</b> = [[1.7]] items</div><div class="ln"><b>Var(X)</b> = [[0.61]]</div><div class="ln"><b>SD(X)</b> ≈ [[0.78]]</div>`)]])},
@@ -520,7 +623,7 @@ function goSt(i,fromHash){ if(i<0||i>=STATIONS.length) return; hush(); cur=i; co
 addEventListener('hashchange',()=>{ const m=location.hash.match(/^#s(\d+)$/); if(m&&+m[1]!==cur) goSt(+m[1],true); });
 addEventListener('keydown',e=>{ if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return; if(e.key==='ArrowRight') goSt(cur+1); if(e.key==='ArrowLeft') goSt(cur-1); });
 const mh=location.hash.match(/^#s(\d+)$/); goSt(mh?Math.min(+mh[1],STATIONS.length-1):0,true);
-window.__allLines=()=>{ [MEAN,VAR,SD,POP,CV,EX].forEach(st=>st.forEach(s=>(s.say||[]).forEach(([w,t])=>window.__lines.add(w+'|'+plain(t))))); return [...window.__lines]; };
+window.__allLines=()=>{ [Q_MEAN,Q_VARB,Q_SD,Q_POP,Q_CV,Q_EX].forEach(q=>q.forEach(x=>window.__lines.add('t|'+plain(x.q)))); [MEAN,VAR,TBL,SD,POP,CV,EX].forEach(st=>st.forEach(s=>(s.say||[]).forEach(([w,t])=>window.__lines.add(w+'|'+plain(t))))); return [...window.__lines]; };
 </script>
 </body>
 </html>
