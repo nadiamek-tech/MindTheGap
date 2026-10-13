@@ -9,27 +9,76 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Schibsted+Grotesk:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <link rel="stylesheet" href="assets/course.css">
 <style>
-:root{--wk:#C0262D;--wk-soft:rgba(192,38,45,.09);--wk-d:#FF7A73;--wk-soft-d:rgba(255,122,115,.14);
+:root{--wk:#C8102E;--wk-soft:rgba(200,16,46,.08);--wk-d:#FF7A7F;--wk-soft-d:rgba(255,122,127,.14);
   --c1:#C62828;--c2:#1F63B5;--c3:#1E7F4F;--c4:#6B3FA0}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c1:#FF8A80;--c2:#7FB2FF;--c3:#6FD69B;--c4:#C3A1FF}}
 :root[data-theme="dark"]{--c1:#FF8A80;--c2:#7FB2FF;--c3:#6FD69B;--c4:#C3A1FF}
 .c1{color:var(--c1)}.c2{color:var(--c2)}.c3{color:var(--c3)}.c4{color:var(--c4)}
+body{font-family:var(--f-display)}
+
+/* ---------- shell ---------- */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:14px}
+.logo{display:block;background:#fff;border-radius:8px;padding:4px 8px;line-height:0;flex:none}
+.logo img{height:34px;width:auto}
+.ttl{flex:1 1 auto;min-width:0}
+.ttl b{display:block;font-weight:800;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ttl span{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stations{max-width:1180px;margin:0 auto;padding:0 16px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+.stations button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-family:var(--f-display);font-size:.86rem;color:var(--muted);white-space:nowrap}
+.stations button .n{font-family:var(--f-mono);font-size:.7rem;margin-right:5px}
+.stations button[aria-current="true"]{background:var(--wk);border-color:var(--wk);color:#fff;font-weight:700}
+.stations button.seen:not([aria-current="true"]){color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+.st-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px;margin-bottom:14px}
+.st-head h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;letter-spacing:-.02em}
+.st-head .eyebrow{display:block;margin-bottom:4px}
+.tracker{display:flex;gap:6px;flex-wrap:wrap}
+.tracker div{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 9px;text-align:center;min-width:58px}
+.tracker small{display:block;font-family:var(--f-mono);font-size:.62rem;color:var(--muted)}
+.tracker b{font-size:.95rem;font-variant-numeric:tabular-nums}
+.tracker div.got{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,transparent)}
+.levels{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.levels button{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:7px 12px;cursor:pointer;font-family:var(--f-display);font-size:.9rem;display:flex;align-items:center;gap:7px}
+.levels button small{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.levels button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.levels button[aria-pressed="true"] small{color:inherit;opacity:.7}
+.inst{font-size:.95rem;color:var(--muted);margin:0 0 12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.pager button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;cursor:pointer;font-family:var(--f-display);font-weight:600}
+.pager button.nx{border-color:var(--wk);color:var(--wk);margin-left:auto}
+.pager button:disabled{opacity:.3;cursor:default}
+
+/* ---------- start ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:800;letter-spacing:-.035em;line-height:.95}
+.hero h1 span{color:var(--wk);display:block}
+.team{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.team span{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:.88rem}
+.route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:14px 0}
+.route div{border-top:3px solid var(--wk);background:var(--bg);border-radius:0 0 8px 8px;padding:7px 8px;font-weight:700;font-size:.82rem;letter-spacing:.04em;text-align:center}
+.lv3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.lv3 div{border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-size:.85rem;background:var(--bg)}
+.lv3 b{display:block;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;color:var(--wk)}
+.go{margin-top:18px;font-size:1rem;padding:10px 18px}
 
 /* ---------- formula stage ---------- */
 .story{display:grid;gap:12px}
-.stg{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:22px 12px;min-height:150px;display:grid;align-content:center;gap:14px;overflow:hidden}
-.m{font-family:"Source Serif 4",Georgia,serif;font-size:clamp(1.25rem,4.2vw,2.15rem);line-height:1.2;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.18em;font-variant-numeric:lining-nums}
+.stg{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:22px 10px;min-height:170px;display:grid;align-content:center;gap:14px;overflow:hidden}
+.m{font-family:"Source Serif 4",Georgia,serif;font-size:clamp(1.25rem,4.2vw,2.2rem);line-height:1.2;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.18em;font-variant-numeric:lining-nums}
 .m .v{font-style:italic}
 .m sub,.m sup{font-size:.6em;line-height:0;position:relative}
 .m sub{vertical-align:baseline;top:.35em}.m sup{vertical-align:baseline;top:-.65em}
 .tk{border-radius:6px;padding:0 .06em;transition:opacity .35s,background .35s,box-shadow .35s;display:inline-block;vertical-align:middle}
-.xi,.sup{display:inline-block;white-space:nowrap}
+.xi{display:inline-block;white-space:nowrap}
 .m .tk.supk{font-size:.6em;vertical-align:top;margin-left:-.05em}
-.m.focus .tk:not(.hl):not(.lit):not(.anc){opacity:.28}
-.tk.hl{background:color-mix(in srgb,var(--wk) 13%,transparent);box-shadow:0 0 0 2px var(--wk)}
-.tk.hl .tk{background:none;box-shadow:none}
+.m.focus .tk:not(.hl):not(.lit):not(.anc){opacity:.25}
+.tk.hl{background:color-mix(in srgb,var(--wk) 13%,transparent);box-shadow:0 0 0 2px var(--wk);animation:pulse 1.4s ease 2}
+.tk.hl .tk{background:none;box-shadow:none;animation:none}
+@keyframes pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--wk) 25%,transparent)}}
 .frac{display:inline-flex;flex-direction:column;align-items:stretch;vertical-align:middle}
-.frac>.num{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.12em;padding:0 .15em .12em;max-width:min(560px,78vw)}
+.frac>.num{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.12em;padding:0 .15em .12em;max-width:min(580px,80vw)}
 .frac>.den{border-top:.07em solid currentColor;padding-top:.1em;display:flex;justify-content:center;align-items:center;gap:.12em}
 .sig{display:inline-flex;flex-direction:column;align-items:center;line-height:1;margin-right:.05em}
 .sig .S{font-size:1.45em;line-height:1}
@@ -39,591 +88,439 @@
 .sqrt{display:inline-flex;align-items:stretch}
 .sqrt .rad{border-top:.07em solid currentColor;padding:0 .1em;margin-top:.12em}
 .new{animation:pop .6s ease both}
-@keyframes pop{0%{opacity:0;transform:translateY(-.4em) scale(.9)}100%{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:translateY(-.4em) scale(.85)}100%{opacity:1;transform:none}}
 .melt{animation:melt 1.6s ease forwards;display:inline-flex}
-@keyframes melt{0%{opacity:1;filter:none;transform:none}60%{opacity:.6;filter:blur(1px);transform:translateY(.15em) scaleY(.8)}100%{opacity:0;filter:blur(3px);transform:translateY(.5em) scaleY(.3);width:0;margin:0}}
+@keyframes melt{0%{opacity:1}60%{opacity:.6;filter:blur(1px);transform:translateY(.15em) scaleY(.8)}100%{opacity:0;filter:blur(3px);transform:translateY(.5em) scaleY(.3);width:0;margin:0}}
 .sep{position:relative;display:inline-block;min-width:.55em;text-align:center}
-.sep .c{animation:fadeout .9s .5s ease forwards}
+.sep .c{animation:fadeout .9s .5s ease forwards;display:inline-block}
 .sep .p{position:absolute;left:0;right:0;opacity:0;color:var(--c2);font-weight:600;animation:fadein .9s 1s ease forwards}
 @keyframes fadeout{to{opacity:0;transform:translateY(.3em)}}
 @keyframes fadein{to{opacity:1}}
 .dchips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
-.dchip{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 10px;text-align:center;font-family:var(--f-display);min-width:54px;transition:all .3s}
+.dchip{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 10px;text-align:center;min-width:54px}
 .dchip b{display:block;font-size:1.15rem;font-variant-numeric:tabular-nums}
 .dchip span{font-family:var(--f-mono);font-size:.68rem;color:var(--c1)}
-.dchip.on{border-color:var(--c1);background:color-mix(in srgb,var(--c1) 9%,transparent)}
-.order{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;font-family:var(--f-display);font-size:.86rem}
+.dchip.on{border-color:var(--c1);background:color-mix(in srgb,var(--c1) 9%,transparent);animation:pop .4s ease both}
+.order{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;font-size:.86rem}
 .order span{border-radius:999px;padding:3px 10px;border:1px solid currentColor}
-.stamp{justify-self:center;font-family:var(--f-display);font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--good);border:3px solid var(--good);border-radius:10px;padding:6px 14px;transform:rotate(-4deg);animation:pop .5s ease both}
-.talk{display:grid;gap:8px;min-height:92px;align-content:start}
-.bub{font-family:var(--f-display);font-size:.98rem;line-height:1.45;padding:9px 13px;border-radius:14px;max-width:88%;animation:pop .45s ease both}
-.bub small{display:block;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;margin-bottom:1px}
+.stamp{justify-self:center;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--good);border:3px solid var(--good);border-radius:10px;padding:6px 14px;transform:rotate(-4deg);animation:stamp .5s ease both}
+@keyframes stamp{0%{opacity:0;transform:rotate(-4deg) scale(1.8)}100%{opacity:1;transform:rotate(-4deg) scale(1)}}
+.talk{display:grid;gap:8px;min-height:84px;align-content:start}
+.bub{font-size:1rem;line-height:1.4;padding:8px 13px;border-radius:14px;max-width:88%;animation:pop .45s ease both;cursor:pointer;position:relative}
+.bub small{display:block;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:1px}
 .bub.t{background:var(--wk-soft);border:1px solid color-mix(in srgb,var(--wk) 35%,transparent);border-bottom-left-radius:4px;justify-self:start}
 .bub.s{background:var(--sunk);border:1px solid var(--line);border-bottom-right-radius:4px;justify-self:end;text-align:right}
+.bub.now{box-shadow:0 0 0 2px var(--wk)}
 .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .dots{display:flex;gap:4px;flex:1 1 auto;justify-content:center;flex-wrap:wrap}
 .dots i{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer}
 .dots i.on{background:var(--wk)}
 .dots i.done{background:color-mix(in srgb,var(--wk) 45%,var(--line))}
+.nl{width:100%;height:auto;display:block;max-width:640px;justify-self:center;touch-action:none}
+.nl text{font-family:var(--f-display);fill:var(--ink)}
+.nl .mut{fill:var(--muted)}
+.pg circle{cursor:grab}.pg{touch-action:none}
 
 /* ---------- calculator ---------- */
-.calcwrap{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:start}
-.calc{background:#232A33;border-radius:18px;padding:14px;box-shadow:0 2px 0 rgba(0,0,0,.25);max-width:280px;width:100%;justify-self:center}
+.calcwrap{display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:16px;align-items:start}
+.calc{background:#232A33;border-radius:18px;padding:14px;max-width:280px;width:100%;justify-self:center}
 .lcd{background:#C7D0BA;color:#1B2116;border-radius:8px;padding:8px 10px;font-family:var(--f-mono);min-height:74px;display:grid;align-content:space-between;margin-bottom:12px;box-shadow:inset 0 2px 4px rgba(0,0,0,.25)}
 .lcd .in{font-size:.86rem;word-break:break-all;min-height:1.3em}
 .lcd .out{font-size:1.45rem;text-align:right;font-weight:600}
 .keys{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.keys button{border:0;border-radius:7px;padding:9px 0;font-family:var(--f-display);font-size:.9rem;font-weight:600;cursor:pointer;background:#3B4552;color:#EEF2F6;transition:transform .08s,background .15s}
+.keys button{border:0;border-radius:7px;padding:10px 0;font-family:var(--f-display);font-size:.9rem;font-weight:600;cursor:pointer;background:#3B4552;color:#EEF2F6;transition:transform .08s,background .15s}
 .keys button.num{background:#E9ECEF;color:#1D232A}
 .keys button.op{background:#56636F}
-.keys button.eq{grid-column:span 2;background:#C0262D;color:#fff}
+.keys button.eq{grid-column:span 2;background:#C8102E;color:#fff}
 .keys button.ac{background:#B5651D;color:#fff}
-.keys button.flash{transform:scale(.9);background:#FFD54A!important;color:#1D232A!important}
-.keys button:disabled{cursor:default}
-.side{display:grid;gap:10px;font-family:var(--f-display);font-size:.92rem}
+.keys button.flash{transform:scale(.88);background:#FFD54A!important;color:#1D232A!important}
+.side{display:grid;gap:10px;font-size:.92rem}
 .tabs{display:flex;flex-wrap:wrap;gap:6px}
 .tabs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:4px 11px;cursor:pointer;font-family:var(--f-display);font-size:.84rem}
 .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .tabs button.trap{border-color:var(--bad);color:var(--bad)}
 .tabs button.trap[aria-pressed="true"]{background:var(--bad);color:#fff}
-.paper{border:1px dashed var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);min-height:60px}
+.paper{border:1px dashed var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);min-height:50px}
 .paper div{font-family:var(--f-mono);font-size:.84rem;animation:pop .4s ease both}
-.note{padding:9px 12px;border-radius:10px;background:var(--sunk);min-height:44px}
+.note{padding:9px 12px;border-radius:10px;background:var(--sunk);min-height:42px}
 .note.bad{background:color-mix(in srgb,var(--bad) 12%,transparent);border-left:3px solid var(--bad)}
 .note.good{background:color-mix(in srgb,var(--good) 12%,transparent);border-left:3px solid var(--good)}
 
-/* ---------- fill-in checker ---------- */
-.fill{display:grid;gap:10px;font-family:var(--f-display);font-size:.95rem}
+/* ---------- fill ---------- */
+.fill{display:grid;gap:10px;font-size:.98rem}
 .fill .ln{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-.fill .ln>b:first-child{min-width:72px;color:var(--wk);font-size:.8rem;font-family:var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.fill .ln>b:first-child{min-width:70px;color:var(--wk);font-size:.76rem;font-family:var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
 input.blank{width:auto;min-width:56px;max-width:170px;border:0;border-bottom:2px solid var(--muted);border-radius:4px 4px 0 0;background:var(--sunk);color:var(--ink);padding:3px 6px;font:inherit;text-align:center}
 input.blank.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,transparent)}
-input.blank.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+input.blank.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 .ft{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .ft th{background:var(--ink);color:var(--bg);font-weight:600;padding:6px;font-size:.85rem}
 .ft td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:center}
-.ft input.blank{min-width:48px;width:70px}
-.datahead{font-family:var(--f-display);border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 12px;margin-bottom:10px}
-.datahead b{font-size:1.15rem;letter-spacing:.06em}
-
-/* ---------- start / shock ---------- */
-.routine{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:12px 0}
-.routine div{border-top:3px solid var(--wk);background:var(--bg);border-radius:0 0 8px 8px;padding:6px 8px;font-family:var(--f-display);font-size:.8rem;color:var(--muted)}
-.routine b{display:block;color:var(--ink);font-size:.86rem;letter-spacing:.04em}
-.lv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:14px}
-.lv div{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-family:var(--f-display);font-size:.8rem;background:var(--bg)}
-.lv b{display:block;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase}
-.timer{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;margin-top:12px}
-.timer svg{width:96px;height:96px}
-.cases{display:grid;gap:8px}
-.jump{display:inline-block;margin-top:6px;font-weight:700}
-@media (max-width:700px){
- .calcwrap{grid-template-columns:minmax(0,1fr)}
- .routine{grid-template-columns:repeat(2,minmax(0,1fr))}
- .lv{grid-template-columns:minmax(0,1fr)}
+.ft input.blank{min-width:44px;width:64px}
+.datahead{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 12px}
+.datahead b{font-size:1.2rem;letter-spacing:.06em}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.stats div{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--bg);text-align:center}
+.stats small{display:block;font-family:var(--f-mono);font-size:.64rem;color:var(--muted)}
+.stats b{font-size:1.15rem;font-variant-numeric:tabular-nums}
+.timer{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;margin:14px 0}
+.timer svg{width:92px;height:92px}
+.reveal{margin-top:10px}
+@media (max-width:760px){
+ .hero,.two,.calcwrap{grid-template-columns:minmax(0,1fr)}
+ .logo img{height:26px}
+ .route{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
  .bub{max-width:96%}
  .stg{padding:18px 6px}
+ .card{padding:12px}
+ .ttl span{display:none}
+ .tracker div{min-width:44px;padding:2px 6px}
 }
 </style>
 </head>
 <body>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="index.html" title="Mind the Gap workshops"><img src="assets/cud-logo.png" alt="Canadian University Dubai"></a>
+    <div class="ttl"><b>Mind the Gap · Read the formula</b><span>Workshop 2 · Midterm revision</span></div>
+    <button type="button" class="pill" id="theme">◐</button>
+  </div>
+  <nav class="stations" id="stations" aria-label="Stations"></nav>
+</header>
+<main class="wrap" id="main"></main>
+
 <script src="assets/course.js"></script>
 <script>
-const {W} = Lecture;
-const esc = W.esc;
+const {W} = Lecture; const esc = W.esc;
+document.getElementById('theme').addEventListener('click',()=>GED102Theme.toggle());
 
-/* ================= formula-building helpers ================= */
+/* ================= results tracker ================= */
+const RES_KEY='mtg2-res'; let RES={}; try{ RES=JSON.parse(localStorage.getItem(RES_KEY)||'{}') }catch(e){}
+const TRACK=[['xbar','x̄'],['s2','s²'],['s','s'],['sig2','σ²'],['cv','CV'],['ex','E(X)']];
+function setRes(o){ Object.assign(RES,o); try{ localStorage.setItem(RES_KEY,JSON.stringify(RES)) }catch(e){} document.querySelectorAll('.tracker').forEach(drawTracker); }
+function drawTracker(el){ el.innerHTML=TRACK.map(([k,l])=>`<div class="${RES[k]?'got':''}"><small>${l}</small><b>${RES[k]||'?'}</b></div>`).join(''); }
+
+/* ================= voice: recorded Kokoro clips, browser speech fallback ================= */
+let AUD={}; fetch('audio/manifest.json').then(r=>r.ok?r.json():null).then(m=>{ if(m&&m.clips) AUD=m.clips; }).catch(()=>{});
+const synth=window.speechSynthesis; let svoice=null, player=null;
+function pickV(){ if(!synth) return; const vs=synth.getVoices(); svoice=vs.find(v=>/en-GB/.test(v.lang)&&/female|Serena|Kate|Libby|Sonia|Google UK English Female/i.test(v.name))||vs.find(v=>/^en/.test(v.lang))||null; }
+if(synth){ pickV(); synth.onvoiceschanged=pickV; }
+const plain=s=>s.replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+const spoken=s=>plain(s).replace(/x̄/g,'x bar').replace(/Σ/g,'sigma').replace(/xᵢ/g,'x i').replace(/−/g,' minus ').replace(/s²/g,'s squared').replace(/σ²/g,'sigma squared').replace(/²/g,' squared').replace(/√/g,'square root of ').replace(/μ/g,'mu').replace(/÷/g,' divided by ').replace(/×/g,' times ').replace(/≈/g,'about ');
+function hush(){ if(synth) synth.cancel(); if(player){ player.onended=null; player.pause(); player=null; } }
+function say(who,html,done){
+  hush(); const key=who+'|'+plain(html); const f=AUD[key];
+  const fallback=()=>{ if(!synth){ setTimeout(done,900+plain(html).length*45); return; } const u=new SpeechSynthesisUtterance(spoken(html)); if(svoice) u.voice=svoice; u.rate=.95; if(who==='s') u.pitch=1.15; u.onend=()=>done&&done(); u.onerror=()=>done&&done(); synth.speak(u); };
+  if(f){ player=new Audio('audio/'+f); player.onended=()=>{ player=null; done&&done(); }; player.play().catch(()=>{ player=null; fallback(); }); }
+  else fallback();
+}
+window.__lines=new Set();
+
+/* ================= formula helpers ================= */
 const T=(k,html,cls='')=>`<span class="tk ${cls}" data-k="${k}">${html}</span>`;
 const fr=(num,den)=>`<span class="frac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
 const SIG=(top='n',bot='i = 1')=>`<span class="sig"><small>${top}</small><span class="S">Σ</span><small>${bot}</small></span>`;
+const SG=(c='')=>`<span class="sig ${c}"><small>n</small><span class="S">Σ</span><small>i = 1</small></span>`;
 const XB='<span class="v xb">x</span>';
 const XI='<span class="xi"><span class="v">x</span><sub>i</sub></span>';
 const N='<span class="v">n</span>';
-const MI='−';
-const sep=(melt)=>melt?`<span class="sep"><span class="c">,</span><span class="p">+</span></span>`:`<span class="sep">,</span>`;
+const S2='<span class="xi"><span class="v">s</span><sup>2</sup></span>';
+const sep=m=>m?`<span class="sep"><span class="c">,</span><span class="p">+</span></span>`:`<span class="sep">,</span>`;
 const plus='<span class="c2" style="font-weight:600">+</span>';
-const list=(items,mode)=>items.map((v,i)=>v+(i<items.length-1?(mode==='melt'?' '+sep(true):mode==='plus'?' '+plus+' ':sep(false)):'')).join(' ');
-function chips(vals,on=[]){ return `<div class="dchips">${vals.map((v,i)=>`<div class="dchip ${on.includes(i)?'on':''}"><span>x<sub>${i+1}</sub></span><b>${v}</b><span style="color:var(--muted)">i = ${i+1}</span></div>`).join('')}</div>`; }
-const order=`<div class="order"><span class="c1">① subtract</span><span class="c4">② square</span><span class="c2">③ add (Σ)</span><span class="c3">④ divide</span></div>`;
+const list=(a,mode)=>a.map((v,i)=>v+(i<a.length-1?(mode==='melt'?' '+sep(true):mode==='plus'?' '+plus+' ':sep(false)):'')).join(' ');
+const chips=(vals,on=[])=>`<div class="dchips">${vals.map((v,i)=>`<div class="dchip ${on.includes(i)?'on':''}"><span>x<sub>${i+1}</sub></span><b>${v}</b></div>`).join('')}</div>`;
+const order=`<div class="order"><span class="c1">① subtract</span><span class="c4">② square</span><span class="c2">③ add</span><span class="c3">④ divide</span></div>`;
+const big=v=>`<span class="new" style="font-weight:600">${v}</span>`;
 
-/* ================= speech for the story player ================= */
-const synth=window.speechSynthesis; let svoice=null;
-function pickV(){ if(!synth) return; const vs=synth.getVoices(); svoice=vs.find(v=>/en-GB/.test(v.lang)&&/female|Serena|Kate|Libby|Sonia|Google UK English Female/i.test(v.name))||vs.find(v=>/^en/.test(v.lang))||null; }
-if(synth){ pickV(); synth.addEventListener?synth.addEventListener('voiceschanged',pickV):0; }
-const spoken=s=>s.replace(/<[^>]+>/g,'').replace(/x̄|x-bar/g,'x bar').replace(/Σ/g,'sigma').replace(/xᵢ/g,'x i').replace(/−/g,' minus ').replace(/s²/g,'s squared').replace(/σ²/g,'sigma squared').replace(/²/g,' squared').replace(/√/g,'square root of ').replace(/μ/g,'mu').replace(/÷/g,' divided by ').replace(/×/g,' times ');
+/* ================= number line: the picture behind the formula ================= */
+function nl(vals,{mean=null,mode='dots',lo=8,hi=30,div=null}={}){
+  const Wd=600,pad=26,sc=(Wd-2*pad)/(hi-lo),X=v=>pad+(v-lo)*sc;
+  const d=vals.map(v=>mean==null?0:v-mean);
+  const side=(mode==='sq'||mode==='avg')?Math.max(...d.map(Math.abs),div?Math.sqrt(d.reduce((a,b)=>a+b*b,0)/div):0):0;
+  const ay=Math.max(54,side*sc+40)+(mode==='dist'||mode==='bal'?vals.length*11:0), H=ay+(mode==='avg'?54:42);
+  let g='';
+  if(mode==='sq'||mode==='avg') vals.forEach((v,i)=>{ const s=Math.abs(d[i])*sc; if(!s) return; const x=Math.min(X(v),X(mean));
+    g+=`<rect x="${x}" y="${ay-s}" width="${s}" height="${s}" fill="var(--c4)" fill-opacity="${mode==='avg'?.06:.14}" stroke="var(--c4)" stroke-width="1.5" ${mode==='avg'?'stroke-opacity=".35"':''} class="new"/>
+     ${s>34&&mode==='sq'?`<text x="${x+s/2}" y="${ay-s/2+5}" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--c4)">${d[i]*d[i]}</text>`:''}`; });
+  if(mode==='avg'&&div){ const v2=d.reduce((a,b)=>a+b*b,0)/div, s=Math.sqrt(v2)*sc;
+    g+=`<rect x="${X(mean)-s/2}" y="${ay-s}" width="${s}" height="${s}" fill="var(--c3)" fill-opacity=".18" stroke="var(--c3)" stroke-width="3" class="new"/>
+     <text x="${X(mean)}" y="${ay-s/2}" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--c3)">area ${+v2.toFixed(2)}</text>
+     <line x1="${X(mean)-s/2}" x2="${X(mean)+s/2}" y1="${ay+28}" y2="${ay+28}" stroke="var(--c3)" stroke-width="3"/>
+     <text x="${X(mean)}" y="${ay+46}" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--c3)">side = s ≈ ${+Math.sqrt(v2).toFixed(2)}</text>`; }
+  if(mode==='dist'||mode==='bal') vals.forEach((v,i)=>{ if(!d[i]) return; const y=ay-16-i*11; const c=d[i]<0?'var(--c2)':'var(--c1)';
+    g+=`<line x1="${X(mean)}" x2="${X(v)}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="2.5" class="new"/><text x="${X(v)+(d[i]<0?-6:6)}" y="${y+4}" font-size="12" font-weight="700" text-anchor="${d[i]<0?'end':'start'}" style="fill:${c}">${d[i]>0?'+':'−'}${Math.abs(d[i])}</text>`; });
+  for(let t=lo;t<=hi;t++){ const big=t%(hi-lo>24?5:2)===0; g+=`<line x1="${X(t)}" x2="${X(t)}" y1="${ay}" y2="${ay+(big?6:3)}" stroke="var(--muted)"/>${big?`<text x="${X(t)}" y="${ay+19}" text-anchor="middle" font-size="11" class="mut">${t}</text>`:''}`; }
+  g=`<line x1="${pad-6}" x2="${Wd-pad+6}" y1="${ay}" y2="${ay}" stroke="var(--muted)" stroke-width="1.5"/>`+g;
+  if(mean!=null){ g+=`<line x1="${X(mean)}" x2="${X(mean)}" y1="10" y2="${ay}" stroke="var(--c3)" stroke-width="2" stroke-dasharray="5 4"/><text x="${X(mean)+5}" y="20" font-size="13" font-weight="700" style="fill:var(--c3)">x̄ = ${+mean.toFixed(2)}</text>`;
+    if(mode==='bal') g+=`<path d="M${X(mean)} ${ay+3} l-11 18 h22 z" fill="var(--c3)"/>`; }
+  const stack={}; vals.forEach((v,i)=>{ const k=stack[v]=(stack[v]||0)+1; g+=`<circle cx="${X(v)}" cy="${ay-(k-1)*15}" r="${hi-lo>24?10:7}" fill="var(--c1)" data-i="${i}" style="cursor:${mode==='play'?'grab':'default'}"/>`; });
+  return `<svg class="nl" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Number line of the values">${g}</svg>`;
+}
 
-/* ================= story stepper: the graphical storytelling engine =================
-   stages: [{f: formula html, hl:[keys], x: extra html, say:[['t'|'s', text], ...]}] */
-function story(el,{stages,label='Next step'}){
-  el.innerHTML=`<div class="story"><div class="stg"><div class="m"></div><div class="xtra"></div></div>
+/* ================= story player ================= */
+function story(el,stages){
+  stages.forEach(s=>(s.say||[]).forEach(([w,t])=>window.__lines.add(w+'|'+plain(t))));
+  el.innerHTML=`<div class="story"><div class="stg"><div class="m"></div><div class="xtra" style="display:grid"></div></div>
    <div class="talk" aria-live="polite"></div>
-   <div class="ctl"><button type="button" class="btn ghost" data-a="prev" aria-label="Previous step">←</button>
-   <div class="dots"></div>
-   <button type="button" class="btn" data-a="next">${label} →</button>
-   <button type="button" class="btn ghost" data-a="play">▶ Play the story</button></div></div>`;
-  const m=el.querySelector('.m'), xt=el.querySelector('.xtra'), talk=el.querySelector('.talk'), dots=el.querySelector('.dots');
-  const bPrev=el.querySelector('[data-a=prev]'), bNext=el.querySelector('[data-a=next]'), bPlay=el.querySelector('[data-a=play]');
-  let i=0, playing=false, run=0;
-  stages.forEach((s,k)=>{ const d=document.createElement('i'); d.title='Step '+(k+1); d.addEventListener('click',()=>{stopPlay();show(k)}); dots.appendChild(d); });
-  function show(k){
-    i=k; const s=stages[k];
-    m.innerHTML=s.f; xt.innerHTML=s.x||'';
+   <div class="ctl"><button type="button" class="btn ghost" data-a="prev" aria-label="Back">←</button><div class="dots"></div>
+   <button type="button" class="btn" data-a="next">Next →</button><button type="button" class="btn ghost" data-a="play">▶ Play</button></div></div>`;
+  const m=el.querySelector('.m'),xt=el.querySelector('.xtra'),talk=el.querySelector('.talk'),dots=el.querySelector('.dots');
+  const bP=el.querySelector('[data-a=prev]'),bN=el.querySelector('[data-a=next]'),bPl=el.querySelector('[data-a=play]');
+  let i=0,playing=false,run=0;
+  stages.forEach((s,k)=>{ const d=document.createElement('i'); d.addEventListener('click',()=>{stop();show(k)}); dots.appendChild(d); });
+  function show(k){ i=k; const s=stages[k]; m.innerHTML=s.f; xt.innerHTML=s.x||'';
     const hl=s.hl||[]; m.classList.toggle('focus',hl.length>0);
     hl.forEach(key=>m.querySelectorAll(`.tk[data-k="${key}"]`).forEach(t=>{ t.classList.add('hl'); t.querySelectorAll('.tk').forEach(c=>c.classList.add('lit')); let p=t.parentElement.closest('.tk'); while(p){ p.classList.add('anc'); p=p.parentElement.closest('.tk'); } }));
-    talk.innerHTML=(s.say||[]).map(([w,txt],j)=>`<div class="bub ${w}" style="animation-delay:${playing?0:j*0.55}s"><small>${w==='t'?'Teacher':'Class'}</small>${txt}</div>`).join('');
-    [...dots.children].forEach((d,j)=>{d.className=j===k?'on':j<k?'done':''});
-    bPrev.disabled=k===0; bNext.disabled=k===stages.length-1;
-  }
-  function stopPlay(){ playing=false; run++; bPlay.textContent='▶ Play the story'; if(synth) synth.cancel(); }
-  function play(){
-    if(playing){ stopPlay(); return; }
-    playing=true; const my=++run; bPlay.textContent='❚❚ Pause';
-    if(i===stages.length-1) show(0);
-    const step=()=>{ if(!playing||my!==run||!el.isConnected) return;
-      const lines=(stages[i].say||[]).map(x=>x[1]);
-      const after=()=>{ if(!playing||my!==run||!el.isConnected) return; if(i<stages.length-1){ show(i+1); setTimeout(step,500);} else stopPlay(); };
-      sayAll(lines,my,after); };
-    show(i); setTimeout(step,300);
-  }
-  function sayAll(lines,my,done){
-    let j=0; const bubs=talk.querySelectorAll('.bub'); bubs.forEach(b=>b.style.opacity=.35);
-    const nx=()=>{ if(!playing||my!==run) return; if(j>=lines.length){ setTimeout(done,700); return; }
-      const b=bubs[j]; if(b) b.style.opacity=1; const txt=spoken(lines[j++]);
-      if(synth){ const u=new SpeechSynthesisUtterance(txt); if(svoice) u.voice=svoice; u.rate=.95; u.onend=()=>setTimeout(nx,250); u.onerror=()=>setTimeout(nx,250); synth.speak(u); }
-      else setTimeout(nx,900+txt.length*45); };
-    if(synth) synth.cancel(); nx();
-  }
-  bPrev.addEventListener('click',()=>{stopPlay(); if(i>0) show(i-1)});
-  bNext.addEventListener('click',()=>{stopPlay(); if(i<stages.length-1) show(i+1)});
-  bPlay.addEventListener('click',play);
+    talk.innerHTML=(s.say||[]).map(([w,t],j)=>`<div class="bub ${w}" style="animation-delay:${playing?0:j*.5}s" title="Click to hear"><small>${w==='t'?'Teacher':'Class'}</small>${t}</div>`).join('');
+    talk.querySelectorAll('.bub').forEach((b,j)=>b.addEventListener('click',()=>{ stop(); const [w,t]=s.say[j]; b.classList.add('now'); say(w,t,()=>b.classList.remove('now')); }));
+    [...dots.children].forEach((d,j)=>d.className=j===k?'on':j<k?'done':''); bP.disabled=k===0; bN.disabled=k===stages.length-1; }
+  function stop(){ playing=false; run++; bPl.textContent='▶ Play'; hush(); }
+  function play(){ if(playing){ stop(); return; } playing=true; const my=++run; bPl.textContent='❚❚ Pause'; if(i===stages.length-1) show(0); else show(i);
+    const step=()=>{ if(!playing||my!==run||!el.isConnected) return; const lines=stages[i].say||[]; const bubs=talk.querySelectorAll('.bub'); bubs.forEach(b=>b.style.opacity=.35); let j=0;
+      const nx=()=>{ if(!playing||my!==run||!el.isConnected) return; bubs.forEach(b=>b.classList.remove('now'));
+        if(j>=lines.length){ setTimeout(()=>{ if(!playing||my!==run) return; if(i<stages.length-1){ show(i+1); setTimeout(step,450);} else stop(); },650); return; }
+        const b=bubs[j]; if(b){ b.style.opacity=1; b.classList.add('now'); } const [w,t]=lines[j++]; say(w,t,()=>setTimeout(nx,200)); };
+      nx(); };
+    setTimeout(step,250); }
+  bP.addEventListener('click',()=>{stop(); if(i>0) show(i-1)}); bN.addEventListener('click',()=>{stop(); if(i<stages.length-1) show(i+1)}); bPl.addEventListener('click',play);
   show(0);
 }
 
-/* ================= calculator simulator (real evaluator, Casio-style precedence) ================= */
+/* ================= calculator (real evaluator, scientific-calculator precedence) ================= */
 const K=s=>s.trim().split(/\s+/);
 function calcEval(toks,ans){
   const t=[]; let num='';
   const flush=()=>{ if(num){ if(!/^\d*\.?\d+$|^\d+\.$/.test(num)) throw 'Syntax ERROR'; t.push(parseFloat(num)); num=''; } };
   for(const k of toks){ if(/^[0-9.]$/.test(k)){ num+=k; continue; } flush(); t.push(k); } flush();
   let p=0; const peek=()=>t[p], eat=()=>t[p++];
-  function expr(){ let v=term(); while(peek()==='+'||peek()==='−'){ const o=eat(); const r=term(); v=o==='+'?v+r:v-r; } return v; }
-  function term(){ let v=unary(); while(peek()==='×'||peek()==='÷'){ const o=eat(); const r=unary(); if(o==='÷'&&r===0) throw 'Math ERROR'; v=o==='×'?v*r:v/r; } return v; }
+  function expr(){ let v=term(); while(peek()==='+'||peek()==='−'){ const o=eat(), r=term(); v=o==='+'?v+r:v-r; } return v; }
+  function term(){ let v=unary(); while(peek()==='×'||peek()==='÷'){ const o=eat(), r=unary(); if(o==='÷'&&r===0) throw 'Math ERROR'; v=o==='×'?v*r:v/r; } return v; }
   function unary(){ if(peek()==='neg'||peek()==='−'){ eat(); return -unary(); } return post(); }
   function post(){ let v=prim(); while(peek()==='²'){ eat(); v=v*v; } return v; }
   function prim(){ const k=eat(); if(typeof k==='number') return k; if(k==='Ans') return ans;
-    if(k==='('||k==='√('){ const v=expr(); if(peek()===')') eat(); if(k==='√('){ if(v<0) throw 'Math ERROR'; return Math.sqrt(v);} return v; }
-    throw 'Syntax ERROR'; }
-  if(!t.length) return 0;
-  const v=expr(); if(p<t.length) throw 'Syntax ERROR'; return v;
+    if(k==='('||k==='√('){ const v=expr(); if(peek()===')') eat(); if(k==='√('){ if(v<0) throw 'Math ERROR'; return Math.sqrt(v);} return v; } throw 'Syntax ERROR'; }
+  if(!t.length) return 0; const v=expr(); if(p<t.length) throw 'Syntax ERROR'; return v;
 }
 const fmtN=v=>{ if(Math.abs(v)<1e-12) v=0; return String(+v.toPrecision(10)).replace('-','−'); };
-const KEYS=[['(','('],[')',')'],['x²','²'],['√','√('],['AC','AC','ac'],
- ['7','7','num'],['8','8','num'],['9','9','num'],['DEL','DEL','ac'],['÷','÷','op'],
- ['4','4','num'],['5','5','num'],['6','6','num'],['×','×','op'],['−','−','op'],
- ['1','1','num'],['2','2','num'],['3','3','num'],['+','+','op'],['(−)','neg'],
- ['0','0','num'],['.','.','num'],['Ans','Ans'],['=','=','eq']];
-const show1=k=>k==='neg'?'⁻':k==='Ans'?'Ans':k;
-function calc(el,{scripts}){
-  el.innerHTML=`<div class="calcwrap"><div class="calc" role="group" aria-label="Scientific calculator simulator">
-    <div class="lcd"><div class="in"></div><div class="out">0</div></div>
+const KEYS=[['(','('],[')',')'],['x²','²'],['√','√('],['AC','AC','ac'],['7','7','num'],['8','8','num'],['9','9','num'],['DEL','DEL','ac'],['÷','÷','op'],['4','4','num'],['5','5','num'],['6','6','num'],['×','×','op'],['−','−','op'],['1','1','num'],['2','2','num'],['3','3','num'],['+','+','op'],['(−)','neg'],['0','0','num'],['.','.','num'],['Ans','Ans'],['=','=','eq']];
+const show1=k=>k==='neg'?'⁻':k;
+function calc(el,scripts){
+  el.innerHTML=`<div class="calcwrap"><div class="calc" role="group" aria-label="Calculator"><div class="lcd"><div class="in"></div><div class="out">0</div></div>
     <div class="keys">${KEYS.map(([l,k,c])=>`<button type="button" class="${c||''}" data-k="${k}" aria-label="${l}">${l}</button>`).join('')}</div></div>
-    <div class="side"><div class="tabs">${scripts.map((s,i)=>`<button type="button" class="${s.trap?'trap':''}" data-i="${i}" aria-pressed="false">${s.trap?'⚠ ':''}${s.name}</button>`).join('')}</div>
-    <div class="note"></div>
-    <div class="row"><button type="button" class="btn" data-a="go">Type the next step ▶</button><button type="button" class="btn ghost" data-a="reset">Start again</button></div>
-    <div><span class="eyebrow">On your paper</span><div class="paper"></div></div>
-    <p class="caption" style="margin:0">You can also press the keys yourself. The simulator follows the same order of operations as a typical scientific calculator: <b>x²</b> before the negative sign, then × ÷, then + −.</p></div></div>`;
-  const inEl=el.querySelector('.lcd .in'), outEl=el.querySelector('.lcd .out'), note=el.querySelector('.note'), paper=el.querySelector('.paper');
-  const go=el.querySelector('[data-a=go]');
-  let toks=[], ans=0, just=false, cur=0, st=0, busy=false;
-  const draw=()=>{ inEl.textContent=toks.map(show1).join(''); };
+    <div class="side"><div class="tabs">${scripts.map((s,i)=>`<button type="button" class="${s.trap?'trap':''}" data-i="${i}">${s.trap?'⚠ ':''}${s.name}</button>`).join('')}</div>
+    <div class="note"></div><div class="row"><button type="button" class="btn" data-a="go">Type next ▶</button><button type="button" class="btn ghost" data-a="reset">↺</button></div>
+    <div class="paper"></div></div></div>`;
+  const inEl=el.querySelector('.in'),out=el.querySelector('.out'),note=el.querySelector('.note'),paper=el.querySelector('.paper'),go=el.querySelector('[data-a=go]');
+  let toks=[],ans=0,just=false,cur=0,st=0,busy=false;
+  const draw=()=>inEl.textContent=toks.map(show1).join('');
   function press(k){
-    if(k==='AC'){ toks=[]; outEl.textContent='0'; just=false; draw(); return; }
-    if(k==='DEL'){ if(just){ just=false; } toks.pop(); draw(); return; }
-    if(k==='='){ try{ const v=calcEval(toks,ans); ans=v; outEl.textContent=fmtN(v);}catch(e){ outEl.textContent=typeof e==='string'?e:'Syntax ERROR'; } just=true; return; }
-    if(just){ toks=['+','−','×','÷','²'].includes(k)?['Ans']:[]; just=false; }
-    toks.push(k); draw();
-  }
+    if(k==='AC'){ toks=[]; out.textContent='0'; just=false; draw(); return; }
+    if(k==='DEL'){ just=false; toks.pop(); draw(); return; }
+    if(k==='='){ try{ const v=calcEval(toks,ans); ans=v; out.textContent=fmtN(v);}catch(e){ out.textContent=typeof e==='string'?e:'Syntax ERROR'; } just=true; return; }
+    if(just){ toks=['+','−','×','÷','²'].includes(k)?['Ans']:[]; just=false; } toks.push(k); draw(); }
   el.querySelectorAll('.keys button').forEach(b=>b.addEventListener('click',()=>{ if(!busy) press(b.dataset.k); }));
   const flash=k=>{ const b=el.querySelector(`.keys button[data-k="${CSS.escape(k)}"]`); if(b){ b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'),170); } };
-  function pick(i){ cur=i; st=0; el.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i)); press('AC'); ans=0; paper.innerHTML=''; const s=scripts[i]; note.className='note'; note.innerHTML=s.intro; go.disabled=false; go.textContent='Type the next step ▶'; }
-  function stepNext(){
-    const s=scripts[cur]; if(busy||st>=s.steps.length) return; const step=s.steps[st++];
-    busy=true; go.disabled=true; let j=0; const keys=K(step.k);
-    const tick=()=>{ if(j<keys.length){ const k=keys[j++]; flash(k); press(k); setTimeout(tick,230); return; }
-      busy=false; note.className='note'+(step.tone?' '+step.tone:''); note.innerHTML=step.note;
-      if(step.rec) paper.insertAdjacentHTML('beforeend',`<div>${step.rec}</div>`);
-      if(st>=s.steps.length){ go.textContent='Done ✓'; go.disabled=true; } else go.disabled=false; };
-    tick();
-  }
-  go.addEventListener('click',stepNext);
+  function pick(i){ cur=i; st=0; el.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i)); press('AC'); ans=0; paper.innerHTML=''; note.className='note'; note.innerHTML=scripts[i].intro; go.disabled=false; go.textContent='Type next ▶'; }
+  go.addEventListener('click',()=>{ const s=scripts[cur]; if(busy||st>=s.steps.length) return; const step=s.steps[st++]; busy=true; go.disabled=true; let j=0; const ks=K(step.k);
+    const tick=()=>{ if(j<ks.length){ const k=ks[j++]; flash(k); press(k); setTimeout(tick,210); return; }
+      busy=false; note.className='note'+(step.tone?' '+step.tone:''); note.innerHTML=step.note; if(step.rec) paper.insertAdjacentHTML('beforeend',`<div>${step.rec}</div>`);
+      if(st>=s.steps.length){ go.textContent='Done ✓'; go.disabled=true; } else go.disabled=false; }; tick(); });
   el.querySelector('[data-a=reset]').addEventListener('click',()=>pick(cur));
   el.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>pick(+b.dataset.i)));
   pick(0);
 }
 
-/* ================= fill-in-the-blank checker ================= */
-function fill(el,{html,id}){
+/* ================= fill-in checker ================= */
+function fill(el,html,onDone){
   let n=0;
-  el.innerHTML=`<div class="fill">${html.replace(/\[\[([^\]]+)\]\]/g,(_,a)=>{ const num=/^-?[\d.]+$/.test(a.split('|')[0].replace('−','-')); return `<input class="blank" data-a="${esc(a)}" aria-label="blank ${++n}" ${num?'inputmode="decimal" size="5"':'size="12"'}>`; })}
-   <div class="row"><button type="button" class="btn" data-a="chk">Check my answers</button><button type="button" class="btn ghost" data-a="show">Show answers</button></div>
-   <div class="feedback" hidden></div></div>`;
-  const ins=[...el.querySelectorAll('input.blank')], fb=el.querySelector('.feedback');
+  el.innerHTML=`<div class="fill">${html.replace(/\[\[([^\]]+)\]\]/g,(_,a)=>{ const num=/^-?[\d.]+$/.test(a.split('|')[0].replace('−','-')); return `<input class="blank" data-a="${esc(a)}" aria-label="blank ${++n}" ${num?'inputmode="decimal" size="5"':'size="11"'}>`; })}
+   <div class="row"><button type="button" class="btn" data-a="chk">Check ✓</button><button type="button" class="btn ghost" data-a="show">Show answers</button></div><div class="feedback" hidden></div></div>`;
+  const ins=[...el.querySelectorAll('input.blank')],fb=el.querySelector('.feedback');
   const norm=s=>s.trim().toLowerCase().replace(/[−–]/g,'-').replace(/\s+/g,' ').replace(/^the /,'');
-  const ok=(v,a)=>{ v=norm(v); if(!v) return false; return a.split('|').some(alt=>{ alt=norm(alt);
-      const an=parseFloat(alt), vn=parseFloat(v.replace(/[^\d.\-]/g,''));
+  const ok=(v,a)=>{ v=norm(v); if(!v) return false; return a.split('|').some(alt=>{ alt=norm(alt); const an=parseFloat(alt),vn=parseFloat(v.replace(/[^\d.\-]/g,''));
       if(/^-?[\d.]+$/.test(alt)){ const dec=(alt.split('.')[1]||'').length; const tol=dec?Math.pow(10,-dec)*1.01:1e-9; return !isNaN(vn)&&Math.abs(vn-an)<=tol; }
       return v===alt||(v.length>2&&(v.includes(alt)||alt.includes(v))); }); };
   el.querySelector('[data-a=chk]').addEventListener('click',()=>{ let r=0; ins.forEach(i=>{ const g=ok(i.value,i.dataset.a); i.classList.toggle('ok',g); i.classList.toggle('no',!g&&i.value.trim()!==''); if(g) r++; });
-    fb.hidden=false; fb.innerHTML=r===ins.length?'<b>All correct.</b> Each answer is used in the next exercise, so keep them.':`<b>${r} / ${ins.length} correct.</b> Red boxes need another look. Empty boxes are not marked.`; });
-  el.querySelector('[data-a=show]').addEventListener('click',()=>{ ins.forEach(i=>{ i.value=i.dataset.a.split('|')[0]; i.classList.add('ok'); i.classList.remove('no'); }); fb.hidden=false; fb.innerHTML='Answers shown. Cover them and try once more without looking.'; });
+    fb.hidden=false; fb.innerHTML=r===ins.length?'<b>All correct ✓</b>':`<b>${r} / ${ins.length}</b>`; if(r===ins.length&&onDone) onDone(); });
+  el.querySelector('[data-a=show]').addEventListener('click',()=>{ ins.forEach(i=>{ i.value=i.dataset.a.split('|')[0]; i.classList.add('ok'); i.classList.remove('no'); }); fb.hidden=false; fb.innerHTML='Cover them and try again.'; });
 }
 
-/* ================= agenda ================= */
-function agenda(el, rows){
-  const total=rows.reduce((a,r)=>a+r[1],0); let acc=0;
-  el.innerHTML=`<div class="stack ui">${rows.map(([t,m,k])=>{ const s=acc; acc+=m; return `<div style="display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:8px;align-items:center"><div><div style="font-size:.84rem;margin-bottom:3px">${t}</div><div style="height:9px;background:var(--sunk);border-radius:3px;position:relative"><div style="position:absolute;left:${s/total*100}%;width:${m/total*100}%;top:0;bottom:0;border-radius:3px;background:${k==='a'?'var(--wk)':k==='c'?'var(--good)':'var(--muted)'}"></div></div></div><span class="mono" style="text-align:right">${m}′</span></div>`; }).join('')}
-   <div class="row mono" style="gap:14px;margin-top:4px"><span><i style="display:inline-block;width:10px;height:10px;background:var(--muted);border-radius:2px"></i> worked example</span><span><i style="display:inline-block;width:10px;height:10px;background:var(--wk);border-radius:2px"></i> your turn</span><span><i style="display:inline-block;width:10px;height:10px;background:var(--good);border-radius:2px"></i> check</span><span>Total ${total} min</span></div></div>`;
+/* ================= explore: drag the dots ================= */
+function explore(el){
+  let vals=[12,15,18,20,25];
+  el.innerHTML=`<div class="stack"><div class="row" style="justify-content:space-between"><span class="inst" style="margin:0">Drag the red dots ↔</span>
+   <div class="tabs"><button type="button" data-v="12,15,18,20,25" aria-pressed="true">Marks</button><button type="button" data-v="17,18,18,19,18">Close together</button><button type="button" data-v="2,8,18,27,30">Spread out</button></div></div>
+   <div class="pg"></div><div class="stats"></div></div>`;
+  const pg=el.querySelector('.pg'),st=el.querySelector('.stats'); let drag=-1;
+  const draw=()=>{ const n=vals.length,mean=vals.reduce((a,b)=>a+b,0)/n,ss=vals.reduce((a,v)=>a+(v-mean)**2,0),v2=ss/(n-1);
+    pg.innerHTML=nl(vals,{mean,mode:'avg',lo:0,hi:30,div:n-1}).replace('class="nl"','class="nl" style="max-height:440px"');
+    st.innerHTML=`<div><small>x̄</small><b>${+mean.toFixed(2)}</b></div><div><small>Σ(xᵢ − x̄)²</small><b>${+ss.toFixed(2)}</b></div><div><small>s²</small><b>${+v2.toFixed(2)}</b></div><div><small>s</small><b>${+Math.sqrt(v2).toFixed(2)}</b></div>`;
+  };
+  pg.addEventListener('pointerdown',e=>{ const c=e.target.closest('circle[data-i]'); if(!c) return; drag=+c.dataset.i; pg.setPointerCapture(e.pointerId); e.preventDefault(); });
+  pg.addEventListener('pointermove',e=>{ if(drag<0) return; const svg=pg.querySelector('svg'); const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; const q=p.matrixTransform(svg.getScreenCTM().inverse());
+    const v=Math.max(0,Math.min(30,Math.round((q.x-26)/((600-52)/30)))); if(v!==vals[drag]){ vals[drag]=v; draw(); } });
+  const end=()=>{ drag=-1; }; pg.addEventListener('pointerup',end); pg.addEventListener('pointercancel',end);
+  el.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{ el.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-pressed',x===b)); vals=b.dataset.v.split(',').map(Number); draw(); }));
+  draw();
 }
 
-/* ================= start: the three gaps ================= */
-const GAPS=`<svg viewBox="0 0 600 170" role="img" aria-label="Three gaps between a question and a correct answer: reading the question, understanding the formula, and using the calculator. Today is gap 2.">
- <text x="10" y="22" font-size="12" class="t-muted t-mono">QUESTION</text>
- <text x="590" y="22" font-size="12" class="t-muted t-mono" text-anchor="end">CORRECT ANSWER</text>
- <path d="M10 120 H590" stroke="var(--line)" stroke-width="3"/>
- ${[[105,'1','Read the','question','Workshop 1',0],[300,'2','Understand','the formula','Today',1],[495,'3','Calculate on','the calculator','Workshop 3',0]].map(([x,n,a,b,w,on])=>`
- <rect x="${x-80}" y="96" width="160" height="48" rx="10" fill="${on?'var(--wk)':'var(--surface)'}" stroke="${on?'var(--wk)':'var(--line)'}" stroke-width="2"/>
- <text x="${x}" y="116" text-anchor="middle" font-size="13" font-weight="700" style="fill:${on?'var(--on-wk)':'var(--ink)'}">${a}</text>
- <text x="${x}" y="133" text-anchor="middle" font-size="13" font-weight="700" style="fill:${on?'var(--on-wk)':'var(--ink)'}">${b}</text>
- <circle cx="${x}" cy="62" r="20" fill="${on?'var(--wk-soft)':'var(--sunk)'}" stroke="${on?'var(--wk)':'var(--line)'}" stroke-width="2"/>
- <text x="${x}" y="69" text-anchor="middle" font-size="19" font-weight="800" style="fill:${on?'var(--wk)':'var(--muted)'}">${n}</text>
- <text x="${x}" y="162" text-anchor="middle" font-size="11" class="t-mono" style="fill:${on?'var(--wk)':'var(--muted)'}">${w.toUpperCase()}</text>`).join('')}
-</svg>
-<div class="routine"><div><b>READ</b>Say it in words</div><div><b>UNDERSTAND</b>What does each symbol do?</div><div><b>APPLY</b>Replace, then calculate</div><div><b>INTERPRET</b>One sentence, with units</div></div>
-<div class="lv"><div><b>Level 1</b>Worked example: watch every step</div><div><b>Level 2</b>Partially worked: fill the gaps</div><div><b>Level 3</b>On your own: a new question</div></div>`;
+/* ================= stories ================= */
+const D=[12,15,18,20,25];
+const meanF=()=>`${T('lhs',XB+' =')} ${T('frac',fr(T('sig',SIG(T('top','n'),T('bot','i = 1')),'c2')+T('xi',XI,'c1'),T('n',N,'c3')))}`;
+const mT=(num,den)=>`${XB} = ${fr(num,den)}`;
+const MEAN=[
+ {f:meanF(),say:[['t','One symbol at a time. No calculator yet.']]},
+ {f:meanF(),hl:['lhs'],say:[['t','x̄, “x-bar”: the answer they ask for. Park it.']]},
+ {f:meanF(),hl:['frac'],say:[['t','This long line?'],['s','A fraction!'],['t','So: divide.']]},
+ {f:meanF(),hl:['sig'],say:[['t','And Σ?'],['s','…?'],['t','Σ means SUM. Add up the list after it.']]},
+ {f:meanF(),hl:['xi'],x:chips(D,[0,1,2,3,4]),say:[['t','xᵢ is the list. i is the position: x₁ = 12, x₂ = 15 …']]},
+ {f:meanF(),hl:['n'],x:chips(D),say:[['t','And n?'],['s','How many values: 5!']]},
+ {f:mT(`<span class="c2">${SG()}</span>${XI}`,`<span class="c3 new">5</span>`),say:[['t','Translate. n becomes 5.']]},
+ {f:mT(`<span class="c2">${SG()}</span><span class="c1 new">(${list(D)})</span>`,`<span class="c3">5</span>`),say:[['t','xᵢ becomes the whole list. Σ is still waiting.']]},
+ {f:mT(`<span class="c2 melt">${SG()}</span><span class="c1">(${list(D,'melt')})</span>`,`<span class="c3">5</span>`),say:[['t','Now Σ melts…'],['t','…and every comma becomes a plus.']]},
+ {f:mT(`<span class="c1">${list(D,'plus')}</span>`,`<span class="c3">5</span>`),x:'<div class="stamp">Method written ✓</div>',say:[['t','Every symbol is a number. That line already earns marks.']]},
+ {f:`${XB} = ${fr(big(90),'<span class="c3">5</span>')} = ${big(18)}`,say:[['t','Now the calculator.'],['s','90 divided by 5 is 18!']]},
+ {f:`${XB} = 18`,x:nl(D,{mean:18,mode:'bal'}),say:[['t','18 is the balance point. The distances left and right cancel out: zero.']]}];
 
-/* ================= shock: countdown + poll ================= */
-function shock(el){
-  el.innerHTML=`<div class="stg"><div class="m">${XB} = ${fr(SIG()+XI,N)}</div>
-    <div style="text-align:center;font-family:var(--f-display)">Data: five students' marks &nbsp;<b style="font-size:1.25rem;letter-spacing:.05em">12, 15, 18, 20, 25</b></div></div>
-   <div class="timer"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="var(--line)" stroke-width="8"/><circle id="arc" cx="50" cy="50" r="44" fill="none" stroke="var(--wk)" stroke-width="8" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/><text x="50" y="58" text-anchor="middle" font-size="26" font-weight="800" id="sec">60</text></svg>
-   <div class="stack"><b class="ui" style="font-size:1rem">Solve it. You have 60 seconds. No help.</b><div class="row"><button type="button" class="btn" id="startT">Start the clock</button><button type="button" class="btn ghost" id="skipT">Stop</button></div><div class="feedback" id="tmsg" hidden></div></div></div>
-   <div id="pollbox" style="margin-top:14px"></div>`;
-  let left=60, h=null; const arc=el.querySelector('#arc'), sec=el.querySelector('#sec'), msg=el.querySelector('#tmsg');
-  const end=()=>{ clearInterval(h); h=null; msg.hidden=false; msg.innerHTML='<b>Time.</b> Did you get stuck? That is normal, and it is the point. Now tell us <em>where</em> you got stuck.'; };
-  el.querySelector('#startT').addEventListener('click',()=>{ if(h) return; left=60; msg.hidden=true; h=setInterval(()=>{ if(!el.isConnected){clearInterval(h);return;} left--; sec.textContent=left; arc.setAttribute('stroke-dashoffset',276.5*(1-left/60)); if(left<=0) end(); },1000); });
-  el.querySelector('#skipT').addEventListener('click',()=>{ if(h) end(); });
-  const ERR=[
-   ['I can\'t tell what each symbol means','Mathematical notation','Read the formula symbol by symbol',2],
-   ['I don\'t know which number goes where','Symbol → number mapping','Translate: replace each symbol',3],
-   ['I misread the fraction','Numerator / denominator structure','The fraction bar means divide',2],
-   ['My calculator gives a different answer','Calculator entry and parentheses','The mean on the calculator',4],
-   ['I do the operations in the wrong order','Order of operations','Read the variance inside out',6],
-   ['I lose the negative sign','Sign operations','Variance on the calculator',8],
-   ['I can\'t rearrange the formula','Algebraic manipulation','Not needed today: every formula today is read and filled in, never rearranged. Ask us after the workshop.',null],
-   ['I get an answer but don\'t know if it\'s reasonable','Estimation and checking','Sanity checks, in the calculator scenes',8]];
-  W.poll(el.querySelector('#pollbox'),{q:'Where did you get stuck?',opts:ERR.map(e=>e[0]),reveal:i=>{ const e=ERR[i]; return `<b>What you need:</b> ${e[1]}.<br>${e[3]!=null?`Today: <a class="jump" href="#s${e[3]}">Scene ${e[3]} · ${e[2]} →</a>`:e[2]}`; }});
-}
+const varF=()=>`${T('lhs',S2+' =')} ${T('frac',fr(T('sig',SIG(),'c2')+T('br',`<span>(</span>${T('xi',XI,'c1')}${T('minus',' − ','c1')}${T('xb',XB,'c1')}<span>)</span>`)+T('sq','2','c4 supk'),T('nm1','(n − 1)','c3')))}`;
+const brk=(fn,mode='comma',sc='')=>`${S2} = ${fr(`${mode==='plus'?'':`<span class="c2 ${sc}">${SG()}</span>`}${D.map((v,i)=>`<span style="white-space:nowrap">${fn(v,i)}</span>${i<4?(mode==='melt'?' '+sep(true):mode==='plus'?' '+plus+' ':sep(false)):''}`).join(' ')}`,'<span class="c3">(n − 1)</span>')}`;
+const full=den=>`${S2} = ${fr(D.map(v=>`<span style="white-space:nowrap">(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup></span>`).join(' '+plus+' '),den)}`;
+const VAR=[
+ {f:varF(),say:[['t','The mean’s big sister. Same reading.']]},
+ {f:varF(),hl:['frac'],say:[['s','Fraction: divide!']]},
+ {f:varF(),hl:['sig'],say:[['t','Σ again. But now in front of a whole bracket.'],['t','Do the bracket for every value. Then add.']]},
+ {f:varF(),hl:['xi','minus','xb'],say:[['t','Inside: each value minus x̄.'],['s','x̄ is 18!']]},
+ {f:varF(),hl:['sq'],say:[['t','Then square the bracket.']]},
+ {f:varF(),hl:['nm1'],say:[['t','Bottom: n − 1.'],['s','5 − 1 = 4.']]},
+ {f:brk(()=>'<span class="new">(&nbsp;&nbsp;&nbsp;&nbsp;)</span>'),say:[['t','How many values?'],['s','Five.'],['t','So: five empty brackets.']]},
+ {f:brk(v=>`(<span class="c1 new">${v}</span>)`),x:chips(D,[0,1,2,3,4]),say:[['t','One value in each.']]},
+ {f:brk(v=>`(<span class="c1">${v}</span><span class="c1 new"> − </span>&nbsp;)`),say:[['t','What comes next?'],['s','Minus!'],['t','In every bracket.']]},
+ {f:brk(v=>`(<span class="c1">${v} − </span><span class="c1 new">18</span>)`),say:[['t','Then?'],['s','x̄. We have it: 18.']]},
+ {f:brk(v=>`(<span class="c1">${v} − 18</span>)<sup class="c4 new">2</sup>`),say:[['t','Then?'],['s','Square!']]},
+ {f:brk(v=>`(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup>`,'melt','melt'),say:[['t','Σ melts. Commas become plus.']]},
+ {f:full('<span class="c3 new">(5 − 1)</span>'),x:'<div class="stamp">Half the mark ✓</div>',say:[['t','n − 1 becomes 5 − 1.'],['t','Half the mark, and no calculator yet.']]},
+ {f:`${S2} = ${fr('<span class="c1">−6, −3, 0, 2, 7</span> …','<span class="c3">4</span>')}`,x:nl(D,{mean:18,mode:'dist'}),say:[['t','See it. Each bracket is a distance from the mean.'],['t','Left is negative. Added up, they cancel to zero.']]},
+ {f:`${S2} = ${fr(`<span class="c4">36 ${plus} 9 ${plus} 0 ${plus} 4 ${plus} 49</span>`,'<span class="c3">4</span>')}`,x:nl(D,{mean:18,mode:'sq'}),say:[['t','So we square. Each distance becomes a real square.'],['t','No more negatives.']]},
+ {f:`${S2} = ${fr(big(98),'<span class="c3">4</span>')} = ${big(24.5)}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['t','Total area 98, shared by 4: the average square.'],['s','24.5!'],['t','Its side is the standard deviation: about 4.95.']]}];
 
-/* ================= stages: the mean ================= */
-const DATA=[12,15,18,20,25];
-const meanF=(o={})=>`${T('lhs',XB+' =')} ${T('frac',fr(T('sig',SIG(T('top','n'),T('bot','i = 1')),'c2')+T('xi',XI,'c1'),T('n',N,'c3')))}`;
-const READ_MEAN=[
- {f:meanF(),say:[['t','Let\'s read it like a sentence, one symbol at a time. No calculator yet.']]},
- {f:meanF(),hl:['lhs'],say:[['t','x̄ is called “x-bar”. It is the name of what the question asks you for: the mean.'],['t','You can ignore it for now. We come back to it at the end.']]},
- {f:meanF(),hl:['frac'],say:[['t','What is this long line? You know this shape.'],['s','A fraction!'],['t','Yes. A fraction means division: the top divided by the bottom.']]},
- {f:meanF(),hl:['sig'],say:[['t','And this big letter? It is the Greek letter sigma: Σ.'],['s','…?'],['t','Σ means SUM: add up. It always stands in front of a list or a table of values.']]},
- {f:meanF(),hl:['xi'],x:chips(DATA,[0,1,2,3,4]),say:[['t','xᵢ is the list of values. The small i is the position: x₁ is the 1st value, x₂ the 2nd, and so on.'],['t','Here x₁ = 12, x₃ = 18 and x₅ = 25. The small number tells you WHERE the value is, not how big it is.']]},
- {f:meanF(),hl:['top','bot'],x:chips(DATA,[0,1,2,3,4]),say:[['t','Under Σ it says i = 1: start with the first value. On top it says n: stop at the last one.'],['t','So Σ takes every value, from x₁ all the way to xₙ.']]},
- {f:meanF(),hl:['n'],x:chips(DATA),say:[['t','And the n at the bottom?'],['s','How many values?'],['t','Exactly. n is how many values we added. Count them.'],['s','Five!']]},
- {f:meanF(),say:[['t','Now read the whole sentence: x-bar equals the sum of all the values, divided by the number of values.'],['t','You can read the formula. Next, we translate it into numbers.']]}];
-
-const meanTr=(num,den,cls='')=>`${T('lhs',XB+' =')} ${fr(num,den)}`;
-const SG=(c='')=>`<span class="sig ${c}"><small>n</small><span class="S">Σ</span><small>i = 1</small></span>`;
-const TR_MEAN=[
- {f:meanF(),say:[['t','Now we translate maths into numbers, one symbol at a time. Start with the easiest one: what is n?'],['s','Five.']]},
- {f:meanTr(`<span class="c2">${SG()}</span>${T('xi',XI,'c1')}`,`<span class="c3 new">5</span>`),say:[['t','So write 5 where n was. One symbol translated.']]},
- {f:meanTr(`<span class="c2">${SG()}</span><span class="c1 new">(${list(DATA)})</span>`,`<span class="c3">5</span>`),say:[['t','Now xᵢ. It means all the values, so write the whole list in its place.'],['t','Look: Σ is still there. We have not added anything yet.']]},
- {f:meanTr(`<span class="c2 melt">${SG()}</span><span class="c1">(${list(DATA,'melt')})</span>`,`<span class="c3">5</span>`),say:[['t','Now watch Σ. Its job is “add”, so it melts down…'],['t','…and every comma turns into a plus sign.']]},
- {f:meanTr(`<span class="c1">${list(DATA,'plus')}</span>`,`<span class="c3">5</span>`),x:'<div class="stamp">Method written ✓</div>',say:[['t','Stop and look. You have written the method with real numbers, and you have not touched the calculator.'],['t','In the exam, this line already shows the marker that you understood the formula.']]},
- {f:`${T('lhs',XB+' =')} ${fr('<span class="new">90</span>','<span class="c3">5</span>')}`,say:[['t','Now, and only now, take your calculator. Add the top first.'],['s','Ninety.']]},
- {f:`${T('lhs',XB+' =',' ')} <span class="new" style="font-weight:600">18</span>`,say:[['t','Then divide by n.'],['s','Eighteen!'],['t','Interpret, in one sentence with units: the average mark is 18 marks.']]}];
-
-/* ================= stages: the sample variance ================= */
-const S2='<span class="xi"><span class="v">s</span><sup>2</sup></span>';
-const varF=()=>`${T('lhs',S2+' =')} ${T('frac',fr(T('sig',SIG(),'c2')+T('br',`<span>(</span>${T('xi',XI,'c1')}${T('minus',' '+MI+' ','c1')}${T('xb',XB,'c1')}<span>)</span>`)+T('sq','2','c4 supk'),T('nm1','(n − 1)','c3')))}`;
-const READ_VAR=[
- {f:varF(),say:[['t','Meet the mean\'s big sister: the sample variance. It looks scary, but we read it exactly the same way.']]},
- {f:varF(),hl:['lhs'],say:[['t','s² is the name of the answer: the sample variance. Park it for now.']]},
- {f:varF(),hl:['frac'],say:[['t','A long line again?'],['s','A fraction: divide!']]},
- {f:varF(),hl:['sig'],say:[['t','Σ again: add up. But look at what stands in front of it this time.'],['t','Not one value, but a whole operation in brackets. Σ says: do this operation for every value, once for each i, then add all the results.']]},
- {f:varF(),hl:['xi'],x:chips(DATA,[0,1,2,3,4]),say:[['t','Inside the bracket: xᵢ, each value of the list, one at a time.']]},
- {f:varF(),hl:['minus','xb'],say:[['t','Then minus x̄, the mean. Do you have x̄?'],['s','Yes: 18, from before.'],['t','Good. That is why we always find the mean first.']]},
- {f:varF(),hl:['sq'],say:[['t','The little 2 outside the bracket: square the whole bracket. Multiply it by itself.']]},
- {f:varF(),hl:['nm1'],say:[['t','At the bottom: n − 1. One less than the number of values.'],['s','5 − 1 = 4.']]},
- {f:varF(),x:order,say:[['t','Read it from the inside out: subtract, square, add, divide.'],['t','In words: s squared equals the sum of the squared differences from the mean, divided by n minus one.']]}];
-
-const BR=(inner,i,mode)=>`<span style="white-space:nowrap">(${inner})</span>`;
-const brk=(fn,mode='comma',sigCls='')=>`${T('lhs',S2+' =')} ${fr(`${mode==='plus'?'':`<span class="c2 ${sigCls}">${SG()}</span>`}${DATA.map((v,i)=>`<span style="white-space:nowrap">${fn(v,i)}</span>${i<4?(mode==='melt'?sep(true):mode==='plus'?' '+plus+' ':sep(false)):''}`).join(' ')}`,'<span class="c3">(n − 1)</span>')}`;
-const B0=()=>'(&nbsp;&nbsp;&nbsp;&nbsp;)';
-const BUILD_VAR=[
- {f:varF(),say:[['t','Now we build it. First question: how many values are in your list?'],['s','Five.'],['t','Then draw five empty brackets, one for each value.']]},
- {f:brk(()=>`<span class="new">${B0()}</span>`),say:[['t','Five brackets. Σ is still in front: we have not added yet.']]},
- {f:brk(v=>`(<span class="c1 new">${v}</span>)`),x:chips(DATA,[0,1,2,3,4]),say:[['t','Put each value xᵢ inside its own bracket: x₁ in the first, x₂ in the second…']]},
- {f:brk(v=>`(<span class="c1">${v}</span><span class="c1 new"> − </span>&nbsp;)`),say:[['t','What does the formula ask you to write after xᵢ?'],['s','Minus!'],['t','Good. Put a minus in every bracket.']]},
- {f:brk(v=>`(<span class="c1">${v} − </span><span class="c1 new">18</span>)`),say:[['t','And after the minus?'],['s','x̄.'],['t','Do you have x̄?'],['s','Yes, 18.'],['t','Then write 18 in every bracket.']]},
- {f:brk(v=>`(<span class="c1">${v} − 18</span>)<sup class="c4 new">2</sup>`),say:[['t','What does the formula ask for next?'],['s','Square!'],['t','Perfect. Put the little 2 on every bracket.']]},
- {f:brk(v=>`(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup>`,'melt','melt'),say:[['t','And Σ? Same story as the mean: it melts down, and every comma becomes a plus sign.']]},
- {f:`${T('lhs',S2+' =')} ${fr(DATA.map(v=>`<span style="white-space:nowrap">(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup></span>`).join(' '+plus+' '),'<span class="c3 new">(5 − 1)</span>')}`,say:[['t','What is left? The bottom of the fraction: n − 1. Replace n.'],['s','5 − 1.']]},
- {f:`${T('lhs',S2+' =')} ${fr(DATA.map(v=>`<span style="white-space:nowrap">(<span class="c1">${v} − 18</span>)<sup class="c4">2</sup></span>`).join(' '+plus+' '),'<span class="c3">(5 − 1)</span>')}`,x:'<div class="stamp">Half the work is done ✓</div>',say:[['t','Stop. By reaching here, you have done half of the question. Every symbol is now a number.'],['t','What is left is only calculation. Take your calculator.']]}];
-
-/* ================= other formulas (same routine) ================= */
-const sq=(r)=>`<span class="sqrt"><span class="c4">√</span><span class="rad">${r}</span></span>`;
+const sq=r=>`<span class="sqrt"><span class="c4">√</span><span class="rad">${r}</span></span>`;
+const MU='<span class="v">μ</span>',SIG2='<span class="xi"><span class="v">σ</span><sup>2</sup></span>';
 const SD=[
- {f:`${T('lhs','<span class="v">s</span> =')} ${T('root',sq(T('s2',S2,'c1')))}`,say:[['t','Standard deviation. Read it: s equals the square root of s².']]},
- {f:`${T('lhs','<span class="v">s</span> =')} ${T('root',sq(T('s2',S2,'c1')))}`,hl:['root'],say:[['t','√ means square root. It undoes the square.'],['t','Why? Variance is in squared units, marks². The root brings us back to marks.']]},
- {f:`<span class="v">s</span> = ${sq('<span class="c1 new">24.5</span>')}`,say:[['t','Replace s² with the variance you found.'],['s','24.5.']]},
- {f:`<span class="v">s</span> ≈ <span class="new" style="font-weight:600">4.95</span> <span style="font-size:.6em">marks</span>`,say:[['t','Calculator: √ ( 24.5 ) =.'],['s','About 4.95.'],['t','Interpret: a typical mark lies about 4.95 marks from the mean of 18.']]}];
-const MU='<span class="v">μ</span>', SIG2='<span class="xi"><span class="v">σ</span><sup>2</sup></span>';
+ {f:`${T('l','<span class="v">s</span> =')} ${T('root',sq(T('s2',S2,'c1')))}`,hl:['root'],say:[['t','√ undoes the square. Back to marks.']]},
+ {f:`<span class="v">s</span> = ${sq('<span class="c1 new">24.5</span>')} ≈ ${big('4.95')}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['s','About 4.95.'],['t','A typical mark is 4.95 from the mean.']]}];
 const POP=[
- {f:`${T('lhs',SIG2+' =')} ${fr(`<span class="c2">${SIG(' ',' ')}</span>(${XI} − ${T('mu',MU,'c1')})<sup class="c4">2</sup>`,T('N','<span class="v">N</span>','c3'))}`,say:[['t','Population variance. Same reading. Only two symbols change. Can you spot them?']]},
- {f:`${T('lhs',SIG2+' =')} ${fr(`<span class="c2">${SIG(' ',' ')}</span>(${XI} − ${T('mu',MU,'c1')})<sup class="c4">2</sup>`,T('N','<span class="v">N</span>','c3'))}`,hl:['mu','N'],say:[['t','μ, “mu”, the population mean, instead of x̄. And N, all the values, instead of n − 1.'],['t','How do you know which one to use? Read the question: “a sample of”, “randomly selected” means sample. “All”, “every”, “the entire” means population.']]},
- {f:`${SIG2} = ${fr('<span class="new">98</span>','<span class="c3 new">5</span>')} = <span class="new" style="font-weight:600">19.6</span>`,say:[['t','Same marks, but now as a whole population: the top is still 98. Divide by N = 5.'],['s','19.6.'],['t','As a sample it was 98 ÷ 4 = 24.5. Dividing by a smaller number gives a bigger answer.']]}];
+ {f:`${T('l',SIG2+' =')} ${fr(`<span class="c2">${SIG(' ',' ')}</span>(${XI} − ${T('mu',MU,'c1')})<sup class="c4">2</sup>`,T('N','<span class="v">N</span>','c3'))}`,hl:['mu','N'],say:[['t','Spot the two changes.'],['s','μ instead of x̄. N instead of n − 1.']]},
+ {f:`${SIG2} = ${fr('98','<span class="c3 new">5</span>')} = ${big('19.6')}`,say:[['t','“All”, “every”, “entire”: population. Divide by N.'],['t','“Sample”, “randomly selected”: divide by n − 1.']]}];
 const CV=[
- {f:`${T('lhs','CV =')} ${fr(T('s','<span class="v">s</span>','c1'),T('xb',XB,'c2'))} ${T('pc','× 100%','c4')}`,say:[['t','Coefficient of variation. Read it: CV equals s divided by x-bar, times 100 percent.']]},
- {f:`${T('lhs','CV =')} ${fr(T('s','<span class="v">s</span>','c1'),T('xb',XB,'c2'))} ${T('pc','× 100%','c4')}`,hl:['s','xb'],say:[['t','Which numbers do we already have?'],['s','s = 4.95 and x̄ = 18.']]},
- {f:`CV = ${fr('<span class="c1 new">4.95</span>','<span class="c2 new">18</span>')} <span class="c4">× 100%</span>`,say:[['t','Replace them. Calculator: 4.95 ÷ 18 × 100 =.']]},
- {f:`CV ≈ <span class="new" style="font-weight:600">27.5%</span>`,say:[['s','About 27.5.'],['t','Interpret: the spread is about 27.5% of the mean. CV has no units, so it can compare spread between different data sets.']]}];
-function tabbedStories(el,list){
-  el.innerHTML=`<div class="tabs" style="margin-bottom:10px">${list.map((x,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}">${x[0]}</button>`).join('')}</div><div class="tb"></div>`;
-  const tb=el.querySelector('.tb'); const bs=el.querySelectorAll('.tabs button');
-  const pick=i=>{ if(synth) synth.cancel(); bs.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i)); tb.innerHTML=''; story(tb,{stages:list[i][1]}); };
+ {f:`${T('l','CV =')} ${fr(T('s','<span class="v">s</span>','c1'),T('xb',XB,'c2'))} ${T('pc','× 100%','c4')}`,hl:['s','xb'],say:[['t','Which numbers do we have?'],['s','s = 4.95 and x̄ = 18.']]},
+ {f:`CV = ${fr('<span class="c1 new">4.95</span>','<span class="c2 new">18</span>')} <span class="c4">× 100%</span> ≈ ${big('27.5%')}`,say:[['t','Spread is 27.5% of the mean. No units.']]}];
+
+const PX='<span class="v">P</span>(<span class="v">x</span>)';
+const EXT=(cols,nw)=>{ const X=[0,1,2,3],P=[.1,.3,.4,.2];
+  const C={x:['x',X],p:['P(x)',P],xp:['x · P(x)',[0,.3,.8,.6]],d:['x − μ',['−1.7','−0.7','0.3','1.3']],d2:['(x − μ)²',[2.89,.49,.09,1.69]],w:['× P(x)',[.289,.147,.036,.338]]};
+  const tot={p:'1 ✓',xp:'1.7',w:'0.81'};
+  return `<table class="ft" style="max-width:560px;justify-self:center">${'<tr>'+cols.map(c=>`<th>${C[c][0]}</th>`).join('')+'</tr>'}${X.map((_,r)=>`<tr>${cols.map(c=>`<td class="${c===nw?'new':''}">${C[c][1][r]}</td>`).join('')}</tr>`).join('')}<tr>${cols.map(c=>`<td><b>${c==='x'?'Σ':tot[c]||''}</b></td>`).join('')}</tr></table>`; };
+const EF=()=>`${T('lhs','E(<span class="v">X</span>) =')} ${T('sig','<span class="S" style="font-size:1.3em">Σ</span>','c2')}${T('x','<span class="v">x</span>','c1')} · ${T('px',PX,'c4')}`;
+const EX=[
+ {f:EF(),x:EXT(['x','p']),say:[['t','First check: probabilities add to 1.'],['s','1 ✓']]},
+ {f:EF(),hl:['x','px'],x:EXT(['x','p','xp'],'xp'),say:[['t','Each x times its probability.'],['s','0, 0.3, 0.8, 0.6.']]},
+ {f:`E(<span class="v">X</span>) = 0 ${plus} 0.3 ${plus} 0.8 ${plus} 0.6 = ${big('1.7')}`,x:EXT(['x','p','xp']),say:[['t','Σ melts. No dividing by n.'],['s','1.7 complaints a day.']]},
+ {f:`Var(<span class="v">X</span>) = <span class="c2">Σ</span>(<span class="v c1">x</span> <span class="c1">− μ</span>)<sup class="c4">2</sup> · <span class="c3">${PX}</span> = ${big('0.81')}`,x:EXT(['x','p','d','d2','w'],'w'),say:[['t','Same story as s². Subtract, square, times P(x), add.'],['s','0.81. SD is 0.9.']]}];
+
+/* ================= stations ================= */
+function levels(el,tabs){
+  el.innerHTML=`<div class="levels">${tabs.map((t,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}"><small>${t[0]}</small>${t[1]}</button>`).join('')}</div><p class="inst"></p><div class="card"></div>`;
+  const card=el.querySelector('.card'),inst=el.querySelector('.inst'),bs=el.querySelectorAll('.levels button');
+  const pick=i=>{ hush(); bs.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i)); inst.textContent=tabs[i][2]||''; inst.hidden=!tabs[i][2]; card.innerHTML=''; tabs[i][3](card); };
   bs.forEach(b=>b.addEventListener('click',()=>pick(+b.dataset.i))); pick(0);
 }
+const CALC_MEAN=[
+ {name:'Step by step',intro:'Add, then divide.',steps:[{k:'1 2 + 1 5 + 1 8 + 2 0 + 2 5 =',note:'Σ = 90',rec:'12 + 15 + 18 + 20 + 25 = 90'},{k:'÷ 5 =',note:'Ans ÷ 5 = <b>18</b> ✓',tone:'good',rec:'90 ÷ 5 = 18'}]},
+ {name:'The trap',trap:true,intro:'All in one line…',steps:[{k:'1 2 + 1 5 + 1 8 + 2 0 + 2 5 ÷ 5 =',note:'<b>70?</b> Only 25 was divided. A mean can’t be bigger than every mark.',tone:'bad',rec:'✗ 70'}]},
+ {name:'Brackets fix it',intro:'Brackets = the fraction line.',steps:[{k:'( 1 2 + 1 5 + 1 8 + 2 0 + 2 5 ) ÷ 5 =',note:'<b>18</b> ✓',tone:'good',rec:'(12 + … + 25) ÷ 5 = 18'}]}];
+const CALC_VAR=[
+ {name:'Bracket by bracket',intro:'One bracket per step.',steps:[
+  {k:'( 1 2 − 1 8 ) ² =',note:'36',rec:'(12 − 18)² = 36'},{k:'( 1 5 − 1 8 ) ² =',note:'9',rec:'(15 − 18)² = 9'},{k:'( 1 8 − 1 8 ) ² =',note:'0',rec:'(18 − 18)² = 0'},
+  {k:'( 2 0 − 1 8 ) ² =',note:'4',rec:'(20 − 18)² = 4'},{k:'( 2 5 − 1 8 ) ² =',note:'49',rec:'(25 − 18)² = 49'},
+  {k:'3 6 + 9 + 0 + 4 + 4 9 =',note:'Σ = 98',rec:'Σ = 98'},{k:'÷ ( 5 − 1 ) =',note:'s² = <b>24.5</b> ✓',tone:'good',rec:'98 ÷ (5 − 1) = 24.5'}]},
+ {name:'Lost minus',trap:true,intro:'−6² without brackets…',steps:[{k:'− 6 ² =',note:'<b>−36?</b> A square is never negative.',tone:'bad',rec:'✗ −6² = −36'},{k:'( − 6 ) ² =',note:'<b>36</b> ✓',tone:'good',rec:'✓ (−6)² = 36'}]},
+ {name:'n − 1 trap',trap:true,intro:'98 ÷ 5 − 1…',steps:[{k:'9 8 ÷ 5 − 1 =',note:'<b>18.6?</b> It divided first.',tone:'bad',rec:'✗ 18.6'},{k:'9 8 ÷ ( 5 − 1 ) =',note:'<b>24.5</b> ✓',tone:'good',rec:'✓ 24.5'}]}];
 
-/* ================= expected value ================= */
-const EXT=(cols,newCol)=>{ const X=[0,1,2,3], P=[.1,.3,.4,.2], mu=1.7;
-  const C={x:['x',X],p:['P(x)',P],xp:['x · P(x)',X.map((x,i)=>+(x*P[i]).toFixed(3))],d:['x − μ',X.map(x=>+(x-mu).toFixed(2))],d2:['(x − μ)²',X.map(x=>+((x-mu)**2).toFixed(2))],w:['(x − μ)² · P(x)',X.map((x,i)=>+(((x-mu)**2)*P[i]).toFixed(3))]};
-  const tot={p:'1 ✓',xp:'1.7',w:'0.81'};
-  return `<table class="ft"><tr>${cols.map(c=>`<th>${C[c][0]}</th>`).join('')}</tr>${X.map((_,r)=>`<tr>${cols.map(c=>`<td class="${c===newCol?'new':''}">${String(C[c][1][r]).replace('-','−')}</td>`).join('')}</tr>`).join('')}<tr>${cols.map(c=>`<td><b>${c==='x'?'Σ':(tot[c]&&(c!=='w'||cols.includes('w'))?tot[c]:'')}</b></td>`).join('')}</tr></table>`; };
-const PX='<span class="v">P</span>(<span class="v">x</span>)';
-const EF=()=>`${T('lhs','E(<span class="v">X</span>) =')} ${T('sig','<span class="sig"><small>&nbsp;</small><span class="S">Σ</span><small>&nbsp;</small></span>','c2')}${T('x','<span class="v">x</span>','c1')} · ${T('px',PX,'c4')}`;
-const EX=[
- {f:EF(),x:EXT(['x','p']),say:[['t','X = number of complaints per day. The table lists every possible value x and its probability P(x).'],['t','Check first: every P(x) is between 0 and 1, and they add up to 1.']]},
- {f:EF(),hl:['x','px'],x:EXT(['x','p']),say:[['t','Read the formula: each value x, times its probability. Σ in front: do it for every row, then add.']]},
- {f:EF(),hl:['x','px'],x:EXT(['x','p','xp'],'xp'),say:[['t','So build a new column: x times P(x), one row at a time.'],['s','0, 0.3, 0.8, 0.6.']]},
- {f:`E(<span class="v">X</span>) = 0 ${plus} 0.3 ${plus} 0.8 ${plus} 0.6 = <span class="new" style="font-weight:600">1.7</span>`,x:EXT(['x','p','xp']),say:[['t','Σ melts into plus signs, like always.'],['s','1.7.'],['t','Interpret: on average we expect 1.7 complaints per day. Notice: no dividing by n. The probabilities already do the averaging.']]},
- {f:`Var(<span class="v">X</span>) = <span class="c2">Σ</span>(<span class="v c1">x</span> <span class="c1">− μ</span>)<sup class="c4">2</sup> · <span class="c3">${PX}</span>`,x:EXT(['x','p','d','d2','w'],'w'),say:[['t','Variance of X: the same story as s². Subtract μ = 1.7, square, multiply by P(x), then add.'],['s','Σ = 0.81.'],['t','SD(X) = √0.81 = 0.9 complaints. Daily complaints typically vary by about 0.9 from 1.7.']]}];
+const ERR=[['Symbols',2],['Which number goes where',2],['The fraction',2],['Calculator answer',2],['Order of steps',3],['Negative signs',3],['Is my answer reasonable?',3]];
+const STATIONS=[
+ {nav:'Start',build:el=>{ el.innerHTML=`<div class="hero"><div><span class="eyebrow">Mind the Gap · Workshop 2 of 3</span><h1>Read the<span>formula.</span></h1>
+   <div class="team"><span>Dr. Noura Mansoura</span><span>Eng. Nadia Mekhfi</span><span>Dr. Robert Mcclung</span><span>Junas Andrino</span></div></div>
+   <div class="card"><div class="route"><div>READ</div><div>UNDERSTAND</div><div>APPLY</div><div>INTERPRET</div></div>
+   <div class="lv3"><div><b>LEVEL 1</b>Watch</div><div><b>LEVEL 2</b>Your turn</div><div><b>LEVEL 3</b>On your own</div></div>
+   <button type="button" class="btn go" onclick="goSt(1)">Start →</button></div></div>`; }},
+ {nav:'The shock',title:'Solve it. 60 seconds.',build:el=>{
+   el.innerHTML=`<div class="card"><div class="stg"><div class="m">${XB} = ${fr(SIG()+XI,N)}</div><div style="text-align:center;font-size:1.3rem;font-weight:700;letter-spacing:.06em">12, 15, 18, 20, 25</div></div>
+    <div class="timer"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="var(--line)" stroke-width="8"/><circle id="arc" cx="50" cy="50" r="44" fill="none" stroke="var(--wk)" stroke-width="8" stroke-linecap="round" stroke-dasharray="276.5" transform="rotate(-90 50 50)"/><text x="50" y="59" text-anchor="middle" font-size="28" font-weight="800" fill="var(--ink)" id="sec">60</text></svg>
+    <div class="row"><button type="button" class="btn" id="startT">▶ Start</button></div></div><div id="pollbox" hidden></div></div>`;
+   let left=60,h=null; const arc=el.querySelector('#arc'),sec=el.querySelector('#sec'),pb=el.querySelector('#pollbox');
+   const end=()=>{ clearInterval(h); h=null; pb.hidden=false; };
+   el.querySelector('#startT').addEventListener('click',e=>{ if(h){ end(); return; } left=60; e.target.textContent='■ Stop'; h=setInterval(()=>{ if(!el.isConnected){clearInterval(h);return;} left--; sec.textContent=left; arc.setAttribute('stroke-dashoffset',276.5*(1-left/60)); if(left<=0){ end(); e.target.textContent='Time!'; } },1000); });
+   W.poll(pb,{q:'Where did you get stuck?',opts:ERR.map(e=>e[0]),reveal:i=>`<a href="#s${ERR[i][1]}" style="font-weight:700">Go to station ${ERR[i][1]} →</a>`}); }},
+ {nav:'Mean',title:'The mean',track:1,build:el=>levels(el,[
+   ['Level 1','Watch','',c=>story(c,MEAN)],
+   ['Tool','Calculator','',c=>calc(c,CALC_MEAN)],
+   ['Level 2','Your turn','Data: 2, 4, 6, 8, 10',c=>fill(c,`<div class="ln"><b>Identify</b> x₂ = [[4]] &nbsp; x₄ = [[8]] &nbsp; n = [[5]]</div>
+     <div class="ln"><b>Translate</b> x̄ = ( 2 + 4 + 6 + 8 + 10 ) / [[5]]</div><div class="ln"><b>Calculate</b> x̄ = [[30]] / 5 = [[6]]</div>`,()=>setRes({xbar:'6'}))]])},
+ {nav:'Variance',title:'The sample variance',track:1,build:el=>levels(el,[
+   ['Level 1','Watch','',c=>story(c,VAR)],
+   ['Tool','Calculator','',c=>calc(c,CALC_VAR)],
+   ['Play','See the squares','',c=>explore(c)],
+   ['Level 2','Your turn','Data: 2, 4, 6, 8, 10 · x̄ = 6',c=>fill(c,`<table class="ft"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>
+     <tr><td>2</td><td>−4</td><td>16</td></tr><tr><td>4</td><td>−2</td><td>[[4]]</td></tr><tr><td>6</td><td>[[0]]</td><td>[[0]]</td></tr><tr><td>8</td><td>[[2]]</td><td>[[4]]</td></tr><tr><td>10</td><td>[[4]]</td><td>[[16]]</td></tr>
+     <tr><td><b>Σ</b></td><td>0</td><td>[[40]]</td></tr></table><div class="ln"><b>Calculate</b> s² = [[40]] / ( 5 − 1 ) = [[10]]</div>`,()=>setRes({s2:'10'}))]])},
+ {nav:'s · σ² · CV',title:'Same routine',track:1,build:el=>levels(el,[
+   ['Level 1','s',      '',c=>story(c,SD)],
+   ['Level 1','σ²',     '',c=>story(c,POP)],
+   ['Level 1','CV',     '',c=>story(c,CV)],
+   ['Level 2','Your turn','Data: 2, 4, 6, 8, 10 · s² = 10',c=>{ c.innerHTML='<div id="f"></div><div style="margin-top:18px"><span class="eyebrow">Sample or population?</span><div id="sp" style="margin-top:8px"></div></div>';
+     fill(c.querySelector('#f'),`<div class="ln"><b>s</b> √[[10]] ≈ [[3.16]]</div><div class="ln"><b>σ²</b> 40 / [[5]] = [[8]] &nbsp; σ ≈ [[2.83]]</div><div class="ln"><b>CV</b> ( [[3.16]] / [[6]] ) × 100% ≈ [[52.7]] %</div>`,()=>setRes({s:'3.16',sig2:'8',cv:'52.7%'}));
+     W.sort(c.querySelector('#sp'),{buckets:['n − 1','N'],items:[{t:'6 randomly selected customers',a:0,why:''},{t:'All 32 students in the section',a:1,why:''},{t:'200 Dubai residents surveyed',a:0,why:''},{t:'Every employee of a 15-person firm',a:1,why:''}]}); }]])},
+ {nav:'E(X)',title:'Expected value',track:1,build:el=>levels(el,[
+   ['Level 1','Watch','',c=>story(c,EX)],
+   ['Level 2','Your turn','Cups of coffee per day',c=>fill(c,`<table class="ft"><tr><th>x</th><th>P(x)</th><th>x · P(x)</th></tr><tr><td>1</td><td>0.2</td><td>0.2</td></tr><tr><td>2</td><td>0.3</td><td>[[0.6]]</td></tr><tr><td>3</td><td>0.4</td><td>[[1.2]]</td></tr><tr><td>4</td><td>0.1</td><td>[[0.4]]</td></tr><tr><td><b>Σ</b></td><td>[[1]]</td><td>[[2.4]]</td></tr></table>
+     <div class="ln"><b>Var</b> 0.392 + 0.048 + 0.144 + 0.256 = [[0.84]] &nbsp; SD ≈ [[0.92]]</div>`,()=>setRes({ex:'2.4'}))]])},
+ {nav:'On your own',title:'Level 3 · Café waiting times',build:el=>levels(el,[
+   ['Level 3','Café','6 randomly selected customers (minutes)',c=>fill(c,`<div class="datahead"><b>3, 5, 4, 8, 6, 4</b></div>
+     <table class="ft"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>${[3,5,4,8,6,4].map(v=>`<tr><td>${v}</td><td>[[${v-5}]]</td><td>[[${(v-5)**2}]]</td></tr>`).join('')}<tr><td><b>Σ</b></td><td>0</td><td>[[16]]</td></tr></table>
+     <div class="ln"><b>x̄</b> [[5]] min</div><div class="ln"><b>s²</b> [[16]] / [[5]] = [[3.2]] min²</div><div class="ln"><b>s</b> ≈ [[1.79]] min</div><div class="ln"><b>CV</b> ≈ [[35.8]] %</div>`)],
+   ['Level 3','Online orders','X = items per order',c=>fill(c,`<div class="datahead">x: <b>1, 2, 3</b> &nbsp; P(x): <b>0.5, 0.3, 0.2</b></div>
+     <div class="ln"><b>Valid?</b> ΣP(x) = [[1]]</div><div class="ln"><b>E(X)</b> = [[1.7]] items</div><div class="ln"><b>Var(X)</b> = [[0.61]]</div><div class="ln"><b>SD(X)</b> ≈ [[0.78]]</div>`)]])},
+ {nav:'Exit',title:'Exit check',build:el=>{ el.innerHTML='<div class="card"><div id="q"></div><div class="feedback" style="margin-top:16px"><b>Exit ticket:</b> why do we square the differences? <button type="button" class="btn ghost" id="rv" style="margin-left:6px">Reveal</button><div id="ra" hidden style="margin-top:8px">Unsquared, they always add up to 0. Squaring makes every distance count.</div></div></div>';
+   el.querySelector('#rv').addEventListener('click',()=>el.querySelector('#ra').hidden=false);
+   W.quiz(el.querySelector('#q'),[
+    {q:'Σ means…',o:['multiply','add up','divide','subtract'],a:1,why:'Sum.'},
+    {q:'3, 5, 4, 8, 6, 4 · x₄ = ?',o:['4','8','6','24'],a:1,why:'The 4th value.'},
+    {q:'12+15+18+20+25÷5 = 70 because…',o:['broken calculator','only 25 was divided','it should multiply','70 is right'],a:1,why:'÷ before +. Use brackets.'},
+    {q:'−6² on a calculator gives…',o:['36','−36'],a:1,why:'Type (−6)².'},
+    {q:'6 randomly selected customers: divide by…',o:['6','5'],a:1,why:'Sample: n − 1.'},
+    {q:'s² = 24.5 marks². Units of s?',o:['marks²','marks','%'],a:1,why:'√ brings units back.'}]); }}
+];
 
-/* ================= mount ================= */
-Lecture.mount({
-  id:'mtg2', course:'MTH 105', back:'Mind the Gap', short:'Workshop 2 · Read the formula',
-  eyebrow:'Mind the Gap · Workshop 2 of 3',
-  title:'I have the formula. Now what?',
-  meta:'Midterm preparation · Introduction to Statistics',
-  scenes:[
-  { nav:'Start here', title:'I have the formula, but I don\'t know how to use it', minutes:5,
-    narration:[
-     'This is the second of three “Mind the Gap” workshops before the midterm. When students lose marks in maths, it is usually for one of three reasons: they cannot <strong>read the question</strong>, they do not <strong>understand the formula</strong>, or they cannot <strong>calculate it correctly</strong> on the calculator.',
-     'Today is about the second gap: <strong>the formula</strong>. You will learn to read a formula like a sentence, translate every symbol into a number, and only then use the calculator.',
-     '<ul><li>Read the formulas for the mean, the sample variance, the standard deviation, the population variance, the coefficient of variation and the expected value.</li><li>Replace every symbol with its number before calculating.</li><li>Type the calculation into a calculator without falling into the common traps.</li><li>Interpret each answer in one sentence, with units.</li></ul>',
-     'Keep two documents next to you: the <strong>Formula Reading Guide</strong> (all Level 1 worked examples) and the <strong>Student Exercise Booklet</strong> (Levels 2 and 3). The data on this page is the same as in both.'],
-    think:'Think of the last formula question you got wrong. Was the problem the question, the formula, or the calculator?',
-    notes:['Timings assume a 105-minute session; cut Scene 12 (expected value) to 4 minutes or set it as homework if time is short.','Hand out the Exercise Booklet at the door. The Formula Reading Guide can go on Moodle.','Every scene with a stepper has <b>▶ Play the story</b>: it advances step by step and reads the teacher/class dialogue aloud. In class, you will usually click <b>Next step</b> yourself and let students answer before the bubble appears.'],
-    fig:{label:'Three gaps · today is gap 2', build:el=>{ el.innerHTML=GAPS+'<div id="ag"></div>'; agenda(el.querySelector('#ag'),[['Start here + the shock',10,'l'],['Read and translate the mean',14,'l'],['Mean: calculator + your turn',11,'a'],['Read and build the variance',16,'l'],['Variance: calculator + your turn',15,'a'],['s, σ², CV + your turn',16,'l'],['Expected value E(X), Var(X)',8,'l'],['On your own (Level 3)',10,'a'],['Exit check',5,'c']]); }} },
-
-  { nav:'The shock', title:'Here is the formula. Solve it.', kind:'activity', minutes:5,
-    narration:[
-     'Here is a formula and a list of five marks. Start the clock and find the answer in 60 seconds. No notes, no help.',
-     'Most people freeze. That is not because the maths is hard. It is because nobody has shown you how to <em>read</em> the formula. A formula is a sentence written in symbols. If you cannot read the words, you cannot follow the instructions.',
-     'When the time is up, choose where you got stuck. Your answer tells you which part of today matters most for you, and links to it.'],
-    notes:['Do this cold: formula on the board, no explanation. Let the silence last.','After the clock: hands up for each option in the poll. Note the two most common; spend extra time on them.','The eight options are the error-to-need table from the quiz analysis.'],
-    fig:{label:'60-second challenge', build:shock} },
-
-  { nav:'Read the mean', title:'Read the formula one symbol at a time', minutes:8, wide:true,
-    narration:[
-     'Before we calculate anything, we <strong>read</strong>. We point at each symbol and ask one question: what is it telling me to do?',
-     '<strong>x̄</strong> is the name of the answer: the mean. <strong>The long line</strong> is a fraction: divide the top by the bottom. <strong>Σ</strong> (sigma) means <em>add up</em>, and it always stands in front of a list of values. <strong>xᵢ</strong> is that list: x₁ is the 1st value, x₂ the 2nd. <strong>n</strong> is how many values there are.',
-     'Click <strong>Next step</strong>, or press <strong>Play the story</strong> to watch and listen.'],
-    think:'In the list 3, 5, 4, 8, 6, 4, what is x₄? What is n?',
-    notes:['This is your “point and ask” routine: point at the symbol, ask the class before you click and the answer bubble appears.','Expected answer to the think prompt: x₄ = 8 (the 4th value, not the value 4), n = 6.'],
-    fig:{label:'The mean · reading', build:el=>story(el,{stages:READ_MEAN})} },
-
-  { nav:'Translate the mean', title:'Translate: symbols become numbers, then Σ melts', minutes:6, wide:true,
-    narration:[
-     'Now we <strong>translate</strong>. Replace one symbol at a time with its number. First <strong>n</strong>, then <strong>xᵢ</strong> with the whole list.',
-     'At this point Σ is still there, because we have not added yet. Then Σ <strong>melts down</strong>: its job is “add”, so every comma in the list becomes a plus sign.',
-     'Only when every symbol is a number do we pick up the calculator. On paper you have already shown the method. That line earns method marks even if you press a wrong key later.'],
-    think:'Why do we write the line “(12 + 15 + 18 + 20 + 25) / 5” before calculating, instead of just writing 18?',
-    notes:['Students often skip to the answer. Insist on the full substituted line: it is what the marker looks for.'],
-    fig:{label:'The mean · translating', build:el=>story(el,{stages:TR_MEAN})} },
-
-  { nav:'Mean on the calculator', title:'Take it to the calculator', kind:'activity', minutes:6, wide:true,
-    narration:[
-     'On paper, the fraction line groups the top for you. On a calculator, <strong>there is no fraction line</strong>. If you type everything in one go, the calculator divides first and adds later, so only the last number is divided.',
-     'The safe way: type the values with <strong>+</strong> between them and press <strong>=</strong>. Then press <strong>÷</strong> (the calculator writes <strong>Ans</strong>, the last answer) and the value of n, and press <strong>=</strong>.',
-     'Open the red tab to see the trap, and the third tab for the one-line fix with brackets.'],
-    think:'A classmate gets a mean of 70 for marks that are all between 12 and 25. Without a calculator, how do you know it is wrong?',
-    notes:['Expected answer: the mean must lie between the smallest and largest value. 70 is impossible. This is the “is my answer reasonable?” check.','Students use Casio fx-82/991 style models most often; key names differ slightly by model. Ask students to follow on their own calculator.'],
-    fig:{label:'Calculator simulator', build:el=>calc(el,{scripts:[
-      {name:'Step by step',intro:'Two steps: add the values, then divide by n. Press <b>Type the next step</b>.',steps:[
-        {k:'1 2 + 1 5 + 1 8 + 2 0 + 2 5 =',note:'The top of the fraction: Σxᵢ = 90. The calculator keeps it in its memory as <b>Ans</b>.',rec:'Σxᵢ = 12 + 15 + 18 + 20 + 25 = 90'},
-        {k:'÷ 5 =',note:'Pressing ÷ right after = starts from <b>Ans</b> (90). So 90 ÷ 5 = <b>18</b>. ✓',tone:'good',rec:'x̄ = 90 / 5 = 18 marks'}]},
-      {name:'The trap',trap:true,intro:'Everything in one line, without brackets. Watch the answer.',steps:[
-        {k:'1 2 + 1 5 + 1 8 + 2 0 + 2 5 ÷ 5 =',note:'<b>70?</b> The calculator did 25 ÷ 5 first (division before addition) and then added: 12 + 15 + 18 + 20 + 5 = 70. A mean of 70 is impossible: it is bigger than every mark.',tone:'bad',rec:'✗ 70 (only 25 was divided)'}]},
-      {name:'One line, with brackets',intro:'Put the fraction bar back, using brackets around the top.',steps:[
-        {k:'( 1 2 + 1 5 + 1 8 + 2 0 + 2 5 ) ÷ 5 =',note:'Brackets do the job of the fraction line. Now the whole sum is divided: <b>18</b>. ✓',tone:'good',rec:'x̄ = (12 + 15 + 18 + 20 + 25) ÷ 5 = 18'}]}]})} },
-
-  { nav:'Your turn: the mean', title:'Your turn · the mean', kind:'activity', minutes:5,
-    narration:[
-     '<strong>Level 2.</strong> Same steps, new data: <strong>2, 4, 6, 8, 10</strong>, treated as a sample. This is Exercise 1 in your booklet.',
-     'Identify the symbols first, read the formula in words, then translate and calculate. Press <strong>Check my answers</strong> when you are done.',
-     'Keep your answer. Every exercise today uses the answer from the one before.'],
-    notes:['Walk the room. Look for students who write x₂ = 2 (the position, not the value).'],
-    fig:{label:'Level 2 · Exercise 1', build:el=>fill(el,{html:`<div class="datahead">Data: <b>2, 4, 6, 8, 10</b> (a sample)</div>
-      <div class="ln"><b>Identify</b> x₂ = [[4]] &nbsp; x₄ = [[8]] &nbsp; n = [[5]]</div>
-      <div class="ln"><b>Read</b> x̄ = the sum of [[values|the values|all the values|data]] ÷ [[number of values|n|how many values|5]]</div>
-      <div class="ln"><b>Step 1</b> Σxᵢ = 2 + 4 + 6 + 8 + 10 = [[30]]</div>
-      <div class="ln"><b>Step 2</b> x̄ = [[30]] / [[5]] = [[6]]</div>`})} },
-
-  { nav:'Read the variance', title:'The big sister: read the sample variance', minutes:8, wide:true,
-    narration:[
-     'The sample variance measures how spread out the values are around the mean. A small variance means the values sit close to the mean; a large one means they are spread out.',
-     'The formula looks long, but every symbol is one you already know. The only new idea: this time Σ stands in front of a whole <strong>operation</strong> in brackets, not a single value. Σ says: <em>do this operation for every value, then add all the results</em>.',
-     'Read it from the <strong>inside out</strong>: ① subtract the mean, ② square, ③ add, ④ divide by n − 1.'],
-    think:'Why must you know x̄ before you can even start the variance?',
-    notes:['Same point-and-ask routine. Let students say “minus”, “square”, “divide” before each click.','Colours match the Formula Reading Guide: red = subtract, purple = square, blue = add, green = divide.'],
-    fig:{label:'Sample variance · reading', build:el=>story(el,{stages:READ_VAR})} },
-
-  { nav:'Build it, bracket by bracket', title:'Build it: one bracket for every value', minutes:8, wide:true,
-    narration:[
-     'How many values are in the list? Five. So draw <strong>five empty brackets</strong>. Then follow the formula from left to right inside the bracket and do the same thing in every bracket at once.',
-     'Put each value in its bracket. The formula says “minus”: write it in every bracket. Then “x̄”: write 18 in every bracket. Then “square”: put the little 2 on every bracket.',
-     'Σ melts into plus signs, and the bottom becomes 5 − 1. At this point every symbol is a number. You have done half of the question, and you have not pressed a single key.'],
-    think:'With a list of 6 values, how many brackets would you draw? What would the bottom of the fraction be?',
-    notes:['Your classroom script: “How many values? Put that many brackets. What comes after xᵢ? Minus. Put it in all of them. What comes next? x̄. Do you have it? Put it. What next? Square.”','Expected think answer: 6 brackets; 6 − 1 = 5.'],
-    fig:{label:'Sample variance · building', build:el=>story(el,{stages:BUILD_VAR})} },
-
-  { nav:'Variance on the calculator', title:'Calculate, one bracket at a time', kind:'activity', minutes:8, wide:true,
-    narration:[
-     'Now the calculator. Do <strong>one bracket at a time</strong>: type it with its brackets, press x², press =, and write the result on your paper. Then add the five results, and divide by n − 1.',
-     'Two traps catch many students. First, <strong>−6²</strong> typed without brackets gives −36, because the calculator squares 6 first and then puts the minus in front. A square is never negative. Second, <strong>98 ÷ 5 − 1</strong> gives 18.6, because the calculator divides before it subtracts. The bottom needs its own brackets.',
-     '<strong>Sanity checks:</strong> the column xᵢ − x̄ always adds up to 0; every squared value is positive or zero; and the variance can never be negative.'],
-    think:'You get s² = −3.2. What went wrong?',
-    notes:['Expected answer: a variance can never be negative, so a sign was lost: usually a −number squared without brackets.','Ask students to do each bracket on their own calculator and compare with the paper column.'],
-    fig:{label:'Calculator simulator', build:el=>calc(el,{scripts:[
-      {name:'Bracket by bracket',intro:'One bracket per step. Watch the paper column fill up.',steps:[
-        {k:'( 1 2 − 1 8 ) ² =',note:'(12 − 18)² = (−6)² = <b>36</b>. The brackets keep the minus inside the square.',rec:'(12 − 18)² = 36'},
-        {k:'( 1 5 − 1 8 ) ² =',note:'(15 − 18)² = (−3)² = <b>9</b>.',rec:'(15 − 18)² = 9'},
-        {k:'( 1 8 − 1 8 ) ² =',note:'(18 − 18)² = <b>0</b>. A value equal to the mean adds no spread.',rec:'(18 − 18)² = 0'},
-        {k:'( 2 0 − 1 8 ) ² =',note:'(20 − 18)² = 2² = <b>4</b>.',rec:'(20 − 18)² = 4'},
-        {k:'( 2 5 − 1 8 ) ² =',note:'(25 − 18)² = 7² = <b>49</b>.',rec:'(25 − 18)² = 49'},
-        {k:'3 6 + 9 + 0 + 4 + 4 9 =',note:'Σ melts: add the five squares. Σ(xᵢ − x̄)² = <b>98</b>. Keep it as Ans.',rec:'Σ = 36 + 9 + 0 + 4 + 49 = 98'},
-        {k:'÷ ( 5 − 1 ) =',note:'98 ÷ (5 − 1) = 98 ÷ 4 = <b>24.5</b>. ✓ Units: marks².',tone:'good',rec:'s² = 98 / (5 − 1) = 24.5 marks²'}]},
-      {name:'Trap: the lost minus',trap:true,intro:'Typing −6² straight in, without brackets.',steps:[
-        {k:'− 6 ² =',note:'<b>−36?</b> The calculator squared 6 first, then added the minus. But (−6)² = +36: a square is never negative.',tone:'bad',rec:'✗ −6² = −36'},
-        {k:'( − 6 ) ² =',note:'With brackets: (−6)² = <b>36</b>. ✓ Safest of all: type (12 − 18)² and let the calculator do the subtraction.',tone:'good',rec:'✓ (−6)² = 36'}]},
-      {name:'Trap: n − 1 without brackets',trap:true,intro:'Dividing the total by n − 1 in one line.',steps:[
-        {k:'9 8 ÷ 5 − 1 =',note:'<b>18.6?</b> The calculator did 98 ÷ 5 = 19.6 first, then subtracted 1.',tone:'bad',rec:'✗ 98 ÷ 5 − 1 = 18.6'},
-        {k:'9 8 ÷ ( 5 − 1 ) =',note:'With brackets around the bottom: <b>24.5</b>. ✓',tone:'good',rec:'✓ 98 ÷ (5 − 1) = 24.5'}]}]})} },
-
-  { nav:'Your turn: the variance', title:'Your turn · the sample variance', kind:'activity', minutes:7,
-    narration:[
-     '<strong>Level 2.</strong> Same data, <strong>2, 4, 6, 8, 10</strong>, with your mean x̄ = 6. This is Exercise 2 in your booklet.',
-     'Some cells are done for you. Complete the table one column at a time: first every xᵢ − x̄, then every square. Then add, and divide by n − 1.',
-     'Check: the middle column must add up to 0. If it does not, recheck your mean.'],
-    notes:['Common error: (−4)² written as −16. Send those students back to the calculator trap tab.'],
-    fig:{label:'Level 2 · Exercise 2', build:el=>fill(el,{html:`<div class="datahead">Data: <b>2, 4, 6, 8, 10</b> &nbsp;·&nbsp; x̄ = 6 ✓</div>
-      <div class="ln"><b>Read</b> s² = the sum of [[squared differences|squared differences from the mean|squared deviations|squares]] ÷ [[n − 1|n-1|4]]</div>
-      <table class="ft"><tr><th>Obs.</th><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>
-      <tr><td>x₁</td><td>2</td><td>−4</td><td>16</td></tr>
-      <tr><td>x₂</td><td>4</td><td>−2</td><td>[[4]]</td></tr>
-      <tr><td>x₃</td><td>6</td><td>[[0]]</td><td>[[0]]</td></tr>
-      <tr><td>x₄</td><td>8</td><td>[[2]]</td><td>[[4]]</td></tr>
-      <tr><td>x₅</td><td>10</td><td>[[4]]</td><td>[[16]]</td></tr>
-      <tr><td><b>Total</b></td><td>30</td><td>0</td><td>[[40]]</td></tr></table>
-      <div class="ln"><b>Step 1</b> Σ(xᵢ − x̄)² = [[40]]</div>
-      <div class="ln"><b>Step 2</b> n − 1 = 5 − 1 = 4 ✓</div>
-      <div class="ln"><b>Step 3</b> s² = [[40]] / 4 = [[10]]</div>`})} },
-
-  { nav:'s, σ² and CV', title:'Same routine: standard deviation, population, CV', minutes:8, wide:true,
-    narration:[
-     'Every other formula on the midterm is read the same way: point at each symbol, say what it does, replace it with a number, then calculate.',
-     '<strong>Standard deviation</strong>: s = √s². The square root undoes the squaring, so the answer comes back to the original units (marks, not marks²).',
-     '<strong>Population variance</strong>: only two symbols change. μ replaces x̄, and you divide by N instead of n − 1. The question tells you which one: “a sample of”, “randomly selected” → sample; “all”, “every”, “the entire” → population.',
-     '<strong>Coefficient of variation</strong>: CV = s ÷ x̄ × 100%. The spread as a percentage of the mean, with no units.'],
-    think:'For the same data, which is bigger: s² (divide by n − 1) or σ² (divide by N)? Why?',
-    notes:['Use the tabs: one formula at a time, 2–3 minutes each.','Think answer: s² is bigger, because dividing by a smaller number gives a bigger result.'],
-    fig:{label:'Three formulas · pick a tab', build:el=>tabbedStories(el,[['Standard deviation s',SD],['Population σ²',POP],['Coefficient of variation',CV]])} },
-
-  { nav:'Your turn: s, σ, CV', title:'Your turn · s, σ and CV', kind:'activity', minutes:8,
-    narration:[
-     '<strong>Level 2.</strong> Exercises 3, 4 and 5 in your booklet, still with <strong>2, 4, 6, 8, 10</strong>. Use your results: x̄ = 6, Σ(xᵢ − x̄)² = 40, s² = 10.',
-     'Round to two decimal places. For the CV, use s = 3.16.',
-     'Then sort the six situations below the exercises: sample or population?'],
-    notes:['Expected: s ≈ 3.16; μ = 6, σ² = 8, σ ≈ 2.83; CV ≈ 52.7%.'],
-    fig:{label:'Level 2 · Exercises 3–5', build:el=>{ el.innerHTML='<div id="f3"></div><div style="margin-top:16px"><span class="eyebrow">Sample or population?</span><div id="sp" style="margin-top:8px"></div></div>';
-      fill(el.querySelector('#f3'),{html:`<div class="datahead">Data: <b>2, 4, 6, 8, 10</b> &nbsp;·&nbsp; s² = 10 ✓</div>
-      <div class="ln"><b>Ex. 3</b> s = √[[10]] ≈ [[3.16]] &nbsp; units: [[original|original units|marks]]</div>
-      <div class="ln"><b>Ex. 4</b> As a population: μ = [[6]], &nbsp;σ² = 40 / [[5]] = [[8]], &nbsp;σ ≈ [[2.83]]</div>
-      <div class="ln"><b>Ex. 5</b> CV = ( [[3.16]] / [[6]] ) × 100% ≈ [[52.7]] %</div>`});
-      W.sort(el.querySelector('#sp'),{buckets:['Sample (n − 1)','Population (N)'],items:[
-        {t:'The waiting times of 6 randomly selected customers',a:0,why:'“Randomly selected” means only some customers were measured.'},
-        {t:'The marks of all 32 students in this section',a:1,why:'“All” the students of the group we care about.'},
-        {t:'A survey of 200 Dubai residents',a:0,why:'200 people chosen from a much larger population.'},
-        {t:'The salaries of every employee in a 15-person company',a:1,why:'“Every” employee is included.'},
-        {t:'10 batteries tested from a day\'s production',a:0,why:'A few batteries stand in for the whole production.'},
-        {t:'The ages of the entire football team',a:1,why:'“The entire” team.'}]}); }} },
-
-  { nav:'Expected value', title:'Probability tables: E(X) and Var(X)', minutes:8, wide:true,
-    narration:[
-     'A probability distribution lists every possible value x and its probability P(x). <strong>Check first</strong>: every P(x) is between 0 and 1, and all of them add up to 1.',
-     '<strong>E(X) = Σ x · P(x)</strong>. Read it: each value times its probability, then add. In a table, that is one new column, x · P(x), and Σ melts into plus signs at the bottom.',
-     'Do <strong>not</strong> divide by n. In the mean, every value has the same weight (1/n). In E(X), every value already has its own weight: P(x).',
-     '<strong>Var(X)</strong> follows the same story as s²: subtract μ, square, multiply by P(x), add. SD(X) is its square root.'],
-    think:'Why is there no “divide by n” in E(X)?',
-    notes:['Level 2 coffee exercise (Booklet Exercises 6–7) follows below the stepper; give 3 minutes, or set it as homework.'],
-    fig:{label:'X = complaints per day', build:el=>{ el.innerHTML='<div id="exs"></div><div style="margin-top:18px"><span class="eyebrow">Level 2 · Exercise 6 · X = cups of coffee per day</span><div id="exf" style="margin-top:8px"></div></div>';
-      story(el.querySelector('#exs'),{stages:EX});
-      fill(el.querySelector('#exf'),{html:`<table class="ft"><tr><th>x</th><th>P(x)</th><th>x · P(x)</th></tr>
-        <tr><td>1</td><td>0.2</td><td>0.2</td></tr><tr><td>2</td><td>0.3</td><td>[[0.6]]</td></tr><tr><td>3</td><td>0.4</td><td>[[1.2]]</td></tr><tr><td>4</td><td>0.1</td><td>[[0.4]]</td></tr>
-        <tr><td><b>Σ</b></td><td>[[1]]</td><td>[[2.4]]</td></tr></table>
-        <div class="ln"><b>Interpret</b> On average a staff member buys [[2.4]] cups per day.</div>`}); }} },
-
-  { nav:'On your own', title:'On your own · café waiting times', kind:'activity', minutes:10,
-    narration:[
-     '<strong>Level 3.</strong> No help this time. A café manager records the waiting time, in minutes, of <strong>6 randomly selected customers</strong> during the lunch rush: <strong>3, 5, 4, 8, 6, 4</strong>.',
-     'Use the full routine for every formula: read it, translate every symbol, then calculate, then interpret. Draw your own table, one bracket per value.',
-     'Write your working in the booklet. Enter your final numbers here to check them (round to two decimals; give the CV to one decimal). Then write the interpretation in the worksheet.'],
-    think:'Before you calculate anything: should you divide by 6 or by 5? Which word in the question tells you?',
-    notes:['Answers: sample (n − 1 = 5); x̄ = 5 min; Σ(xᵢ − x̄)² = 16; s² = 3.2 min²; s ≈ 1.79 min; CV ≈ 35.8%.','The second Level 3 question (online orders) in the booklet: E(X) = 1.7, Var(X) = 0.61, SD(X) ≈ 0.78. Use it for fast finishers.'],
-    fig:{label:'Level 3 · check your numbers', build:el=>{ el.innerHTML='<div id="l3"></div><div style="margin-top:16px" id="l3w"></div>';
-      fill(el.querySelector('#l3'),{html:`<div class="datahead">Waiting times (min): <b>3, 5, 4, 8, 6, 4</b></div>
-        <div class="ln"><b>Type</b> sample or population? [[sample]] &nbsp; divide by [[5|n − 1|n-1]]</div>
-        <div class="ln"><b>Mean</b> x̄ = [[5]] minutes</div>
-        <div class="ln"><b>Squares</b> Σ(xᵢ − x̄)² = [[16]]</div>
-        <div class="ln"><b>Variance</b> s² = [[3.2]] minutes²</div>
-        <div class="ln"><b>Std dev</b> s ≈ [[1.79]] minutes</div>
-        <div class="ln"><b>CV</b> ≈ [[35.8]] %</div>`});
-      W.worksheet(el.querySelector('#l3w'),{id:'mtg2-cafe',title:'Mind the Gap 2 · Café waiting times',fields:[
-        {l:'Write the variance formula in words',ph:'s squared equals…'},
-        {l:'Interpret the standard deviation for the café',hint:'One sentence, with units.',ph:'A typical wait is about…'},
-        {l:'Interpret the CV for the café',ph:'The spread is about…'}]}); }} },
-
-  { nav:'Exit check', title:'Exit check', kind:'check', minutes:5,
-    narration:[
-     'Six quick questions on today. Feedback appears after each answer.',
-     'Then the exit ticket: <strong>why do we square the differences before adding them?</strong> Write one or two sentences in your booklet.',
-     'Next workshop: the third gap, <strong>the calculator</strong>. Bring your own calculator to every workshop and to the midterm.'],
-    notes:['Exit ticket answer: the differences from the mean always add up to 0, because positives and negatives cancel. Squaring makes every difference positive and gives more weight to values far from the mean.'],
-    fig:{label:'Six questions', build:el=>W.quiz(el,[
-      {q:'In x̄ = Σxᵢ / n, what does Σ tell you to do?',o:['Multiply the values','Add all the values','Find the largest value','Subtract the mean'],a:1,why:'Σ (sigma) means “add up”. It stands in front of the list of values.'},
-      {q:'Data: 3, 5, 4, 8, 6, 4. What is x₄?',o:['4','8','6','24'],a:1,why:'The small number is the position. x₄ is the 4th value: 8.'},
-      {q:'Typing 12 + 15 + 18 + 20 + 25 ÷ 5 = gives 70. Why?',o:['The calculator is broken','It divided only 25 by 5, then added','It should be multiplied','70 is correct'],a:1,why:'Division comes before addition. Put the top in brackets, or add first and then divide Ans by 5.'},
-      {q:'You type −6² = on a scientific calculator. What do you get?',o:['36','−36','12','−12'],a:1,why:'The calculator squares 6, then puts the minus in front. Type (−6)², or better, (12 − 18)².'},
-      {q:'6 randomly selected customers. For the variance you divide by…',o:['6','5','36','1'],a:1,why:'A sample: divide by n − 1 = 5.'},
-      {q:'s² = 24.5 marks². What are the units of s?',o:['marks²','marks','%','no units'],a:1,why:'The square root takes the units back from marks² to marks.'}])} }
-  ]
-});
+/* ================= router ================= */
+const nav=document.getElementById('stations'),main=document.getElementById('main');
+let seen=new Set(); try{ seen=new Set(JSON.parse(localStorage.getItem('mtg2-seen')||'[]')) }catch(e){}
+STATIONS.forEach((s,i)=>{ const b=document.createElement('button'); b.type='button'; b.innerHTML=`<span class="n">${i}</span>${s.nav}`; b.addEventListener('click',()=>goSt(i)); nav.appendChild(b); });
+let cur=-1;
+function goSt(i,fromHash){ if(i<0||i>=STATIONS.length) return; hush(); cur=i; const s=STATIONS[i];
+  main.innerHTML=(s.title?`<div class="st-head"><div><span class="eyebrow">Station ${i}</span><h1>${s.title}</h1></div>${s.track?'<div class="tracker"></div>':''}</div>`:'')+'<div id="body"></div>'+
+   `<div class="pager"><button type="button" ${i===0?'disabled':''} onclick="goSt(${i-1})">←</button><button type="button" class="nx" ${i===STATIONS.length-1?'disabled':''} onclick="goSt(${i+1})">${i<STATIONS.length-1?STATIONS[i+1].nav+' →':''}</button></div>`;
+  main.querySelectorAll('.tracker').forEach(drawTracker); s.build(main.querySelector('#body'));
+  seen.add(i); try{ localStorage.setItem('mtg2-seen',JSON.stringify([...seen])) }catch(e){}
+  [...nav.children].forEach((b,j)=>{ b.setAttribute('aria-current',j===i); b.classList.toggle('seen',seen.has(j)); });
+  nav.children[i].scrollIntoView({block:'nearest',inline:'center'});
+  if(!fromHash) try{ history.replaceState(null,'','#s'+i) }catch(e){} window.scrollTo({top:0}); }
+addEventListener('hashchange',()=>{ const m=location.hash.match(/^#s(\d+)$/); if(m&&+m[1]!==cur) goSt(+m[1],true); });
+addEventListener('keydown',e=>{ if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return; if(e.key==='ArrowRight') goSt(cur+1); if(e.key==='ArrowLeft') goSt(cur-1); });
+const mh=location.hash.match(/^#s(\d+)$/); goSt(mh?Math.min(+mh[1],STATIONS.length-1):0,true);
+window.__allLines=()=>{ [MEAN,VAR,SD,POP,CV,EX].forEach(st=>st.forEach(s=>(s.say||[]).forEach(([w,t])=>window.__lines.add(w+'|'+plain(t))))); return [...window.__lines]; };
 </script>
 </body>
 </html>
