@@ -10,7 +10,7 @@ def norm(t):
     t=t.replace('…?','Hmm?').replace('1 ✓','One. Check!').replace('✓','')
     t=re.sub(r'x([₀-₉])',lambda m:' x '+m.group(1).translate(SUB)+' ',t)
     for a,b in [('x̄','x bar'),('“x-bar”',''),('xᵢ','x i'),('Σ','sigma'),('s²','s squared'),('σ²','sigma squared'),('μ','mu'),('√','The square root'),
-                ('−',' minus '),('≈','about'),('%',' percent'),('P(x)','P of x'),('…',', '),('“','"'),('”','"'),('’',"'"),('n minus 1','n minus one'),(' SD ',' S D ')]:
+                ('−',' minus '),('≈','about'),('×',' times '),('÷',' divided by '),('%',' percent'),('P(x)','P of x'),('…',', '),('“','"'),('”','"'),('’',"'"),('n minus 1','n minus one'),(' SD ',' S D ')]:
         t=t.replace(a,b)
     return re.sub(r'\s{2,}',' ',t).strip()
 k=Kokoro('/home/claude/kokoro/kokoro-v1.0.int8.onnx','/home/claude/kokoro/voices-v1.0.bin')
