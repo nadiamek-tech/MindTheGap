@@ -478,7 +478,7 @@ const MEAN=[
  {f:mT(`<span class="c2 melt">${SG()}</span><span class="c1">(${list(D,'melt')})</span>`,`<span class="c3">5</span>`),say:[['t','Now Σ melts…'],['t','…and every comma becomes a plus.']]},
  {f:mT(`<span class="c1">${list(D,'plus')}</span>`,`<span class="c3">5</span>`),x:'<div class="stamp">Method written ✓</div>',say:[['t','Every symbol is a number. That line already earns marks.']]},
  {f:`${XB} = ${fr(big(90),'<span class="c3">5</span>')} = ${big(18)}`,say:[['t','Now the calculator.'],['s','90 divided by 5 is 18!']]},
- {f:`${XB} = 18`,x:nl(D,{mean:18,mode:'bal'}),say:[['t','In words: x-bar equals the sum of all the values, divided by the number of values.'],['t','Interpret: the average mark is 18.']]}];
+ {f:`${XB} = 18`,say:[['t','In words: x-bar equals the sum of all the values, divided by the number of values.'],['t','Interpret: the average mark is 18.']]}];
 
 /* 3 · Sample variance */
 const varF=()=>`${T('lhs',S2+' =')} ${T('frac',fr(T('sig',SIG(),'c2')+T('br',`<span>(</span>${T('xi',XI,'c1')}${T('minus',' − ','c1')}${T('xb',XB,'c1')}<span>)</span>`)+T('sq','2','c4 supk'),T('nm1','(n − 1)','c3')))}`;
@@ -512,10 +512,10 @@ function vt(cols,{nw=null,tot=false}={}){
 const TBL=[
  {f:varF(),x:vt(['o','x']),say:[['t','Method 2: a table. One column per step.']]},
  {f:varF(),hl:['xi','minus','xb'],x:vt(['o','x','d'],{nw:'d'}),say:[['t','① xᵢ − x̄: each value minus 18.'],['s','−6, −3, 0, 2, 7.']]},
- {f:varF(),hl:['xi','minus','xb'],x:vt(['o','x','d'],{tot:true})+nl(D,{mean:18,mode:'dist'}),say:[['t','Each one is a distance from the mean.'],['t','Check: this column always adds up to 0.']]},
- {f:varF(),hl:['sq'],x:vt(['o','x','d','q'],{nw:'q'})+nl(D,{mean:18,mode:'sq'}),say:[['t','② Square each one. Real squares, no negatives.'],['s','36, 9, 0, 4, 49.']]},
+ {f:varF(),hl:['xi','minus','xb'],x:vt(['o','x','d'],{tot:true}),say:[['t','Check: this column always adds up to 0.']]},
+ {f:varF(),hl:['sq'],x:vt(['o','x','d','q'],{nw:'q'}),say:[['t','② Square each one. No more negatives.'],['s','36, 9, 0, 4, 49.']]},
  {f:varF(),hl:['sig'],x:vt(['o','x','d','q'],{tot:true}),say:[['t','③ Σ: total the last column.'],['s','98.']]},
- {f:`${S2} = ${fr('98','<span class="c3">(5 − 1)</span>')} = ${big(24.5)}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['t','④ Divide by n − 1.'],['s','24.5!'],['t','Interpret: the sample variance is 24.5 marks squared.']]}];
+ {f:`${S2} = ${fr('98','<span class="c3">(5 − 1)</span>')} = ${big(24.5)}`,say:[['t','④ Divide by n − 1.'],['s','24.5!'],['t','Interpret: the sample variance is 24.5 marks squared.']]}];
 
 /* 4 · Standard deviation */
 const sq=r=>`<span class="sqrt"><span class="c4">√</span><span class="rad">${r}</span></span>`;
@@ -524,7 +524,7 @@ const sdF=()=>`${T('l','<span class="v">s</span> =')} ${T('root',sq(T('s2',S2,'c
 const SD=[
  {f:sdF(),hl:['s2'],say:[['t','① Start with s², the variance you already found.']]},
  {f:sdF(),hl:['root'],say:[['t','② Square root: undo the squaring.']]},
- {f:`<span class="v">s</span> = ${sq('<span class="c1 new">24.5</span>')} ≈ ${big('4.95')}`,x:nl(D,{mean:18,mode:'avg',div:4}),say:[['s','About 4.95 marks.'],['t','Marks squared become marks again.']]},
+ {f:`<span class="v">s</span> = ${sq('<span class="c1 new">24.5</span>')} ≈ ${big('4.95')}`,say:[['s','About 4.95 marks.'],['t','Marks squared become marks again.']]},
  {f:`<span class="v">s</span> ≈ 4.95`,say:[['t','Interpret: a typical mark lies about 4.95 marks from the mean of 18.']]}];
 
 /* 5 · Sample or population? */
@@ -751,7 +751,7 @@ const STATIONS=[
    ['Level 2','Exercise 1','',c=>bookEx(c,{...EX1,onDone:()=>setRes({xbar:'6'})})],
    ['Tool','Calculator','',c=>calc(c,CALC_MEAN)]])},
  {nav:'3 · Sample variance',title:'Sample variance',track:1,build:el=>levels(el,[
-   ['Idea','What is it?','Variance: how spread out the values are around the mean. Small SD → close to the mean. Large SD → spread out.',c=>explore(c)],
+   ['Idea','What is it?','',c=>{ c.innerHTML=`<div style="display:grid;gap:10px;font-size:1.05rem"><p style="margin:0"><b>Variance</b> measures how spread out the observations are around the mean.</p><p style="margin:0"><b>Standard deviation</b> is the square root of variance.</p><p style="margin:0">Small standard deviation → values are relatively close to the mean.</p><p style="margin:0">Large standard deviation → values are more spread out.</p></div>`; }],
    ['Level 1','Read it','',c=>story(c,VREAD)],
    ['Method 1','Brackets','',c=>story(c,VBRK)],
    ['Method 2','Table','',c=>story(c,TBL)],
