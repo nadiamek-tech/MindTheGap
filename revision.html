@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mind the Gap Midterm Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Schibsted+Grotesk:wght@400;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="assets/course.css">
+<style>
+:root{--wk:#C8102E;--wk-soft:rgba(200,16,46,.08);--wk-d:#FF7A7F;--wk-soft-d:rgba(255,122,127,.14);--c2:#1F63B5;--c3:#1E7F4F}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c2:#7FB2FF;--c3:#6FD69B}}
+:root[data-theme="dark"]{--c2:#7FB2FF;--c3:#6FD69B}
+.tool{display:grid;gap:10px;font-family:var(--f-display)}
+.tool svg{width:100%;height:auto;display:block}
+.seg2{display:flex;flex-wrap:wrap;gap:6px}
+.seg2 button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;font:inherit;font-size:.88rem}
+.seg2 button[aria-pressed="true"]{background:var(--wk);border-color:var(--wk);color:#fff;font-weight:700}
+.tool textarea,.tool input[type=number]{width:100%;min-width:0;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:1rem var(--f-mono)}
+.tool label{font-size:.85rem;color:var(--muted)}
+.inrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.inrow div{display:grid;gap:3px}
+.out{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px}
+.out div{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:5px 8px}
+.out small{display:block;font-family:var(--f-mono);font-size:.68rem;color:var(--muted)}
+.out b{font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}
+.tbl th,.tbl td{border:1px solid var(--line);padding:4px 6px;text-align:center}
+.tbl th{background:var(--sunk);font-weight:600}
+.tbl input{width:100%;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;text-align:center;padding:2px}
+.warn{color:var(--wk);font-weight:600}
+.okk{color:var(--c3);font-weight:600}
+.map2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.map2 h4{font-size:.95rem;margin:0 0 6px}
+.map2 button{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:8px 10px;margin-bottom:6px;cursor:pointer;font:inherit;font-size:.9rem}
+.map2 button:hover{border-color:var(--wk)}
+.map2 button small{display:block;color:var(--muted);font-size:.78rem}
+.mini{max-width:360px;margin:6px 0}
+.sl{display:grid;grid-template-columns:110px minmax(0,1fr) 46px;gap:8px;align-items:center;font-size:.9rem}
+.sl input{accent-color:var(--wk);width:100%}
+.prac .pq svg{width:100%;max-width:380px;height:auto;display:block;margin:6px 0}
+@media (max-width:560px){.inrow{grid-template-columns:repeat(2,minmax(0,1fr))}.map2{grid-template-columns:minmax(0,1fr)}.sl{grid-template-columns:90px minmax(0,1fr) 40px}}
+</style>
+</head>
+<body>
+<script src="assets/course.js"></script>
+<script src="assets/kb.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/assistant.js"></script>
+<script>
+const {W} = Lecture;
+const esc = W.esc;
+const r2 = v => (Math.round(v*100)/100).toString();
+const r4 = v => (Math.round(v*10000)/10000).toString();
+const FT = 'font-family="Schibsted Grotesk,Arial"';
+const MONO = 'font-family="JetBrains Mono,monospace"';
+const goScene = i => { const b=document.querySelectorAll('.toc ol li button')[i]; if(b) b.click(); };
+const toW2 = `<a href="workshop-02.html">Each formula, symbol by symbol: Workshop 2 →</a>`;
+
+/* ---------- SVG helpers ---------- */
+function hist(freqs, edges, o={}){
+  const Wd=o.w||520, Hd=o.h||220, L=34, R=12, T=12, B=36, k=freqs.length;
+  const ymax=o.ymax||Math.max(...freqs)+1, bw=(Wd-L-R)/(k+(o.pad?2:0)), x0=L+(o.pad?bw:0);
+  const Y=v=>T+(Hd-T-B)*(1-v/ymax);
+  let s=`<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="${esc(o.aria||'Histogram')}">`;
+  for(let g=0; g<=ymax; g+=Math.ceil(ymax/5)) s+=`<line x1="${L}" x2="${Wd-R}" y1="${Y(g)}" y2="${Y(g)}" stroke="var(--line)"/><text x="${L-6}" y="${Y(g)+4}" text-anchor="end" ${MONO} font-size="10" fill="var(--muted)">${g}</text>`;
+  if(!o.hideBars) freqs.forEach((f,i)=>{ s+=`<rect x="${x0+i*bw}" y="${Y(f)}" width="${bw}" height="${Y(0)-Y(f)}" fill="var(--wk-soft)" stroke="var(--wk)" stroke-width="1.2"/>`; });
+  (edges||[]).forEach((e,i)=>{ s+=`<text x="${x0+i*bw}" y="${Hd-B+16}" text-anchor="middle" ${MONO} font-size="10" fill="var(--muted)">${e}</text>`; });
+  if(o.xlabel) s+=`<text x="${(L+Wd-R)/2}" y="${Hd-4}" text-anchor="middle" ${FT} font-size="11" fill="var(--muted)">${esc(o.xlabel)}</text>`;
+  s+=`<line x1="${L}" x2="${Wd-R}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)"/>`;
+  if(o.poly){ const pts=[[x0-bw/2,0],...freqs.map((f,i)=>[x0+i*bw+bw/2,f]),[x0+k*bw+bw/2,0]];
+    s+=`<polyline points="${pts.map(([x,f])=>`${x},${Y(f)}`).join(' ')}" fill="none" stroke="var(--c2)" stroke-width="2.4"/>`+pts.map(([x,f])=>`<circle cx="${x}" cy="${Y(f)}" r="4" fill="var(--c2)"/>`).join(''); }
+  if(o.lines) o.lines.forEach(([pos,lab,col],j)=>{ const x=x0+pos*bw; s+=`<line x1="${x}" x2="${x}" y1="${T}" y2="${Y(0)}" stroke="${col}" stroke-width="2.4" stroke-dasharray="${j?'6 4':''}"/><text x="${x+(j?6:-6)}" y="${T+12+j*16}" text-anchor="${j?'start':'end'}" ${FT} font-weight="700" font-size="12" fill="${col}">${lab}</text>`; });
+  return s+'</svg>';
+}
+function boxSVG(f, lo, hi, step, o={}){
+  const Wd=520, Hd=o.out&&o.out.length?150:130, L=20, R=20, X=v=>L+(Wd-L-R)*(v-lo)/(hi-lo), cy=52;
+  const [mn,q1,md,q3,mx]=f;
+  let s=`<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="${esc(o.aria||'Boxplot')}">`;
+  for(let v=lo; v<=hi+1e-9; v+=step) s+=`<line x1="${X(v)}" x2="${X(v)}" y1="14" y2="94" stroke="var(--line)"/><text x="${X(v)}" y="110" text-anchor="middle" ${MONO} font-size="10" fill="var(--muted)">${v}</text>`;
+  s+=`<line x1="${X(mn)}" x2="${X(q1)}" y1="${cy}" y2="${cy}" stroke="var(--ink)" stroke-width="2"/><line x1="${X(q3)}" x2="${X(mx)}" y1="${cy}" y2="${cy}" stroke="var(--ink)" stroke-width="2"/>`;
+  s+=`<line x1="${X(mn)}" x2="${X(mn)}" y1="${cy-12}" y2="${cy+12}" stroke="var(--ink)" stroke-width="2"/><line x1="${X(mx)}" x2="${X(mx)}" y1="${cy-12}" y2="${cy+12}" stroke="var(--ink)" stroke-width="2"/>`;
+  s+=`<rect x="${X(q1)}" y="${cy-22}" width="${X(q3)-X(q1)}" height="44" fill="var(--wk-soft)" stroke="var(--ink)" stroke-width="2"/><line x1="${X(md)}" x2="${X(md)}" y1="${cy-22}" y2="${cy+22}" stroke="var(--wk)" stroke-width="3"/>`;
+  (o.out||[]).forEach(v=>{ s+=`<circle cx="${X(v)}" cy="${cy}" r="5" fill="none" stroke="var(--wk)" stroke-width="2"/>`; });
+  if(o.labels) [['Min',mn],['Q1',q1],['Median',md],['Q3',q3],['Max',mx]].forEach(([t,v],i)=>{ s+=`<text x="${X(v)}" y="${i%2?cy-28:cy+36}" text-anchor="middle" ${FT} font-weight="700" font-size="11" fill="${t==='Median'?'var(--wk)':'var(--ink)'}">${t}</text>`; });
+  if(o.xlabel) s+=`<text x="${Wd/2}" y="${Hd-6}" text-anchor="middle" ${FT} font-size="11" fill="var(--muted)">${esc(o.xlabel)}</text>`;
+  return s+'</svg>';
+}
+const nums = t => String(t).split(/[\s,;]+/).map(Number).filter(v=>t!==''&&!isNaN(v)&&isFinite(v));
+const median = a => { const s=[...a].sort((x,y)=>x-y), n=s.length; return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2; };
+function fiveNum(a){ const s=[...a].sort((x,y)=>x-y), n=s.length, h=Math.floor(n/2);
+  return {s, min:s[0], q1:median(s.slice(0,h)), med:median(s), q3:median(s.slice(n%2?h+1:h)), max:s[n-1]}; }
+
+/* ---------- Tool 1: shape ---------- */
+function shapeTool(el){
+  const SETS={'Symmetric':[2,5,9,12,9,5,2],'Right-skewed (positive)':[7,12,10,6,4,2,1],'Left-skewed (negative)':[1,2,4,6,10,12,7]};
+  el.innerHTML=`<div class="tool"><div class="seg2">${Object.keys(SETS).map((k,i)=>`<button type="button" aria-pressed="${i===1}">${k}</button>`).join('')}</div><div class="pic"></div><div class="feedback"></div></div>`;
+  const draw=k=>{ const f=SETS[k], n=f.reduce((a,b)=>a+b,0); const xs=[]; f.forEach((c,i)=>{ for(let j=0;j<c;j++) xs.push(i+.5); });
+    const mean=xs.reduce((a,b)=>a+b,0)/n, med=median(xs);
+    el.querySelector('.pic').innerHTML=hist(f,[],{aria:k+' histogram',lines:[[mean,'mean','var(--wk)'],[med,'median','var(--c2)']]});
+    el.querySelector('.feedback').innerHTML= k[0]==='S'?'<b>Symmetric:</b> mean = median. No long tail.':k[0]==='R'?'<b>Tail to the right:</b> a few large values pull the mean up, so mean &gt; median.':'<b>Tail to the left:</b> a few small values pull the mean down, so mean &lt; median.'; };
+  el.querySelectorAll('.seg2 button').forEach(b=>b.addEventListener('click',()=>{ el.querySelectorAll('.seg2 button').forEach(x=>x.setAttribute('aria-pressed',x===b)); draw(b.textContent); }));
+  draw('Right-skewed (positive)');
+}
+
+/* ---------- Tool 2: polygon vs ogive ---------- */
+function polyTool(el){
+  const f=[3,6,9,5,2], edges=['9.5','19.5','29.5','39.5','49.5','59.5'];
+  el.innerHTML=`<div class="tool"><div class="seg2"><button type="button" aria-pressed="true">Frequency polygon</button><button type="button" aria-pressed="false">Ogive</button></div><div class="pic"></div><div class="feedback"></div>
+  <table class="tbl"><tr><th>Class</th><td>10–19</td><td>20–29</td><td>30–39</td><td>40–49</td><td>50–59</td></tr><tr><th>f</th>${f.map(v=>`<td>${v}</td>`).join('')}</tr><tr><th>Midpoint</th><td>14.5</td><td>24.5</td><td>34.5</td><td>44.5</td><td>54.5</td></tr><tr><th>Cum. f</th><td>3</td><td>9</td><td>18</td><td>23</td><td>25</td></tr></table></div>`;
+  const pic=el.querySelector('.pic'), fb=el.querySelector('.feedback');
+  const draw=m=>{ if(m===0){ pic.innerHTML=hist(f,edges,{pad:true,poly:true,xlabel:'Class boundaries',aria:'Histogram with frequency polygon',ymax:10}); fb.innerHTML='Points at the <b>midpoints</b> (14.5 … 54.5), height = frequency. The line starts at 4.5 and ends at 64.5 on the axis.'; }
+    else { const Wd=520,Hd=220,L=34,R=12,T=12,B=36, cum=[0,3,9,18,23,25], X=i=>L+(Wd-L-R)*i/5, Y=v=>T+(Hd-T-B)*(1-v/25);
+      let s=`<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="Ogive">`; [0,5,10,15,20,25].forEach(g=>{ s+=`<line x1="${L}" x2="${Wd-R}" y1="${Y(g)}" y2="${Y(g)}" stroke="var(--line)"/><text x="${L-6}" y="${Y(g)+4}" text-anchor="end" ${MONO} font-size="10" fill="var(--muted)">${g}</text>`; });
+      edges.forEach((e,i)=>{ s+=`<text x="${X(i)}" y="${Hd-B+16}" text-anchor="middle" ${MONO} font-size="10" fill="var(--muted)">${e}</text>`; });
+      s+=`<polyline points="${cum.map((c,i)=>`${X(i)},${Y(c)}`).join(' ')}" fill="none" stroke="var(--c3)" stroke-width="2.4"/>`+cum.map((c,i)=>`<circle cx="${X(i)}" cy="${Y(c)}" r="4" fill="var(--c3)"/>`).join('');
+      s+=`<text x="${(L+Wd-R)/2}" y="${Hd-4}" text-anchor="middle" ${FT} font-size="11" fill="var(--muted)">Upper class boundaries · y = cumulative frequency</text></svg>`;
+      pic.innerHTML=s; fb.innerHTML='Points at the <b>upper boundaries</b>, height = <b>cumulative</b> frequency. It always rises and ends at n = 25.'; } };
+  el.querySelectorAll('.seg2 button').forEach((b,i)=>b.addEventListener('click',()=>{ el.querySelectorAll('.seg2 button').forEach(x=>x.setAttribute('aria-pressed',x===b)); draw(i); }));
+  draw(0);
+}
+
+/* ---------- Tool 3: boxplot ---------- */
+function boxTool(el){
+  el.innerHTML=`<div class="tool"><label for="bx-in">Type or paste your data (spaces or commas)</label><textarea id="bx-in" rows="2">12 15 17 18 20 21 22 24 26 29 41</textarea><div class="pic"></div><div class="out"></div><div class="feedback"></div></div>`;
+  const ta=el.querySelector('textarea');
+  const run=()=>{ const a=nums(ta.value); const out=el.querySelector('.out'), fb=el.querySelector('.feedback'), pic=el.querySelector('.pic');
+    if(a.length<4){ out.innerHTML=''; pic.innerHTML=''; fb.innerHTML='<span class="warn">Enter at least 4 numbers.</span>'; return; }
+    const F=fiveNum(a), iqr=F.q3-F.q1, lf=F.q1-1.5*iqr, uf=F.q3+1.5*iqr, outl=F.s.filter(v=>v<lf||v>uf), inl=F.s.filter(v=>v>=lf&&v<=uf);
+    const span=F.max-F.min||1, step=Math.pow(10,Math.floor(Math.log10(span/4))); const st=[1,2,5,10].map(m=>m*step).find(v=>span/v<=8)||step*10;
+    const lo=Math.floor(F.min/st)*st, hi=Math.ceil(F.max/st)*st;
+    pic.innerHTML=boxSVG([inl[0],F.q1,F.med,F.q3,inl[inl.length-1]],lo,hi===lo?lo+st:hi,st,{labels:true,out:outl});
+    out.innerHTML=[['n',a.length],['Sorted',F.s.join(', ')],['Min',F.min],['Q1',r2(F.q1)],['Median',r2(F.med)],['Q3',r2(F.q3)],['Max',F.max],['Range',r2(F.max-F.min)],['IQR',r2(iqr)],['Lower fence',r2(lf)],['Upper fence',r2(uf)]].map(([k,v])=>`<div ${k==='Sorted'?'style="grid-column:1/-1"':''}><small>${k}</small><b>${v}</b></div>`).join('');
+    fb.innerHTML=outl.length?`<b>Outlier${outl.length>1?'s':''}: ${outl.join(', ')}</b> (outside the fences). The whisker stops at the last value inside.`:'No outliers: every value is inside the fences.'; };
+  ta.addEventListener('input',run); run();
+}
+
+/* ---------- Tool 4: centre and spread ---------- */
+function spreadTool(el){
+  el.innerHTML=`<div class="tool"><label for="sp-in">Sample data</label><textarea id="sp-in" rows="2">6 8 9 9 13</textarea><div class="tb" style="overflow-x:auto"></div><div class="out"></div><p class="mono" style="margin:0">${toW2}</p></div>`;
+  const ta=el.querySelector('textarea');
+  const run=()=>{ const a=nums(ta.value), n=a.length, tb=el.querySelector('.tb'), out=el.querySelector('.out');
+    if(n<2){ tb.innerHTML='<span class="warn">Enter at least 2 numbers.</span>'; out.innerHTML=''; return; }
+    const sum=a.reduce((p,q)=>p+q,0), m=sum/n, d=a.map(x=>x-m), sq=d.map(v=>v*v), ss=sq.reduce((p,q)=>p+q,0), v=ss/(n-1), s=Math.sqrt(v);
+    const cnt={}; a.forEach(x=>cnt[x]=(cnt[x]||0)+1); const mx=Math.max(...Object.values(cnt)); const modes=mx>1?Object.keys(cnt).filter(k=>cnt[k]===mx).map(Number).sort((p,q)=>p-q):[];
+    tb.innerHTML=n<=12?`<table class="tbl"><tr><th>x</th>${a.map(x=>`<td>${x}</td>`).join('')}<th>Σ</th></tr><tr><th>x − x̄</th>${d.map(x=>`<td>${r2(x)}</td>`).join('')}<td>0</td></tr><tr><th>(x − x̄)²</th>${sq.map(x=>`<td>${r2(x)}</td>`).join('')}<td><b>${r2(ss)}</b></td></tr></table>`:'';
+    out.innerHTML=[['n',n],['Σx',r2(sum)],['Mean x̄',r4(m)],['Median',r2(median(a))],['Mode',modes.length?modes.join(', '):'none'],['Σ(x − x̄)²',r4(ss)],['s² = Σ ÷ (n − 1)',r4(v)],['s = √s²',r4(s)],['CV = s ÷ x̄ × 100%',m? r2(s/m*100)+'%':'—']].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join(''); };
+  ta.addEventListener('input',run); run();
+}
+
+/* ---------- Tool 5: Venn ---------- */
+function vennTool(el){
+  el.innerHTML=`<div class="tool"><div class="inrow"><div><label for="vn">Total</label><input type="number" id="vn" value="120" min="1"></div><div><label for="va">n(A)</label><input type="number" id="va" value="50" min="0"></div><div><label for="vb">n(B)</label><input type="number" id="vb" value="40" min="0"></div><div><label for="vab">n(A and B)</label><input type="number" id="vab" value="15" min="0"></div></div><div class="pic"></div><div class="out"></div><div class="feedback"></div></div>`;
+  const g=id=>+el.querySelector('#'+id).value;
+  const run=()=>{ const N=g('vn'),A=g('va'),B=g('vb'),AB=g('vab'), pic=el.querySelector('.pic'), out=el.querySelector('.out'), fb=el.querySelector('.feedback');
+    const bad=AB>Math.min(A,B)?'n(A and B) cannot be bigger than n(A) or n(B).':A+B-AB>N?'A and B together are bigger than the total. Check your numbers.':N<=0?'Total must be positive.':'';
+    if(bad){ fb.innerHTML=`<span class="warn">${bad}</span>`; out.innerHTML=''; pic.innerHTML=''; return; }
+    const a=A-AB,b=B-AB,ne=N-A-B+AB, P=v=>r4(v/N);
+    pic.innerHTML=`<svg viewBox="0 0 520 230" role="img" aria-label="Venn diagram"><rect x="6" y="6" width="508" height="218" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="20" y="28" ${FT} font-weight="700" font-size="14" fill="var(--ink)">S = ${N}</text>
+      <circle cx="210" cy="118" r="88" fill="var(--wk-soft)" stroke="var(--wk)" stroke-width="2"/><circle cx="310" cy="118" r="88" fill="rgba(31,99,181,.08)" stroke="var(--c2)" stroke-width="2"/>
+      <text x="160" y="40" ${FT} font-weight="700" font-size="14" fill="var(--wk)">A</text><text x="352" y="40" ${FT} font-weight="700" font-size="14" fill="var(--c2)">B</text>
+      ${[[165,a,'A only'],[260,AB,'A and B'],[355,b,'B only'],[470,ne,'neither']].map(([x,v,t],i)=>`<text x="${x}" y="${i===3?200:122}" text-anchor="middle" ${FT} font-weight="800" font-size="22" fill="var(--ink)">${v}</text><text x="${x}" y="${i===3?216:140}" text-anchor="middle" ${FT} font-size="11" fill="var(--muted)">${t}</text>`).join('')}</svg>`;
+    out.innerHTML=[['P(A)',P(A)],['P(B)',P(B)],['P(A and B)',P(AB)],['P(A or B)',P(A+B-AB)],['P(A only)',P(a)],['P(exactly one)',P(a+b)],['P(neither)',P(ne)]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('');
+    fb.innerHTML=`Check: ${a} + ${AB} + ${b} + ${ne} = <b>${a+AB+b+ne}</b> = total ✓`; };
+  el.querySelectorAll('input').forEach(i=>i.addEventListener('input',run)); run();
+}
+
+/* ---------- Tool 6: tree ---------- */
+function treeTool(el){
+  el.innerHTML=`<div class="tool"><div class="sl"><label for="pa">P(A)</label><input type="range" id="pa" min="0" max="1" step="0.05" value="0.7"><b class="mono" id="pav"></b></div><div class="sl"><label for="pb">P(B)</label><input type="range" id="pb" min="0" max="1" step="0.05" value="0.4"><b class="mono" id="pbv"></b></div><div class="pic"></div><div class="out"></div><p class="mono" style="margin:0;color:var(--muted)">A and B independent. A′ = “not A”.</p></div>`;
+  const run=()=>{ const pa=+el.querySelector('#pa').value, pb=+el.querySelector('#pb').value; el.querySelector('#pav').textContent=r2(pa); el.querySelector('#pbv').textContent=r2(pb);
+    const br=(x1,y1,x2,y2,p)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--wk)" stroke-width="2"/><text x="${(x1+x2)/2}" y="${(y1+y2)/2-6}" text-anchor="middle" ${MONO} font-size="12" font-weight="600" fill="var(--wk)">${r2(p)}</text>`;
+    const nd=(x,y,t)=>`<rect x="${x-18}" y="${y-13}" width="36" height="26" rx="7" fill="var(--surface)" stroke="var(--ink)"/><text x="${x}" y="${y+5}" text-anchor="middle" ${FT} font-weight="700" font-size="13" fill="var(--ink)">${t}</text>`;
+    let s=`<svg viewBox="0 0 520 230" role="img" aria-label="Tree diagram">`; const paths=[];
+    [['A',pa,60],["A′",1-pa,170]].forEach(([t,p,y])=>{ s+=br(40,115,150,y,p)+nd(168,y,t);
+      [['B',pb,y-30],["B′",1-pb,y+30]].forEach(([u,q,y2])=>{ s+=br(186,y,300,y2,q)+nd(318,y2,u); const pr=p*q; paths.push([t+' and '+u,pr]); s+=`<text x="346" y="${y2+5}" ${MONO} font-size="12" fill="var(--ink)">${r2(p)} × ${r2(q)} = <tspan font-weight="700">${r4(pr)}</tspan></text>`; }); });
+    s+=nd(30,115,'•')+'</svg>'; el.querySelector('.pic').innerHTML=s;
+    el.querySelector('.out').innerHTML=[['P(A and B)',paths[0][1]],['P(neither)',paths[3][1]],['P(at least one)',1-paths[3][1]],['P(exactly one)',paths[1][1]+paths[2][1]],['Sum of paths',paths.reduce((p,q)=>p+q[1],0)]].map(([k,v])=>`<div><small>${k}</small><b>${r4(v)}</b></div>`).join(''); };
+  el.querySelectorAll('input').forEach(i=>i.addEventListener('input',run)); run();
+}
+
+/* ---------- Tool 7: discrete distribution ---------- */
+function distTool(el){
+  const P=[0.10,0.20,0.40,0.20,0.10];
+  el.innerHTML=`<div class="tool"><table class="tbl"><tr><th>x</th>${P.map((_,i)=>`<td>${i}</td>`).join('')}</tr><tr><th>P(x)</th>${P.map((p,i)=>`<td><input type="text" inputmode="decimal" value="${p}" aria-label="P(${i})"></td>`).join('')}</tr><tr><th>x·P(x)</th>${P.map(()=>'<td class="xp"></td>').join('')}</tr><tr><th>P(X ≤ x)</th>${P.map(()=>'<td class="cp"></td>').join('')}</tr></table><div class="pic"></div><div class="out"></div><div class="feedback"></div></div>`;
+  const ins=[...el.querySelectorAll('input')];
+  const run=()=>{ const p=ins.map(i=>+i.value||0), sum=p.reduce((a,b)=>a+b,0), fb=el.querySelector('.feedback');
+    const neg=p.some(v=>v<0||v>1), ok=!neg&&Math.abs(sum-1)<1e-9;
+    let c=0; el.querySelectorAll('.xp').forEach((t,i)=>t.textContent=r2(i*p[i])); el.querySelectorAll('.cp').forEach((t,i)=>{ c+=p[i]; t.textContent=r2(c); });
+    const Wd=520,Hd=170,L=34,B=28,T=10,X=i=>L+20+i*((Wd-L-40)/4), Y=v=>T+(Hd-T-B)*(1-Math.min(v,1)/0.6);
+    el.querySelector('.pic').innerHTML=`<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="Probability bar chart">${[0,.2,.4,.6].map(g=>`<line x1="${L}" x2="${Wd-10}" y1="${Y(g)}" y2="${Y(g)}" stroke="var(--line)"/><text x="${L-6}" y="${Y(g)+4}" text-anchor="end" ${MONO} font-size="10" fill="var(--muted)">${g}</text>`).join('')}${p.map((v,i)=>`<rect x="${X(i)-20}" y="${Y(Math.max(v,0))}" width="40" height="${Y(0)-Y(Math.max(v,0))}" fill="var(--wk)" opacity=".8"/><text x="${X(i)}" y="${Hd-8}" text-anchor="middle" ${MONO} font-size="11" fill="var(--ink)">${i}</text>`).join('')}</svg>`;
+    if(!ok){ fb.innerHTML=`<span class="warn">Not valid: ${neg?'every P(x) must be between 0 and 1.':`ΣP(x) = ${r4(sum)}, not 1.`}</span>`; el.querySelector('.out').innerHTML=''; return; }
+    const E=p.reduce((a,v,i)=>a+i*v,0), E2=p.reduce((a,v,i)=>a+i*i*v,0), V=p.reduce((a,v,i)=>a+(i-E)**2*v,0);
+    fb.innerHTML='<span class="okk">Valid: 0 ≤ P(x) ≤ 1 and ΣP(x) = 1 ✓</span>';
+    el.querySelector('.out').innerHTML=[['E(X) = Σx·P(x)',r4(E)],['E(X²)',r4(E2)],['Var(X)',r4(V)],['SD = √Var',r4(Math.sqrt(V))]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join(''); };
+  ins.forEach(i=>i.addEventListener('input',run)); run();
+}
+
+/* ---------- practice figures ---------- */
+const H1 = hist([2,9,8,5,3,2,1],['200','250','300','350','400','450','500','550'],{xlabel:'Reaction time (ms)',aria:'Histogram of reaction times',ymax:10});
+const H2 = hist([1,2,3,6,9,9],['0','2','4','6','8','10','12'],{xlabel:'Quiz score (out of 12)',aria:'Histogram of quiz scores',ymax:10});
+const BX = boxSVG([12,20,26,30,46],10,50,5,{xlabel:'Metro commute time (minutes)',aria:'Boxplot of commute times'});
+
+const PRAC = {
+graphs:[
+ {type:'Shape', q:`A road-safety study timed how fast 30 drivers braked (illustrative data).${H1}Describe the shape. Is the mean above or below the median?`,
+  hint:`<b>Positively (right) skewed</b>: most times are short and the tail stretches to the right. The few slow drivers pull the mean up, so <b>mean &gt; median</b>.`},
+ {type:'Shape', q:`Scores of 30 students on an easy quiz.${H2}Describe the shape and say where most scores are.`,
+  hint:`<b>Negatively (left) skewed</b>: most scores are high (8–12) and the tail stretches to the left. Mean &lt; median.`},
+ {type:'Polygon', q:`Daily water use (litres) of 30 households in Sharjah (illustrative).<table class="tbl" style="margin:6px 0"><tr><th>Class</th><td>100–149</td><td>150–199</td><td>200–249</td><td>250–299</td><td>300–349</td></tr><tr><th>f</th><td>4</td><td>7</td><td>10</td><td>6</td><td>3</td></tr></table>(a) Find the class boundaries and midpoints. (b) Where does the frequency polygon start and end? (c) Which graph would you draw to read “how many households use less than 250 L?”`,
+  hint:`(a) Boundaries: 99.5, 149.5, 199.5, 249.5, 299.5, 349.5. Midpoints: 124.5, 174.5, 224.5, 274.5, 324.5.<br>(b) It starts at <b>74.5</b> and ends at <b>374.5</b>, both with frequency 0 (midpoints of the empty classes).<br>(c) The <b>ogive</b> (cumulative frequency): at 249.5 it reads 4 + 7 + 10 = <b>21</b> households.`}],
+box:[
+ {type:'Compute', q:`Daily solar output (kWh) of 11 rooftop panels in Masdar City (illustrative):<br><span class="mono">18, 21, 23, 23, 25, 27, 28, 31, 31, 35, 48</span><br>(a) Five-number summary. (b) Range and IQR. (c) Is 48 an outlier?`,
+  hint:`(a) Min 18, Q1 = 23, median = 27 (6th value), Q3 = 31, max 48. Q1 and Q3 are the medians of the 5 values below and above the median.<br>(b) Range = 48 − 18 = <b>30</b>. IQR = 31 − 23 = <b>8</b>.<br>(c) Upper fence = 31 + 1.5 × 8 = 43. 48 &gt; 43, so <b>yes, 48 is an outlier</b>.`},
+ {type:'Read', q:`A boxplot of Dubai Metro commute times for 200 students (illustrative):${BX}(a) Range and IQR. (b) About how many students commute more than 30 minutes? (c) Between which two values is the middle 50%?`,
+  hint:`(a) Range = 46 − 12 = <b>34 min</b>. IQR = 30 − 20 = <b>10 min</b>.<br>(b) 30 is Q3, so 25% are above it: 0.25 × 200 = <b>50 students</b>.<br>(c) Between Q1 = <b>20</b> and Q3 = <b>30</b> minutes.`}],
+spread:[
+ {type:'Compute', q:`Plastic bottles collected by 7 volunteers at a Jumeirah beach clean-up (illustrative):<br><span class="mono">10, 14, 15, 15, 19, 21, 25</span><br>Find the mean, median, mode, sample variance, sample SD and CV.`,
+  hint:`Σx = 119, <b>x̄ = 17</b>. Median = <b>15</b> (4th value). Mode = <b>15</b>.<br>Deviations: −7, −3, −2, −2, 2, 4, 8 → squares 49, 9, 4, 4, 4, 16, 64; Σ = 150.<br><b>s² = 150 ÷ 6 = 25</b>, <b>s = 5</b>, <b>CV = 5 ÷ 17 × 100% ≈ 29.4%</b>.`},
+ {type:'Compare', q:`Two solar farms. Farm A: mean 40 MWh, s = 6 MWh. Farm B: mean 25 MWh, s = 5 MWh. Which farm is more consistent? Use the CV.`,
+  hint:`CV(A) = 6 ÷ 40 × 100% = <b>15%</b>. CV(B) = 5 ÷ 25 × 100% = <b>20%</b>. Farm A has the smaller CV, so <b>A is more consistent</b>, even though its s is larger.`},
+ {type:'Think', q:`Every volunteer in Q1 collects 3 more bottles. What happens to the mean and to s?`,
+  hint:`The mean rises by 3 (to 20). <b>s stays 5</b>: every value moves together, so the distances from the mean do not change.`}],
+venn:[
+ {type:'Venn', q:`A survey of 300 households: 150 have solar panels (S), 90 have a water-saving device (D), and 210 have <i>at least one</i> of the two.<br>(a) Draw the Venn diagram. (b) P(S and D). (c) P(exactly one). (d) P(neither). (e) Are S and D mutually exclusive?`,
+  hint:`(a) Both = 150 + 90 − 210 = <b>30</b>. S only = 120, D only = 60, neither = 300 − 210 = 90.<br>(b) 30 ÷ 300 = <b>0.10</b>. (c) (120 + 60) ÷ 300 = <b>0.60</b>. (d) 90 ÷ 300 = <b>0.30</b>.<br>(e) <b>No</b>: 30 households have both, so the events overlap.`},
+ {type:'Rules', q:`In a lab, P(A) = 0.45 and P(B) = 0.35, and A and B are mutually exclusive. Find P(A or B) and P(neither).`,
+  hint:`Mutually exclusive → P(A and B) = 0. P(A or B) = 0.45 + 0.35 = <b>0.80</b>. P(neither) = 1 − 0.80 = <b>0.20</b>.`}],
+tree:[
+ {type:'Tree', q:`Two independent leak sensors protect a water pipe. Sensor 1 detects a leak with probability 0.9, sensor 2 with probability 0.8.<br>(a) Draw the tree. (b) P(both detect). (c) P(neither detects). (d) P(at least one detects).`,
+  hint:`(a) First branches: detects 0.9 / misses 0.1. Second: detects 0.8 / misses 0.2 on each.<br>(b) 0.9 × 0.8 = <b>0.72</b>. (c) 0.1 × 0.2 = <b>0.02</b>. (d) 1 − 0.02 = <b>0.98</b>.`},
+ {type:'Sample space', q:`A student chooses one main dish (machboos, salad or pasta) and one drink (water or laban), all equally likely. List the sample space. What is P(salad and water)?`,
+  hint:`3 × 2 = <b>6 outcomes</b>: (machboos, water), (machboos, laban), (salad, water), (salad, laban), (pasta, water), (pasta, laban).<br>P(salad and water) = 1/3 × 1/2 = <b>1/6 ≈ 0.167</b>.`}],
+dist:[
+ {type:'Validity', q:`Which table is a valid probability distribution?<br>(i) 0.3, 0.3, 0.3 &nbsp; (ii) 0.5, −0.1, 0.6 &nbsp; (iii) 0.25, 0.25, 0.5`,
+  hint:`Only <b>(iii)</b>. (i) sums to 0.9. (ii) has a negative probability.`},
+ {type:'Compute', q:`X = number of the 3 EV chargers in use at a mall at noon (illustrative).<table class="tbl" style="margin:6px 0"><tr><th>x</th><td>0</td><td>1</td><td>2</td><td>3</td></tr><tr><th>P(x)</th><td>0.15</td><td>0.35</td><td>0.30</td><td>k</td></tr></table>(a) k. (b) P(X ≤ 1). (c) E(X), with meaning. (d) Var(X) and SD.`,
+  hint:`(a) k = 1 − 0.80 = <b>0.20</b>. (b) 0.15 + 0.35 = <b>0.50</b>.<br>(c) E(X) = 0 + 0.35 + 0.60 + 0.60 = <b>1.55</b>: over many days, about 1.55 chargers are in use at noon on average.<br>(d) Σ(x − 1.55)²P(x) = 0.3604 + 0.1059 + 0.0608 + 0.4205 ≈ <b>0.9475</b>; SD = √0.9475 ≈ <b>0.97</b>.`},
+ {type:'Meaning', q:`A charity raffle ticket costs 10 AED. You win 100 AED with probability 0.05, 20 AED with probability 0.15, nothing otherwise. Let X = your net gain. Find E(X) and explain it.`,
+  hint:`Net gains: 90 (0.05), 10 (0.15), −10 (0.80). E(X) = 4.5 + 1.5 − 8 = <b>−2 AED</b>. On average a buyer loses 2 AED per ticket; that is what the charity raises.`}]
+};
+const practice = k => el => W.practice(el, PRAC[k], {label:'Show answer', prefix:''});
+
+Lecture.mount({
+  id:'mtg-rev', course:'Mind the Gap', short:'Midterm practice', eyebrow:'Introduction to Statistics · Midterm revision',
+  title:'Midterm practice', meta:'Descriptive statistics (CLO 1) · Probability (CLO 2)', endLabel:'End of revision',
+  scenes:[
+  { nav:'Start here', title:'What the midterm covers', minutes:2,
+    narration:[`Each topic: a short recap with a tool, then <b>new</b> practice. Try first, then open the answer.`],
+    fig:{label:'Pick a topic', html:`<div class="map2"><div><h4>Descriptive statistics · CLO 1</h4>
+      <button data-s="1">Histogram shape<small>symmetric, right- or left-skewed</small></button><button data-s="2">Frequency polygon and ogive<small>midpoints, boundaries</small></button><button data-s="4">Boxplot<small>five-number summary, range, IQR</small></button><button data-s="6">Centre and spread<small>mean, mode, s², s, CV</small></button></div>
+      <div><h4>Probability · CLO 2</h4><button data-s="8">Venn diagrams<small>addition and complement rules</small></button><button data-s="10">Tree diagrams<small>multiplication rule, sample space</small></button><button data-s="12">Discrete distributions<small>k, P(X ≥ a), E(X), Var(X), SD</small></button><button data-s="14">Exit quiz<small>7 quick questions</small></button></div></div>`,
+      build:el=>el.querySelectorAll('button[data-s]').forEach(b=>b.addEventListener('click',()=>goScene(+b.dataset.s)))} },
+
+  { nav:'Histogram shape', title:'Shape: follow the tail', minutes:4,
+    narration:[`The tail names the shape. Tail to the right: <b>positively skewed</b>, mean &gt; median. Tail to the left: <b>negatively skewed</b>, mean &lt; median.`],
+    fig:{label:'Switch the shape', build:shapeTool} },
+
+  { nav:'Polygon and ogive', title:'Frequency polygon and ogive', minutes:5,
+    narration:[`A <b>frequency polygon</b> joins the class midpoints at their frequencies and closes on the axis. An <b>ogive</b> joins cumulative frequencies at the upper class boundaries.`],
+    fig:{label:'Same data, two graphs', build:polyTool} },
+
+  { nav:'Practice · Graphs', title:'Practice · Graphs', kind:'activity', minutes:10,
+    narration:[`New data. Answer on paper first.`], src:'Data: illustrative.',
+    fig:{label:'3 questions', build:practice('graphs')} },
+
+  { nav:'Boxplot', title:'Boxplot: five numbers', minutes:5,
+    narration:[`Min, Q1, median, Q3, max. <b>Range</b> = max − min. <b>IQR</b> = Q3 − Q1, the middle 50%. Outlier: beyond Q1 − 1.5·IQR or Q3 + 1.5·IQR.`],
+    fig:{label:'Type data, see the boxplot', build:boxTool, caption:'Q1 and Q3 = medians of the lower and upper halves (median excluded when n is odd).'} },
+
+  { nav:'Practice · Boxplot', title:'Practice · Boxplot', kind:'activity', minutes:10,
+    narration:[`Compute one, read one.`], src:'Data: illustrative.',
+    fig:{label:'2 questions', build:practice('box')} },
+
+  { nav:'Centre and spread', title:'Centre and spread', minutes:5,
+    narration:[`Centre: mean, median, mode. Spread: s², s and <b>CV = s ÷ x̄ × 100%</b>. Use the CV to compare spread between data sets with different means.`],
+    fig:{label:'Type data, check each step', build:spreadTool} },
+
+  { nav:'Practice · Spread', title:'Practice · Centre and spread', kind:'activity', minutes:12,
+    narration:[`Use a deviation table. Check your answers with the tool in the previous scene.`], src:'Data: illustrative.',
+    fig:{label:'3 questions', build:practice('spread')} },
+
+  { nav:'Venn diagrams', title:'Venn diagrams and the addition rule', minutes:5,
+    narration:[`Fill from the middle out: both, then each “only”, then neither. <b>P(A or B) = P(A) + P(B) − P(A and B)</b>. <b>P(neither) = 1 − P(A or B)</b>.`],
+    fig:{label:'Change the counts', build:vennTool} },
+
+  { nav:'Practice · Venn', title:'Practice · Venn diagrams', kind:'activity', minutes:10,
+    narration:[`This time the overlap is missing. Find it first.`], src:'Data: illustrative.',
+    fig:{label:'2 questions', build:practice('venn')} },
+
+  { nav:'Tree diagrams', title:'Tree diagrams and the multiplication rule', minutes:5,
+    narration:[`Branches from one point add to 1. <b>Multiply along a path</b> for “and” (independent events). <b>Add paths</b> for “or”.`],
+    fig:{label:'Drag the probabilities', build:treeTool} },
+
+  { nav:'Practice · Tree', title:'Practice · Tree diagrams', kind:'activity', minutes:8,
+    narration:[`Unequal branches this time.`], src:'Data: illustrative.',
+    fig:{label:'2 questions', build:practice('tree')} },
+
+  { nav:'Discrete distributions', title:'Discrete probability distributions', minutes:6,
+    narration:[`Valid when every P(x) is between 0 and 1 and <b>ΣP(x) = 1</b>. <b>E(X) = Σx·P(x)</b> is the long-run average. <b>Var(X) = Σ(x − μ)²·P(x)</b>, SD = √Var(X).`], src:toW2,
+    fig:{label:'Edit P(x) · check validity', build:distTool} },
+
+  { nav:'Practice · Distribution', title:'Practice · Discrete distributions', kind:'activity', minutes:12,
+    narration:[`Find k first. Every later part depends on it.`], src:'Data: illustrative.',
+    fig:{label:'3 questions', build:practice('dist')} },
+
+  { nav:'Exit quiz', title:'Exit quiz', kind:'check', minutes:5,
+    narration:[`Seven quick questions across all topics.`],
+    fig:{label:'Check yourself', build:el=>W.quiz(el,[
+      {q:'In a left-skewed distribution, usually…',o:['mean > median','mean < median','mean = median'],a:1,why:'The long left tail pulls the mean down, below the median.'},
+      {q:'A boxplot has Q1 = 40 and Q3 = 58. The IQR is…',o:['98','49','18','9'],a:2,why:'IQR = Q3 − Q1 = 58 − 40 = 18.'},
+      {q:'Which graph uses cumulative frequency?',o:['Histogram','Frequency polygon','Ogive'],a:2,why:'The ogive plots cumulative frequency at each upper class boundary.'},
+      {q:'Which measure compares spread between data sets with different means?',o:['Range','Standard deviation','Coefficient of variation'],a:2,why:'CV = s ÷ x̄ × 100% is relative, so it compares across means and units.'},
+      {q:'P(A) = 0.5, P(B) = 0.4, P(A and B) = 0.2. P(A or B) =',o:['0.9','0.7','0.2','0.1'],a:1,why:'0.5 + 0.4 − 0.2 = 0.7.'},
+      {q:'A and B are independent, P(A) = 0.3, P(B) = 0.5. P(A and B) =',o:['0.8','0.15','0.2','0.35'],a:1,why:'Multiply: 0.3 × 0.5 = 0.15.'},
+      {q:'Which list cannot be a probability distribution?',o:['0.2, 0.5, 0.3','0.3, 0.4, 0.4','0.1, 0.1, 0.8'],a:1,why:'0.3 + 0.4 + 0.4 = 1.1, not 1.'}])} },
+
+  { nav:'Takeaways', title:'Takeaways', kind:'review', minutes:2,
+    narration:[`Good luck on Monday. Bring a standard calculator.`],
+    fig:{label:'The midterm on one page', mindmap:{center:'Midterm', branches:[
+      {t:'Graphs',items:['Tail right → positive skew','Polygon: midpoints, closes on axis','Ogive: cumulative, upper boundaries']},
+      {t:'Boxplot',items:['Min, Q1, median, Q3, max','Range = max − min','IQR = Q3 − Q1','Fences: Q1 − 1.5·IQR, Q3 + 1.5·IQR']},
+      {t:'Centre and spread',items:['x̄ = Σx ÷ n','s² = Σ(x − x̄)² ÷ (n − 1)','s = √s²','CV = s ÷ x̄ × 100%']},
+      {t:'Venn',items:['Both first','P(A or B) = P(A) + P(B) − P(A and B)','P(neither) = 1 − P(A or B)']},
+      {t:'Tree',items:['Branches add to 1','Multiply along a path','Add paths for “or”']},
+      {t:'Distributions',items:['ΣP(x) = 1','E(X) = Σx·P(x)','Var(X) = Σ(x − μ)²·P(x)','SD = √Var(X)']}]}} }
+  ]
+});
+</script>
+</body>
+</html>

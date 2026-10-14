@@ -273,3 +273,7 @@ textarea,input[type=text]{width:100%;border:1px solid var(--line);background:var
   .brand span{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.toclogo{display:inline-block;background:#fff;border-radius:8px;padding:4px 8px;margin-bottom:12px}
+.toclogo img{height:34px;width:auto;display:block}
+@media (max-width:899px){.toclogo{display:none}}

@@ -27,6 +27,7 @@ body{font-family:var(--f-display)}
 .card .no{font-weight:800;font-size:2.6rem;line-height:1;color:var(--muted)}
 .card h2{font-size:1.25rem}
 .card.ready{border-color:var(--wk);background:linear-gradient(160deg,var(--wk-soft),transparent 70%)}
+.card.wide{grid-column:1/-1}
 .card.ready .no,.card.ready .open{color:var(--wk);font-weight:700}
 @media (max-width:760px){.ws{grid-template-columns:minmax(0,1fr)}.logo img{height:32px}}
 </style>
@@ -43,10 +44,14 @@ body{font-family:var(--f-display)}
     <div class="card"><span class="no">01</span><h2>Read the question</h2><span class="tag">Held</span></div>
     <a class="card ready" href="workshop-02.html"><span class="no">02</span><h2>Read the formula</h2><span class="open">Open →</span></a>
     <div class="card"><span class="no">03</span><h2>Use the calculator</h2><span class="tag">Coming soon</span></div>
+    <a class="card ready wide" href="revision.html"><span class="no">✎</span><h2>Midterm practice</h2><span>Every midterm topic: recap, interactive tools, new exercises with answers.</span><span class="open">Open →</span></a>
   </div>
 </div>
 <footer style="max-width:1080px;margin:0 auto;padding:18px 16px 30px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted);text-align:center">Created and owned by <b>Eng. Nadia Mek</b> · <a href="https://github.com/nadiamek-tech/MindTheGap">github.com/nadiamek-tech/MindTheGap</a></footer>
 <script src="assets/course.js"></script>
+<script src="assets/kb.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/assistant.js"></script>
 <script>document.getElementById('theme').addEventListener('click',()=>GED102Theme.toggle());</script>
 </body>
 </html>
