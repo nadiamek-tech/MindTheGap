@@ -751,7 +751,6 @@ const STATIONS=[
    ['Level 2','Exercise 1','',c=>bookEx(c,{...EX1,onDone:()=>setRes({xbar:'6'})})],
    ['Tool','Calculator','',c=>calc(c,CALC_MEAN)]])},
  {nav:'3 · Sample variance',title:'Sample variance',track:1,build:el=>levels(el,[
-   ['Idea','What is it?','',c=>{ c.innerHTML=`<div style="display:grid;gap:10px;font-size:1.05rem"><p style="margin:0"><b>Variance</b> measures how spread out the observations are around the mean.</p><p style="margin:0"><b>Standard deviation</b> is the square root of variance.</p><p style="margin:0">Small standard deviation → values are relatively close to the mean.</p><p style="margin:0">Large standard deviation → values are more spread out.</p></div>`; }],
    ['Level 1','Read it','',c=>story(c,VREAD)],
    ['Method 1','Brackets','',c=>story(c,VBRK)],
    ['Method 2','Table','',c=>story(c,TBL)],
