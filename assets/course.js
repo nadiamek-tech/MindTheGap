@@ -1,4 +1,4 @@
-/* Narrated lecture engine (shared across Nadia's CUD courses; first built for GED 102).
+/* GED 102 narrated lecture engine.
    A week page calls Lecture.mount({...}) with its scenes. Each scene:
    { title, kind:'lecture'|'activity'|'check', minutes, narration:[html...], think, notes:[...], src,
      fig:{label, html?, build?(el, W)}, wide:bool } */
@@ -113,7 +113,7 @@
       }));
     },
     video(el, v){
-      const embed=!/claude|anthropic/.test(location.hostname);
+      const embed=/github\.io$|^localhost$|^127\./.test(location.hostname);
       const url=`https://www.youtube.com/watch?v=${v.id}${v.start?`&t=${v.start}s`:''}`;
       const box=h('div',{class:'video'});
       box.innerHTML=(embed?`<div class="vframe"><iframe src="https://www.youtube-nocookie.com/embed/${v.id}${v.start?`?start=${v.start}`:''}" title="${esc(v.title)}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
@@ -179,7 +179,7 @@
 
     const bar=h('header',{class:'bar'});
     bar.innerHTML=`<div class="bar-in">
-      <a class="brand" href="index.html" title="Back to the course map"><b>${esc(cfg.course||'GED 102')}</b><span>← Course map · ${esc(cfg.short)}</span></a>
+      <a class="brand" href="index.html" title="Back to the course map"><b>GED 102</b><span>← Course map · ${esc(cfg.short)}</span></a>
       <div class="controls">
         <span class="seg-label">Layout</span>
         <div class="seg" role="group" aria-label="Layout">
@@ -193,7 +193,7 @@
 
     const shell=h('div',{class:'shell'});
     const toc=h('nav',{class:'toc','aria-label':'Scenes'});
-    toc.innerHTML=`<a href="index.html" class="toclogo"><img src="assets/cud-logo.png" alt="Canadian University Dubai" onerror="this.parentNode.remove()"></a><div class="eyebrow">${cfg.eyebrow||`Week ${cfg.week} · CLO ${cfg.clo}`}</div><h1>${esc(cfg.title)}</h1>
+    toc.innerHTML=`<div class="eyebrow">Week ${cfg.week} · CLO ${cfg.clo}</div><h1>${esc(cfg.title)}</h1>
       <div class="meta">${esc(cfg.meta)}</div><div class="meta">Instructor: <b>${esc(cfg.instructor||'Eng. Nadia Mek')}</b></div>`;
     const ol=h('ol'); toc.appendChild(ol);
     S.forEach((s,i)=>{ const li=h('li'); const b=h('button',{type:'button'},`<span class="n">${String(i).padStart(2,'0')}</span><span class="t">${esc(s.nav||s.title)}${s.kind&&s.kind!=='lecture'?`<span class="kind">${{check:'quiz',activity:'activity',exam:'exam',review:'review'}[s.kind]}</span>`:''}</span>`); b.addEventListener('click',()=>go(i)); li.appendChild(b); ol.appendChild(li); });
@@ -277,7 +277,7 @@
       stage.appendChild(split);
       const pager=h('div',{class:'pager'});
       const prev=h('button',{type:'button',class:'prev'},`<small>← Previous</small>${cur>0?esc(S[cur-1].nav||S[cur-1].title):'Start'}`); prev.disabled=cur===0; prev.addEventListener('click',()=>go(cur-1));
-      const nxt=h('button',{type:'button',class:'next'},`<small>Next →</small>${cur<S.length-1?esc(S[cur+1].nav||S[cur+1].title):(cfg.endLabel||'End of lecture')}`); nxt.disabled=cur===S.length-1; nxt.addEventListener('click',()=>go(cur+1));
+      const nxt=h('button',{type:'button',class:'next'},`<small>Next →</small>${cur<S.length-1?esc(S[cur+1].nav||S[cur+1].title):'End of lecture'}`); nxt.disabled=cur===S.length-1; nxt.addEventListener('click',()=>go(cur+1));
       pager.append(prev,h('span',{class:'kbd'},'← → keys'),nxt); stage.appendChild(pager);
       ol.querySelectorAll('li').forEach((li,i)=>{ li.querySelector('button').setAttribute('aria-current',i===cur); li.classList.toggle('seen',seen.has(i)); });
       const cb=ol.children[cur].querySelector('button'); if(cb.scrollIntoView && innerWidth<900) cb.scrollIntoView({block:'nearest',inline:'center'});
