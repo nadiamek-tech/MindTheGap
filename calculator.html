@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mind the Gap · Calculator</title>
+<meta name="description" content="Scientific calculator for the Mind the Gap statistics workshops, Canadian University Dubai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Schibsted+Grotesk:wght@400;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="assets/course.css">
+<style>
+:root{--wk:#C8102E;--wk-soft:rgba(200,16,46,.08);--wk-d:#FF7A7F;--wk-soft-d:rgba(255,122,127,.14);--br:#C62828;--op:#1F63B5}
+body{font-family:var(--f-display)}
+.top{border-bottom:1px solid var(--line)}
+.top-in{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:14px}
+.logo{display:block;background:#fff;border-radius:8px;padding:4px 8px;line-height:0;flex:none}
+.logo img{height:34px;width:auto}
+.ttl{flex:1 1 auto;min-width:0}
+.ttl b{display:block;font-weight:800;font-size:1rem}
+.ttl span{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 16px 50px;display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:22px;align-items:start}
+/* device */
+.dev{background:#2B2F36;border-radius:26px;padding:18px 16px 20px;box-shadow:0 14px 30px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.08);user-select:none;-webkit-user-select:none}
+.dev .brand{display:flex;justify-content:space-between;color:#C9CED6;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;margin:0 4px 8px}
+.lcd{background:#C9D3BE;border-radius:10px;padding:10px 12px;min-height:128px;box-shadow:inset 0 2px 6px rgba(0,0,0,.35);color:#1B2118;font-family:var(--f-mono);display:grid;grid-template-rows:auto 1fr auto;gap:4px}
+.lcd .flags{display:flex;justify-content:space-between;font-size:.66rem;opacity:.75;min-height:1em}
+.lcd .in{font-size:1.02rem;line-height:1.35;overflow-wrap:anywhere;max-height:5.4em;overflow-y:auto}
+.lcd .in .cur{display:inline-block;width:.55em;height:1.05em;background:#1B2118;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.lcd .out{text-align:right;font-size:1.9rem;font-weight:600;line-height:1.1;min-height:1.1em}
+.k-b{color:var(--br);font-weight:700}.k-o{color:var(--op);font-weight:700}.k-f{font-weight:700}
+.warn{font-size:.72rem;color:#8A1C1C;min-height:1em}
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.keys button{border:0;border-radius:10px;padding:11px 0;font-family:var(--f-display);font-weight:700;font-size:1.08rem;cursor:pointer;background:#4A505A;color:#F2F4F7;box-shadow:0 3px 0 #1D2026;touch-action:manipulation}
+.keys button:active,.keys button.hit{transform:translateY(2px);box-shadow:0 1px 0 #1D2026}
+.keys .fn{background:#3A3F48;font-size:.98rem}
+.keys .num{background:#E8EAEE;color:#1B1F25;box-shadow:0 3px 0 #9AA0AA}
+.keys .num:active,.keys .num.hit{box-shadow:0 1px 0 #9AA0AA}
+.keys .br{color:#FFB4B4}
+.keys .del{background:#C8102E;color:#fff;box-shadow:0 3px 0 #7A0A1C}
+.keys .eq{background:#1F63B5;box-shadow:0 3px 0 #123D70}
+/* side */
+.side{display:grid;gap:14px}
+.box{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px}
+.box h2{font-size:1.05rem;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 11px;cursor:pointer;font-family:var(--f-mono);font-size:.78rem;color:var(--ink)}
+.chips button:hover{border-color:var(--wk)}
+.grp{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 6px}
+.grp:first-of-type{margin-top:0}
+.tips{display:grid;gap:8px;margin:0;padding:0;list-style:none;font-size:.93rem}
+.tips li{display:flex;gap:10px;align-items:baseline}
+.tips code{font-family:var(--f-mono);font-size:.82rem;background:var(--sunk);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.hist{font-family:var(--f-mono);font-size:.8rem;display:grid;gap:4px;max-height:180px;overflow:auto}
+.hist div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding-bottom:3px}
+.hist div span:first-child{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note{font-size:.82rem;color:var(--muted)}
+.box{min-width:0}.hist div span:first-child{min-width:0}
+.pill{white-space:nowrap;text-decoration:none}
+.foot{max-width:1080px;margin:0 auto;padding:18px 16px 30px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted);text-align:center}
+@media (max-width:820px){.ttl span{display:none}.wrap{grid-template-columns:minmax(0,1fr)}.dev{max-width:420px;width:100%;margin:0 auto}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <a class="logo" href="index.html" title="Mind the Gap workshops"><img src="assets/cud-logo.png" alt="Canadian University Dubai"></a>
+  <div class="ttl"><b>Calculator</b><span>Mind the Gap · Finishing strong</span></div>
+  <a class="pill" href="workshop-03.html">Video ▸</a>
+  <button type="button" class="pill" id="theme">◐</button>
+</div></header>
+
+<main class="wrap">
+  <section class="dev" aria-label="Scientific calculator">
+    <div class="brand"><span>MIND THE GAP</span><span>S-V.P.A.M.</span></div>
+    <div class="lcd" aria-live="polite">
+      <div class="flags"><span id="mode">D</span><span id="fr"></span></div>
+      <div class="in" id="in"></div>
+      <div><div class="warn" id="warn"></div><div class="out" id="out">0</div></div>
+    </div>
+    <div class="keys" id="keys">
+      <button class="fn" data-k="SD" title="Fraction ⇄ decimal">S⇔D</button>
+      <button class="fn" data-k="²">x²</button>
+      <button class="fn" data-k="√(">√</button>
+      <button class="fn" data-k="^(">xʸ</button>
+      <button class="fn" data-k="neg" title="Negative sign">(−)</button>
+      <button class="fn br" data-k="(">(</button>
+      <button class="fn br" data-k=")">)</button>
+      <button class="fn" data-k="Ans">Ans</button>
+      <button class="del" data-k="DEL">DEL</button>
+      <button class="del" data-k="AC">AC</button>
+      <button class="num" data-k="7">7</button><button class="num" data-k="8">8</button><button class="num" data-k="9">9</button>
+      <button data-k="×">×</button><button data-k="÷">÷</button>
+      <button class="num" data-k="4">4</button><button class="num" data-k="5">5</button><button class="num" data-k="6">6</button>
+      <button data-k="+">+</button><button data-k="−">−</button>
+      <button class="num" data-k="1">1</button><button class="num" data-k="2">2</button><button class="num" data-k="3">3</button>
+      <button class="num" data-k="0">0</button><button class="num" data-k=".">.</button>
+      <button class="eq" data-k="=" style="grid-column:1/-1">=</button>
+    </div>
+  </section>
+
+  <div class="side">
+    <div class="box">
+      <h2>Try the workshop entries</h2>
+      <div class="grp">Brackets</div>
+      <div class="chips" data-set="b"></div>
+      <div class="grp">Chi-square</div>
+      <div class="chips" data-set="c"></div>
+      <div class="grp">Confidence intervals</div>
+      <div class="chips" data-set="ci"></div>
+      <p class="note" style="margin:10px 0 0">Tap one, then press <b>=</b>.</p>
+    </div>
+    <div class="box">
+      <h2>On your own calculator</h2>
+      <ul class="tips">
+        <li><code>S⇔D</code><span>The answer shows as a fraction (25/6)? Press S⇔D to see 4.1666…</span></li>
+        <li><code>(−)</code><span>Type a negative number with (−), subtract with −.</span></li>
+        <li><code>( )</code><span>Close every bracket you open.</span></li>
+        <li><code>−3²</code><span>gives −9. Type (15 − 18)² to get 9.</span></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h2>History</h2>
+      <div class="hist" id="hist"><span class="note">Your answers appear here.</span></div>
+    </div>
+  </div>
+</main>
+<footer class="foot">Created and owned by <b>Nadia</b> · <a href="https://github.com/nadiamek-tech/MindTheGap">github.com/nadiamek-tech/MindTheGap</a></footer>
+
+<script src="assets/course.js"></script>
+<script src="assets/calc.js"></script>
+<script>
+document.getElementById('theme').addEventListener('click',()=>GED102Theme.toggle());
+const C=window.MTGCalc;
+const PRESETS={
+  b:[['Mean','(12 + 15 + 18 + 20 + 25) ÷ 5'],['Mean, no brackets','12 + 15 + 18 + 20 + 25 ÷ 5'],['z','(85 − 70) ÷ 8'],['s ÷ √n','0.4 ÷ (1.5 ÷ √(25))'],['SE proportion','√(0.6 × (1 − 0.6) ÷ 200)'],['(30 − 40)²','(30 − 40)²'],['−10²','−10²']],
+  c:[['One term','(50 − 40)² ÷ 40'],['Trap','35 − 30² ÷ 30'],['Apps (4.167)','(35 − 30)² ÷ 30 + (15 − 18)² ÷ 18 + (10 − 12)² ÷ 12 + (15 − 20)² ÷ 20 + (15 − 12)² ÷ 12 + (10 − 8)² ÷ 8'],['Café (18.75)','(30 − 40)² ÷ 40 + (55 − 40)² ÷ 40 + (15 − 20)² ÷ 20 + (50 − 40)² ÷ 40 + (25 − 40)² ÷ 40 + (25 − 20)² ÷ 20']],
+  ci:[['Mean, lower','72 − 1.96 × (10 ÷ √(25))'],['Mean, upper','72 + 1.96 × (10 ÷ √(25))'],['Proportion, lower','0.6 − 1.96 × √(0.6 × (1 − 0.6) ÷ 200)'],['Proportion, upper','0.6 + 1.96 × √(0.6 × (1 − 0.6) ÷ 200)']]
+};
+let T=[], ans=0, shown=null, done=false, frac=false;
+const $=id=>document.getElementById(id);
+function draw(){
+  $('in').innerHTML=C.html(T)+(done?'':'<span class="cur"></span>');
+  const open=C.openBrackets(T);
+  $('warn').textContent=!done&&open>0?`${open} bracket${open>1?'s':''} still open`:'';
+  if(shown===null){$('out').textContent=done?'':'';$('fr').textContent='';return;}
+  if(typeof shown==='string'){$('out').textContent=shown;$('fr').textContent='';return;}
+  const f=C.fraction(shown);
+  if(frac&&f){$('out').textContent=(shown<0?'−':'')+Math.abs(f[0])+'/'+f[1];$('fr').textContent='Fraction';}
+  else{$('out').textContent=C.fmt(shown);$('fr').textContent='';}
+}
+function addHist(expr,v){
+  const h=$('hist'); if(h.querySelector('.note')) h.innerHTML='';
+  const d=document.createElement('div'); d.innerHTML=`<span>${expr}</span><b>${C.fmt(v)}</b>`; h.prepend(d);
+}
+function press(k){
+  if(k==='AC'){T=[];shown=null;done=false;frac=false;return draw();}
+  if(k==='SD'){if(typeof shown==='number'){frac=!frac;}return draw();}
+  if(k==='DEL'){if(done){done=false;shown=null;}else T.pop();return draw();}
+  if(k==='='){
+    try{const r=C.evaluate(T,ans);ans=r.value;shown=r.value;frac=false;
+      if(r.autoClosed) for(let i=0;i<r.autoClosed;i++) T.push(')');
+      addHist(T.join('').replace(/([+−×÷])/g,' $1 ').replace(/^ − /,'−'),r.value);
+    }catch(e){shown=e.message.includes('Math')?'Math ERROR':'Syntax ERROR';}
+    done=true;return draw();
+  }
+  if(done){ /* after =, an operator keeps going from Ans, anything else starts fresh */
+    T=['+','−','×','÷','²','^('].includes(k)?['Ans']:[];done=false;shown=null;frac=false;
+  }
+  T.push(k==='neg'?'−':k); draw();
+}
+$('keys').addEventListener('click',e=>{const b=e.target.closest('button');if(b)press(b.dataset.k);});
+document.querySelectorAll('.chips').forEach(box=>{
+  PRESETS[box.dataset.set].forEach(([label,expr])=>{
+    const b=document.createElement('button');b.type='button';b.textContent=label;b.title=expr;
+    b.addEventListener('click',()=>{T=C.tokenize(expr);done=false;shown=null;frac=false;draw();window.scrollTo({top:0,behavior:'smooth'});});
+    box.appendChild(b);
+  });
+});
+const KEYMAP={'Enter':'=','=':'=','Backspace':'DEL','Escape':'AC','*':'×','x':'×','/':'÷','-':'−','+':'+','(':'(',')':')','^':'^(','r':'√(','s':'²','.':'.'};
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  const k=/^[0-9]$/.test(e.key)?e.key:KEYMAP[e.key]; if(!k) return;
+  e.preventDefault(); press(k);
+  const b=document.querySelector(`#keys [data-k="${CSS.escape(k)}"]`); if(b){b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),120);}
+});
+draw();
+</script>
+</body>
+</html>
