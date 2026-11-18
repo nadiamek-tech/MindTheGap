@@ -17,11 +17,18 @@
       if (s.startsWith('^(', i)) { out.push('^('); i += 2; continue; }
       if (s.startsWith('Ans', i)) { out.push('Ans'); i += 3; continue; }
       if ('+−×÷()²'.includes(c)) { out.push(c); i++; continue; }
+      if (c === 'C') { out.push('C'); i++; continue; }
       throw new Error('Unknown key: ' + c);
     }
     return out;
   }
 
+  function comb(n, r) {
+    if (!Number.isInteger(n) || !Number.isInteger(r) || n < 0 || r < 0 || r > n) throw new Error('Math ERROR');
+    let v = 1; r = Math.min(r, n - r);
+    for (let k = 1; k <= r; k++) v = v * (n - r + k) / k;
+    return Math.round(v);
+  }
   /* ---------- parser ---------- */
   function evaluate(tokens, ans) {
     let p = 0; let autoClosed = 0;
@@ -51,6 +58,7 @@
         if (peek() === '²') { p++; v = v * v; }
         else { p++; const e = expr(); closeBracket(); v = Math.pow(v, e); }
       }
+      if (peek() === 'C') { p++; const r = postfix(); v = comb(v, r); }
       return v;
     }
     function unary() {
@@ -114,6 +122,7 @@
       if (t === '√(') return `<span class="k-f">√</span><span class="k-b">(</span>`;
       if (t === '^(') return `<span class="k-f">^</span><span class="k-b">(</span>`;
       if (t === '²') return `<span class="k-f">²</span>`;
+      if (t === 'C') return `<span class="k-f">C</span>`;
       if (OPS.includes(t)) return `<span class="k-o">${t}</span><wbr>`;
       return t;
     }).join('');

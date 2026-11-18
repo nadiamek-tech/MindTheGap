@@ -95,7 +95,8 @@ body{font-family:var(--f-display)}
       <button data-k="+">+</button><button data-k="−">−</button>
       <button class="num" data-k="1">1</button><button class="num" data-k="2">2</button><button class="num" data-k="3">3</button>
       <button class="num" data-k="0">0</button><button class="num" data-k=".">.</button>
-      <button class="eq" data-k="=" style="grid-column:1/-1">=</button>
+      <button class="fn" data-k="C" title="Combinations n C r">nCr</button>
+      <button class="eq" data-k="=" style="grid-column:2/-1">=</button>
     </div>
   </section>
 
@@ -106,6 +107,10 @@ body{font-family:var(--f-display)}
       <div class="chips" data-set="b"></div>
       <div class="grp">Chi-square</div>
       <div class="chips" data-set="c"></div>
+      <div class="grp">Binomial</div>
+      <div class="chips" data-set="bi"></div>
+      <div class="grp">Confidence intervals</div>
+      <div class="chips" data-set="ci"></div>
       <p class="note" style="margin:10px 0 0">Tap one, then press <b>=</b>.</p>
     </div>
     <div class="box">
@@ -114,6 +119,7 @@ body{font-family:var(--f-display)}
         <li><code>S⇔D</code><span>The answer shows as a fraction (25/6)? Press S⇔D to see 4.1666…</span></li>
         <li><code>(−)</code><span>Type a negative number with (−), subtract with −.</span></li>
         <li><code>( )</code><span>Close every bracket you open.</span></li>
+        <li><code>nCr</code><span>10 nCr 3 = 120. On a Casio: 10, SHIFT ÷, 3.</span></li>
         <li><code>−3²</code><span>gives −9. Type (15 − 18)² to get 9.</span></li>
       </ul>
     </div>
@@ -133,6 +139,7 @@ const C=window.MTGCalc;
 const PRESETS={
   b:[['Mean','(12 + 15 + 18 + 20 + 25) ÷ 5'],['Mean, no brackets','12 + 15 + 18 + 20 + 25 ÷ 5'],['z','(85 − 70) ÷ 8'],['s ÷ √n','0.4 ÷ (1.5 ÷ √(25))'],['SE proportion','√(0.6 × (1 − 0.6) ÷ 200)'],['(30 − 40)²','(30 − 40)²'],['−10²','−10²']],
   c:[['One term','(50 − 40)² ÷ 40'],['Trap','35 − 30² ÷ 30'],['Apps (4.167)','(35 − 30)² ÷ 30 + (15 − 18)² ÷ 18 + (10 − 12)² ÷ 12 + (15 − 20)² ÷ 20 + (15 − 12)² ÷ 12 + (10 − 8)² ÷ 8'],['Café (18.75)','(30 − 40)² ÷ 40 + (55 − 40)² ÷ 40 + (15 − 20)² ÷ 20 + (50 − 40)² ÷ 40 + (25 − 40)² ÷ 40 + (25 − 20)² ÷ 20']],
+  bi:[['10C3','10C3'],['P(X = 3)','10C3 × 0.3^(3) × (1 − 0.3)^(7)'],['Trap','10C3 × 0.3^(3) × 1 − 0.3^(7)']],
   ci:[['Mean, lower','72 − 1.96 × (10 ÷ √(25))'],['Mean, upper','72 + 1.96 × (10 ÷ √(25))'],['Proportion, lower','0.6 − 1.96 × √(0.6 × (1 − 0.6) ÷ 200)'],['Proportion, upper','0.6 + 1.96 × √(0.6 × (1 − 0.6) ÷ 200)']]
 };
 let T=[], ans=0, shown=null, done=false, frac=false;
@@ -175,7 +182,7 @@ document.querySelectorAll('.chips').forEach(box=>{
     box.appendChild(b);
   });
 });
-const KEYMAP={'Enter':'=','=':'=','Backspace':'DEL','Escape':'AC','*':'×','x':'×','/':'÷','-':'−','+':'+','(':'(',')':')','^':'^(','r':'√(','s':'²','.':'.'};
+const KEYMAP={'c':'C','C':'C','Enter':'=','=':'=','Backspace':'DEL','Escape':'AC','*':'×','x':'×','/':'÷','-':'−','+':'+','(':'(',')':')','^':'^(','r':'√(','s':'²','.':'.'};
 document.addEventListener('keydown',e=>{
   if(e.ctrlKey||e.metaKey||e.altKey) return;
   const k=/^[0-9]$/.test(e.key)?e.key:KEYMAP[e.key]; if(!k) return;
