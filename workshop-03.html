@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Mind the Gap 3 · Your calculator in the final</title>
-<meta name="description" content="Step-by-step video: brackets, confidence intervals and chi-square on the calculator.">
+<meta name="description" content="Step-by-step video: brackets and chi-square on the calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Schibsted+Grotesk:wght@400;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
@@ -62,7 +62,7 @@ video{width:100%;border-radius:14px;background:#000;display:block;border:1px sol
 <script src="assets/course.js"></script>
 <script>
 document.getElementById('theme').addEventListener('click',()=>GED102Theme.toggle());
-const CH=[{"t": 0, "title": "Your calculator in the final", "part": "Start"}, {"t": 21.0, "title": "What does the calculator do first?", "part": "Brackets"}, {"t": 46.8, "title": "Where do the brackets go?", "part": "Brackets"}, {"t": 66.9, "title": "Confidence interval for a mean", "part": "Confidence intervals"}, {"t": 90.9, "title": "A 95% interval for a mean", "part": "Confidence intervals"}, {"t": 130.8, "title": "Divide by √n, not by n", "part": "Confidence intervals"}, {"t": 151.4, "title": "A 95% interval for a proportion", "part": "Confidence intervals"}, {"t": 186.7, "title": "Chi-square: what each part means", "part": "Chi-square"}, {"t": 200.0, "title": "Observed table and hypotheses", "part": "Chi-square"}, {"t": 222.9, "title": "Expected counts", "part": "Chi-square"}, {"t": 247.6, "title": "One bracket for every cell", "part": "Chi-square"}, {"t": 272.1, "title": "df, critical value, decision", "part": "Chi-square"}, {"t": 298.6, "title": "Two calculator traps", "part": "Chi-square"}, {"t": 319.3, "title": "Practise with the slides", "part": "Practice"}];
+const CH=[{"t": 0, "title": "Your calculator in the final", "part": "Start"}, {"t": 19.1, "title": "What does the calculator do first?", "part": "Brackets"}, {"t": 45.0, "title": "Where do the brackets go?", "part": "Brackets"}, {"t": 65.1, "title": "Chi-square: what each part means", "part": "Chi-square"}, {"t": 78.4, "title": "Observed table and hypotheses", "part": "Chi-square"}, {"t": 101.2, "title": "Expected counts", "part": "Chi-square"}, {"t": 126.0, "title": "One bracket for every cell", "part": "Chi-square"}, {"t": 150.4, "title": "df, critical value, decision", "part": "Chi-square"}, {"t": 176.9, "title": "Two calculator traps", "part": "Chi-square"}, {"t": 197.6, "title": "Practise with the slides", "part": "Practice"}];
 const vid=document.getElementById('vid'), box=document.getElementById('parts');
 const mmss=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
 const groups={}; CH.forEach((c,i)=>{(groups[c.part]=groups[c.part]||[]).push([c,i]);});
